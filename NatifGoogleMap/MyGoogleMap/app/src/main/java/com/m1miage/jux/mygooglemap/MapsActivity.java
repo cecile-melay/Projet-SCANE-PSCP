@@ -9,11 +9,19 @@ import android.os.Bundle;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+
 import android.util.Log;
+import android.widget.Toast;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 /*
  * Main Activity which contains the Google Map
@@ -21,6 +29,11 @@ import android.util.Log;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Timer timer = new Timer();
+    private static LocationManager locManager;
+    private static LocationListener locListener;
+    private static Looper looper;
+    private final int intervalGeolocRefresh = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,23 +58,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        /* Use the LocationManager class to obtain GPS locations */
-        LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        LocationListener mlocListener = new MyLocationListener(getApplicationContext(),mMap);
+        MapsActivity ma = this;
         // Check Geolocation permission /!\ NOT RELIABLE MAYBE MUST HAVE TO ALLOW IN APP MANAGER THE GEOLOC PERMISSION FOR THIS APP /!\
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        // Launch the geolocation (GPS Way) loop thread
-        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
-        Location l = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        /* Use the LocationManager class to obtain GPS locations */
+        locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locListener = new MyLocationListener(this, mMap);
+        looper = Looper.myLooper();
+
+        Toast.makeText( this,
+                "Geolocation in progress ...",
+                Toast.LENGTH_SHORT).show();
+        // Launch the Geolocation loop with a forced timeout
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locListener, looper);
+        }
+        }, 0, intervalGeolocRefresh);
+
+        //mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
+        //Location l = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+
+
 
     }
 

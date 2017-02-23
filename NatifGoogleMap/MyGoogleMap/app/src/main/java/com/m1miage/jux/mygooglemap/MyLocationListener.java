@@ -4,12 +4,16 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 import android.location.Location;
 import android.widget.Toast;
 import android.os.Bundle;
 import android.content.Context;
 import android.util.Log;
+
+import java.util.Timer;
+import java.util.TimerTask;
 /**
  * Created by jux on 22/02/2017.
  */
@@ -21,24 +25,24 @@ import android.util.Log;
 public class MyLocationListener implements android.location.LocationListener {
 
     private Context context;
+    private MapsActivity ma;
     private GoogleMap mMap;
     private int compteur = 0;
+    private Timer timer = new Timer();
+    private LatLng myposition;
 
-    public MyLocationListener(Context c, GoogleMap gm)
+    public MyLocationListener(MapsActivity ma, GoogleMap gm)
     {
-        this.context = c;
+        this.ma = ma;
+        this.context = this.ma.getApplicationContext();
         this.mMap = gm;
     }
 
     @Override
-    public void onLocationChanged(Location loc)
+    public void onLocationChanged(final Location loc)
     {
         updateMyPositionOnMap(loc.getLatitude(),loc.getLongitude());
-        this.compteur++;
-        /*String Text = String.valueOf(loc.getLatitude()+" -- "+ loc.getLongitude());
-        Toast.makeText(this.context,
-                Text,
-                Toast.LENGTH_SHORT).show();*/
+        compteur++;
     }
 
 
@@ -65,14 +69,23 @@ public class MyLocationListener implements android.location.LocationListener {
 
     public void updateMyPositionOnMap(Double lat,Double lng)
     {
-        LatLng me = new LatLng(lat,lng);
-        Log.e("myLocalisation",String.valueOf(me));
-        mMap.addMarker(new MarkerOptions().position(me).title("Jux Le Terrible"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(me));
-        if(compteur==0)
-        {
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(20), 1000, null);
-        }
+        this.myposition = new LatLng(lat,lng);
+        Log.e("myLocalisation",String.valueOf(this.myposition));
+        // Update in GUI main Thread
+        ma.runOnUiThread(new Runnable() {
+            public void run() {
+                //.icon(BitmapDescriptorFactory.fromAsset("ez.png"))
+                mMap.addMarker(new MarkerOptions().position(myposition).title("Jux Le Terrible"));
+                if(compteur<2)
+                {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myposition));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(21), 3000, null);
+                }
+            }
+        });
+
     }
+
+
 
 }
