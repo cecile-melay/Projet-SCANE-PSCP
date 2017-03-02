@@ -1,8 +1,10 @@
 package com.m1miage.jux.mygooglemap;
 
 import android.Manifest;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.support.test.espresso.core.deps.guava.collect.Lists;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -11,14 +13,17 @@ import android.location.LocationManager;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.content.Intent;
+import android.app.PendingIntent;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 
-import android.util.Log;
-import android.widget.Toast;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -33,7 +38,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static LocationManager locManager;
     private static LocationListener locListener;
     private static Looper looper;
-    private final int intervalGeolocRefresh = 2000;
+    private int intervalGeolocRefresh = 2000;
+
+    private ArrayList<Double[]> zones = new ArrayList<Double[]>();
+    private ArrayList<String> nomsZones = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +76,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locListener = new MyLocationListener(this, mMap);
         looper = Looper.myLooper();
 
+        //Intent intent = new Intent(this, AlertReceiver.class);
+        //PendingIntent pending = PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        //locManager.addProximityAlert(43.210103, 6.025803, 200, -1, pending);
+
+        zones.add(new Double[]{43.210103,6.025803}); // Maison Jux
+        nomsZones.add("Maison Jux");
+        zones.add(new Double[]{43.209415,6.026087}); // Cimetière
+        nomsZones.add("Cimetière");
+        zones.add(new Double[]{43.209254,6.027240}); // Pharmacie
+        nomsZones.add("Pharmacie");
+        zones.add(new Double[]{43.208314,6.025117});  // Banc montée
+        nomsZones.add("Banc montée");
+        zones.add(new Double[]{43.207563,6.024693});  // Square Leo Lagrange
+        nomsZones.add("Sqaure Leo Lagrange");
+        zones.add(new Double[]{43.205904,6.024352});  // Eglise
+        nomsZones.add("Eglise");
+        zones.add(new Double[]{43.206334,6.025166});  // Boulangerie
+        nomsZones.add("Boulangerie");
+
+        addProximityAlerts(zones, nomsZones);
+
         Toast.makeText( this,
                 "Geolocation in progress ...",
                 Toast.LENGTH_SHORT).show();
@@ -82,9 +111,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
         //Location l = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+    }
 
+    private void addProximityAlerts(ArrayList<Double[]> positions, ArrayList<String> name) {
 
+        int requestCode = 0;
+        for(int i=0 ; i<name.size() ; i++)
+        {
+            //Bundle extras = new Bundle();
+            //extras.putString("name", name.get(i));
+            //extras.putInt("id", requestCode);
+            Intent intent = new Intent(this, AlertReceiver.class);
+            //Intent intent = new Intent("com.m1miage.jux.mygooglemap");
+            intent.putExtra("name", name.get(i));
+            PendingIntent proximityIntent = PendingIntent.getBroadcast(this, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            locManager.addProximityAlert(
+                    positions.get(i)[0], // the latitude of the central point of the alert region
+                    positions.get(i)[1], // the longitude of the central point of the alert region
+                    10, // the radius of the central point of the alert region, in meters
+                    -1, // time for this proximity alert, in milliseconds, or -1 to     indicate no expiration
+                    proximityIntent // will be used to generate an Intent to fire when entry to or exit from the alert region is detected
+            );
+            requestCode++;
+        }
+        IntentFilter filter = new IntentFilter("com.m1miage.jux.mygooglemap");
+        registerReceiver(new AlertReceiver(), filter);
 
+        /*
+        //Intent intent = new Intent("com.m1miage.jux.mygooglemap");
+        Intent intent = new Intent(this, AlertReceiver.class);
+        //intent.setAction("com.m1miage.jux.mygooglemap");
+        PendingIntent proximityIntent = PendingIntent.getBroadcast(this, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        locManager.addProximityAlert(
+                43.210103, // the latitude of the central point of the alert region
+                6.025803, // the longitude of the central point of the alert region
+                7, // the radius of the central point of the alert region, in meters
+                -1, // time for this proximity alert, in milliseconds, or -1 to     indicate no expiration
+                proximityIntent // will be used to generate an Intent to fire when entry to or exit from the alert region is detected
+        );
+
+        IntentFilter filter = new IntentFilter("com.m1miage.jux.mygooglemap");
+        registerReceiver(new AlertReceiver(), filter);
+        //Toast.makeText(getApplicationContext(),"Alert Added",Toast.LENGTH_SHORT).show();
+        */
     }
 
 }

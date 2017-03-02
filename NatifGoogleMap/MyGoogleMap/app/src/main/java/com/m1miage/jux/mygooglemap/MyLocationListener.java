@@ -13,7 +13,6 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.Timer;
-import java.util.TimerTask;
 /**
  * Created by jux on 22/02/2017.
  */

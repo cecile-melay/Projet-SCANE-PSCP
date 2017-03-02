@@ -29,4 +29,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-base:10.2.0'
     compile 'com.google.android.gms:play-services-location:10.2.0'
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support.test.espresso:espresso-core:2.2.2'
 }
