@@ -3,6 +3,7 @@ package com.m1miage.jux.mygooglemap;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
@@ -29,6 +30,7 @@ public class MyLocationListener implements android.location.LocationListener {
     private int compteur = 0;
     private Timer timer = new Timer();
     private LatLng myposition;
+    private Marker marker;
 
     public MyLocationListener(MapsActivity ma, GoogleMap gm)
     {
@@ -66,19 +68,31 @@ public class MyLocationListener implements android.location.LocationListener {
     {
     }
 
-    public void updateMyPositionOnMap(Double lat,Double lng)
+    public void updateMyPositionOnMap(final Double lat,final Double lng)
     {
         this.myposition = new LatLng(lat,lng);
         Log.e("myLocalisation",String.valueOf(this.myposition));
         // Update in GUI main Thread
         ma.runOnUiThread(new Runnable() {
             public void run() {
-                //.icon(BitmapDescriptorFactory.fromAsset("ez.png"))
-                mMap.addMarker(new MarkerOptions().position(myposition).title("Jux Le Terrible"));
+                //.icon(BitmapDescriptorFactory.fromAsset("ez.png");
+                //MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(lat, lng)).title("Me");
+
+                mMap.clear();
+                marker = mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(lat, lng))
+                        //.icon(BitmapDescriptorFactory.fromResource(R.drawable.my_position))
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .title("Me")
+                        .snippet("Jux")
+                );
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(myposition));
+
+                //mMap.addMarker(new MarkerOptions().position(myposition).title("Jux Le Terrible"));
                 if(compteur<2)
                 {
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myposition));
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo(21), 3000, null);
+                    //mMap.moveCamera(CameraUpdateFactory.newLatLng(myposition));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(25), 3000, null);
                 }
             }
         });

@@ -35,9 +35,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Timer timer = new Timer();
-    private static LocationManager locManager;
-    private static LocationListener locListener;
-    private static Looper looper;
+    private LocationManager locManager;
+    private LocationListener locListener;
+    private Looper looper;
     private int intervalGeolocRefresh = 2000;
 
     private ArrayList<Double[]> zones = new ArrayList<Double[]>();
