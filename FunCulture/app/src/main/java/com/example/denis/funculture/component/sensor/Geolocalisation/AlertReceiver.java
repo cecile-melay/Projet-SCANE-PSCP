@@ -18,8 +18,6 @@ public class AlertReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            //Toast.makeText(context,"EZZZZZZZZZZZZZ",Toast.LENGTH_SHORT).show();
-
             //Variable  Key pour déterminer si l'utilisateur quitte ou entre
             String key = LocationManager.KEY_PROXIMITY_ENTERING;
 
@@ -31,7 +29,7 @@ public class AlertReceiver extends BroadcastReceiver {
                 Log.i("TAG", "Bienvenue");
                 for(int i=0 ; i<3 ; i++)
                 {
-                    Toast.makeText(context, "ENTREE "+intent.getStringExtra("name"), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "ENTREE "+intent.getStringExtra("name"), Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -68,7 +66,7 @@ public class AlertReceiver extends BroadcastReceiver {
                 {
                     //Toast.makeText(context, "SORTIE MAISON JUX", Toast.LENGTH_SHORT).show();
                     //Toast.makeText(context, "SORTIE "+intent.getBundleExtra("com.m1miage.jux.mygooglemap.").get("name"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(context, "SORTIE "+intent.getStringExtra("name"), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "SORTIE "+intent.getStringExtra("name"), Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -100,6 +98,8 @@ public class AlertReceiver extends BroadcastReceiver {
                 }
             }
         }
+
+
 
         //créer une notification
         /*private Notification createNotification() {
