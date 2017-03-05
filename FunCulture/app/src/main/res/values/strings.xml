@@ -20,4 +20,7 @@
     <string name="accelerometer">Accéléromètre</string>
     <string name="step_count">Accéléromètre</string>
 
+    <string name="title_activity_maps">Map</string>
+    <string name="new_location">New Location : Latitude = %1$s, Longitude = %2$s, Altitude = %3$s avec une précision de %4$s mètres </string>
+
 </resources>

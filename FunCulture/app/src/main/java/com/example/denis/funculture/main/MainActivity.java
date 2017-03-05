@@ -19,6 +19,7 @@ import android.widget.Spinner;
 
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.activities.AccelerometerActivity;
+import com.example.denis.funculture.activities.MapsActivity;
 import com.example.denis.funculture.activities.PedometerActivity;
 import com.example.denis.funculture.component.sensor.Pedometer;
 import com.example.denis.funculture.utils.MyResources;
@@ -153,6 +154,8 @@ public class MainActivity extends AppCompatActivity
                 switch (position) {
                     //GPS
                     case 0 :
+                        intent = new Intent(this, MapsActivity.class);
+                        this.startActivity(intent);
                         break;
 
                     //ACCELEROMETER
