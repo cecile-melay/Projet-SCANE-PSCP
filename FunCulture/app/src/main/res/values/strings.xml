@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">FunCulture</string>
+
+    <string name="navigation_drawer_open">Ouvrir le menu de navigation</string>
+    <string name="navigation_drawer_close">Fermer le menu de navigation</string>
+
+    <string name="action_settings">Paramètres</string>
+
+
+
+    <string name="home">Bienvenue</string>
+    <string name="home_message">Pour le moment on placera simplement une liste des capteurs que l\'on peut tester.</string>
+    <string name="sensor">Capteur : </string>
+    <string name="sensor_select">Sélectionnez un capteur : </string>
+    <string name="test">Tester</string>
+
+
+    <string name="gps">Géolocalisation</string>
+    <string name="pedometer">Podomètre</string>
+    <string name="accelerometer">Accéléromètre</string>
+    <string name="step_count">Accéléromètre</string>
+
+</resources>
