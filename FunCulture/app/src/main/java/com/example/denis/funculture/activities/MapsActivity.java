@@ -143,4 +143,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    /**
+     * Partie Creation d'itineraire a suivre
+     * TODO  récupérer les points sur l'arraylist de position de la fonction addProximityAlerts
+     * TODO Utiliser les polylines https://developers.google.com/maps/documentation/android-api/shapes?hl=fr pour les reliér
+     * Limites : vérifier que ça fonctionne hors routes (normalement oui car ça ne map pas sur un itinéraire
+     *
+     */
+
+
+
+    /*
+    * Partie controle de trajectoire
+    * Réutiliser la geolocalisation et comparer deux listes de points : celle de la trajectoire de base et celle de l'utilisateur
+    * TODO Calculer la distance entre chaque point pour éviter les erreurs gps, vérifier la bonne direction en combinant : distance au point suivant (ligne droite) et angle entre la polylines et le segment tracé par l'utilisateur
+     */
+    public double calculCoeffiscientDirecteur(double xa, double ya, double xb, double yb ){
+        /*
+        * Le coeffiscient directeur sera la valeur a comparer pour savoir si un utilisateur fait demi tour
+         */
+        return (yb-ya)/(xb-xa);
+    }
+
+    public double calculDistance(double xa, double ya, double xb, double yb){
+        /*
+        *On va pouvoir savoir si un utilisateur reste dans la bonne direction en vérifiant que la distance avec le point prochain n'est pas trop grande
+         */
+        return Math.sqrt(((int)(xa-xb)^2)-((int)(yb-ya)^2));
+    }
 }
