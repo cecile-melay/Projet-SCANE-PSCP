@@ -10,5 +10,7 @@ public class MyResources {
         public static final String GPS = App.getContext().getString(R.string.gps);
         public static final String ACCELEROMETER = App.getContext().getString(R.string.accelerometer);
         public static final String PEDOMETER = App.getContext().getString(R.string.pedometer);
+        public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
+        public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
 
 }

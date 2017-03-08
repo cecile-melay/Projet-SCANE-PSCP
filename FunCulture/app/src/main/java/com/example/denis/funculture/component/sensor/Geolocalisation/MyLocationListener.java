@@ -1,6 +1,7 @@
 package com.example.denis.funculture.component.sensor.Geolocalisation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +15,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.Arrays;
 import java.util.Timer;
 
 /**
@@ -28,7 +28,7 @@ import java.util.Timer;
 public class MyLocationListener implements android.location.LocationListener {
 
     private Context context;
-    private MapsActivity ma;
+    public static MapsActivity MA;
     private GoogleMap mMap;
     private int compteur = 0;
     private Timer timer = new Timer();
@@ -39,15 +39,45 @@ public class MyLocationListener implements android.location.LocationListener {
 
     public MyLocationListener(MapsActivity ma, GoogleMap gm)
     {
-        this.ma = ma;
-        this.context = this.ma.getApplicationContext();
+        this.MA = ma;
+        this.context = this.MA.getApplicationContext();
         this.mMap = gm;
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(25), 2000, null);
     }
 
     @Override
     public void onLocationChanged(final Location loc)
     {
-        updateMyPositionOnMap(loc.getLatitude(),loc.getLongitude());
+        this.myposition = new LatLng(loc.getLatitude(),loc.getLongitude());
+        this.myOldPosition = this.myposition;
+        Log.e("myLocalisation", String.valueOf(this.myposition));
+
+        if(compteur==0) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(myposition));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(25), 2000, null);
+        }
+        else
+            MA.getTabMarkers().get(MA.getTabMarkers().size()-1).remove();
+        // On test si le déplacement vaut la peine de recentrer la map
+        //if (shoudlIRealyMoveMap(this.myposition, this.myOldPosition)) {
+        // Update in GUI main Thread
+        MA.runOnUiThread(new Runnable() {
+            public void run() {
+                marker = mMap.addMarker(new MarkerOptions()
+                        .position(myposition)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .title("Me")
+                        .snippet("Jux")
+                );
+                MA.getTabMarkers().add(marker);
+                //mMap.moveCamera(CameraUpdateFactory.newLatLng(myposition)); // On centre la map dynamiquement en fonction du déplacement de l'utilisateur
+                //if (compteur < 10)  // On zoom sur l'user
+                //{
+                  //mMap.animateCamera(CameraUpdateFactory.zoomTo(20), 2000, null);
+                //}
+            }
+        });
+        //}
         compteur++;
     }
 
@@ -64,48 +94,17 @@ public class MyLocationListener implements android.location.LocationListener {
     public void onProviderEnabled(String provider)
     {
         Toast.makeText( this.context,
-                "Gps Enabled",
+                "Gps Enabled. Location in progress ...",
                 Toast.LENGTH_SHORT).show();
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(25), 2000, null);
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras)
     {
-    }
-
-    public void updateMyPositionOnMap(final Double lat,final Double lng)
-    {
-        this.myposition = new LatLng(lat,lng);
-        if(compteur==0)
-            this.myOldPosition = this.myposition;
-        else
-        {
-            // On test si le déplacement vaut la peine de recentrer la map
-            //if (shoudlIRealyMoveMap(this.myposition, this.myOldPosition)) {
-                this.myOldPosition = this.myposition;
-                Log.e("myLocalisation", String.valueOf(this.myposition));
-                // Update in GUI main Thread
-                ma.runOnUiThread(new Runnable() {
-                    public void run() {
-                        mMap.clear();
-                        marker = mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(lat, lng))
-                                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.my_position))
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                                .title("Me")
-                                .snippet("Jux")
-                        );
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(myposition)); // On centre la map dynamiquement en fonction du déplacement de l'utilisateur
-
-                        if (compteur < 10)  // On zoom sur l'user
-                        {
-                            mMap.animateCamera(CameraUpdateFactory.zoomTo(25), 3000, null);
-                        }
-                    }
-                });
-            //}
-        }
-        compteur++;
+        /*Toast.makeText( this.context,
+                provider+"  "+status+"  "+extras,
+                Toast.LENGTH_SHORT).show();*/
     }
 
     public Boolean shoudlIRealyMoveMap(LatLng newPosition, LatLng oldPosition){

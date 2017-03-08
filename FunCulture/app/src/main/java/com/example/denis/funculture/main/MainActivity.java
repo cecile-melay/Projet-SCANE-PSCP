@@ -23,6 +23,7 @@ import com.example.denis.funculture.activities.MapsActivity;
 import com.example.denis.funculture.activities.PedometerActivity;
 import com.example.denis.funculture.component.sensor.Pedometer;
 import com.example.denis.funculture.utils.MyResources;
+import com.example.denis.funculture.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         init();
+
+        Util.checkPrivileges(this, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
     }
 
     @Override

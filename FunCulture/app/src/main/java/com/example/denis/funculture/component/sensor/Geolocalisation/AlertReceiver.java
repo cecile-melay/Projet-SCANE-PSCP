@@ -6,14 +6,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.media.AudioManager;
+import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.denis.funculture.activities.MapsActivity;
 
 /**
  * Created by jux on 23/02/2017.
  */
 
 public class AlertReceiver extends BroadcastReceiver {
+
+    private Vibrator v;
+
+    private final int NOTIFICATIONTIMER = 1000;
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -24,13 +31,11 @@ public class AlertReceiver extends BroadcastReceiver {
             //Variable booléenne pour savoir si l'utilisateur entre ou sort
             boolean state = intent.getBooleanExtra(key, false);
 
-            if(state){
-
-                Log.i("TAG", "Bienvenue");
+            if(state)
+            {
                 for(int i=0 ; i<3 ; i++)
                 {
-                    //Toast.makeText(context, "ENTREE "+intent.getStringExtra("name"), Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(context, "ENTREE "+intent.getStringExtra("name"), Toast.LENGTH_SHORT).show();
                 }
 
                 NotificationManager notificationManager =
@@ -47,9 +52,13 @@ public class AlertReceiver extends BroadcastReceiver {
                         break;
                     case AudioManager.RINGER_MODE_VIBRATE:
                         Log.i("Mode"," mode vibreur");
+                        v = (Vibrator) MyLocationListener.MA.getSystemService(Context.VIBRATOR_SERVICE);
+                        v.vibrate(NOTIFICATIONTIMER);
                         break;
                     case AudioManager.RINGER_MODE_NORMAL:
                         Log.i("Mode"," mode normale");
+                        v = (Vibrator) MyLocationListener.MA.getSystemService(Context.VIBRATOR_SERVICE);
+                        v.vibrate(NOTIFICATIONTIMER);
                         break;
                 }
                 //PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, null, 0);
@@ -59,14 +68,12 @@ public class AlertReceiver extends BroadcastReceiver {
                         "Alerte de bienvenue","Bienvenue dans notre zone!", pendingIntent);*/
 
                 //notificationManager.notify(1000, notification);
-            }else{
-
-                Log.i("MyTag", "Thank you for visiting my Area,come back again !!");
+            }
+            else
+            {
                 for(int i=0 ; i<3 ; i++)
                 {
-                    //Toast.makeText(context, "SORTIE MAISON JUX", Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(context, "SORTIE "+intent.getBundleExtra("com.m1miage.jux.mygooglemap.").get("name"), Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(context, "SORTIE "+intent.getStringExtra("name"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "SORTIE "+intent.getStringExtra("name"), Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -87,13 +94,17 @@ public class AlertReceiver extends BroadcastReceiver {
 
                 switch (audiomanager.getRingerMode()) {
                     case AudioManager.RINGER_MODE_SILENT:
-                        Log.i("Mode","Silent mode");
+                        Log.i("Mode","mode silencieux");
                         break;
                     case AudioManager.RINGER_MODE_VIBRATE:
-                        Log.i("Mode","Vibrate mode");
+                        Log.i("Mode"," mode vibreur");
+                        v = (Vibrator) MyLocationListener.MA.getSystemService(Context.VIBRATOR_SERVICE);
+                        v.vibrate(NOTIFICATIONTIMER);
                         break;
                     case AudioManager.RINGER_MODE_NORMAL:
-                        Log.i("Mode","Normal mode");
+                        Log.i("Mode"," mode normale");
+                        v = (Vibrator) MyLocationListener.MA.getSystemService(Context.VIBRATOR_SERVICE);
+                        v.vibrate(NOTIFICATIONTIMER);
                         break;
                 }
             }

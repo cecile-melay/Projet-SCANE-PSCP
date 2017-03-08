@@ -6,22 +6,34 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.component.sensor.Geolocalisation.AlertReceiver;
 import com.example.denis.funculture.component.sensor.Geolocalisation.MyLocationListener;
+import com.example.denis.funculture.utils.MyResources;
+import com.example.denis.funculture.utils.Util;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,12 +50,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationListener locListener;
     private Looper looper;
     private int intervalGeolocRefresh = 3000;
+    private Location startLocation;
+    private ArrayList<Marker> tabMarkers = new ArrayList<Marker>();
 
     private ArrayList<Double[]> zones = new ArrayList<Double[]>();
     private ArrayList<String> nomsZones = new ArrayList<String>();
-
-    private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
-    private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,52 +81,92 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         MapsActivity ma = this;
         // Check Geolocation permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MapsActivity.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE);
-            ActivityCompat.requestPermissions(MapsActivity.this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
+            Util.checkPrivileges(this, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
         }
-        /* Use the LocationManager class to obtain GPS locations */
-        locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locListener = new MyLocationListener(this, mMap);
-        looper = Looper.myLooper();
-
-        //Intent intent = new Intent(this, AlertReceiver.class);
-        //PendingIntent pending = PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-        zones.add(new Double[]{43.210103, 6.025803}); // Maison Jux
-        nomsZones.add("Maison Jux");
-        zones.add(new Double[]{43.209415, 6.026087}); // Cimetière
-        nomsZones.add("Cimetière");
-        zones.add(new Double[]{43.209254, 6.027240}); // Pharmacie
-        nomsZones.add("Pharmacie");
-        zones.add(new Double[]{43.208314, 6.025117});  // Banc montée
-        nomsZones.add("Banc montée");
-        zones.add(new Double[]{43.207563, 6.024693});  // Square Leo Lagrange
-        nomsZones.add("Sqaure Leo Lagrange");
-        zones.add(new Double[]{43.205904, 6.024352});  // Eglise
-        nomsZones.add("Eglise");
-        zones.add(new Double[]{43.206334, 6.025166});  // Boulangerie
-        nomsZones.add("Boulangerie");
-
-        addProximityAlerts(zones, nomsZones);
-
-        // Launch the Geolocation loop with a forced timeout
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locListener, looper);
+        else {
+            mMap.setMyLocationEnabled(true);
+            // Use the LocationManager class to obtain GPS locations
+            locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            if(!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            {
+                Toast.makeText(this,
+                        "Activez le GPS",
+                        Toast.LENGTH_SHORT).show();
             }
-            else
-                return;
-            }
-        }, 0, intervalGeolocRefresh);
 
-        //mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
-        //Location l = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            startLocation = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            locListener = new MyLocationListener(this, mMap);
+            if(startLocation!=null) {
+                locListener.onLocationChanged(startLocation);
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(25), 2000, null);
+            }
+            looper = Looper.myLooper();
+
+            //Intent intent = new Intent(this, AlertReceiver.class);
+            //PendingIntent pending = PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+            zones.add(new Double[]{43.210103, 6.025803}); // Maison Jux
+            nomsZones.add("Maison Jux");
+            zones.add(new Double[]{43.209415, 6.026087}); // Cimetière
+            nomsZones.add("Cimetière");
+            zones.add(new Double[]{43.209254, 6.027240}); // Pharmacie
+            nomsZones.add("Pharmacie");
+            zones.add(new Double[]{43.208314, 6.025117});  // Banc montée
+            nomsZones.add("Banc montée");
+            zones.add(new Double[]{43.207563, 6.024693});  // Square Leo Lagrange
+            nomsZones.add("Square Leo Lagrange");
+            zones.add(new Double[]{43.205904, 6.024352});  // Eglise
+            nomsZones.add("Eglise");
+            zones.add(new Double[]{43.206334, 6.025166});  // Boulangerie
+            nomsZones.add("Boulangerie");
+
+            zones.add(new Double[]{43.616909, 7.064413});  // Parking
+            nomsZones.add("Parking");
+            zones.add(new Double[]{43.616824, 7.064771});  // Ping Pong
+            nomsZones.add("Table de ping pong");
+            Circle circle;
+            circle = mMap.addCircle(new CircleOptions()
+                    .center(new LatLng(43.616909, 7.064413))
+                    .radius(2.5)
+                    .strokeColor(Color.BLUE)
+                    .fillColor(Color.RED));
+            circle = mMap.addCircle(new CircleOptions()
+                    .center(new LatLng(43.616824, 7.064771))
+                    .radius(2.5)
+                    .strokeColor(Color.RED)
+                    .fillColor(Color.BLUE));
+
+            addProximityAlerts(zones, nomsZones);
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.616909, 7.064413))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Parking")
+                    .snippet("parking de la formation MIAGE")
+            );
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.616824, 7.064771))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pingpong))
+                    .title("Ping Pong")
+                    .snippet("Table de ping pong")
+            );
+            mMap.setMyLocationEnabled(false);
+
+            //locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
+            // Launch the Geolocation loop with a forced timeout
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                        locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locListener, looper);
+                    else
+                        return;
+                }
+            }, 0, intervalGeolocRefresh);
+
+            //mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
+            //Location l = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
 
     }
 
@@ -129,7 +180,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 locManager.addProximityAlert(
                         positions.get(i)[0], // the latitude of the central point of the alert region
                         positions.get(i)[1], // the longitude of the central point of the alert region
-                        10, // the radius of the central point of the alert region, in meters
+                        8, // the radius of the central point of the alert region, in meters
                         -1, // time for this proximity alert, in milliseconds, or -1 to     indicate no expiration
                         proximityIntent // will be used to generate an Intent to fire when entry to or exit from the alert region is detected
                 );
@@ -140,7 +191,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         IntentFilter filter = new IntentFilter("com.example.denis.funculture.activities");
         registerReceiver(new AlertReceiver(), filter);
+    }
 
+    public ArrayList<Marker> getTabMarkers()
+    {
+        return this.tabMarkers;
     }
 
 }
