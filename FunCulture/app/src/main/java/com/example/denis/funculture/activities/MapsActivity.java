@@ -63,7 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
-    private com.google.android.gms.maps.model.PolygonOptions PolygonOptions;
+    private com.google.android.gms.maps.model.PolygonOptions polygonOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
