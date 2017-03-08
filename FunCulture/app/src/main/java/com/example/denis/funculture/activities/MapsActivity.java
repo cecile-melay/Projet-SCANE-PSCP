@@ -21,6 +21,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -44,6 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
+    private com.google.android.gms.maps.model.PolygonOptions PolygonOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +106,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         nomsZones.add("Boulangerie");
 
         addProximityAlerts(zones, nomsZones);
+        //mMap.addPolygon(PolygonOptions);
 
         // Launch the Geolocation loop with a forced timeout
         timer.schedule(new TimerTask() {
@@ -150,6 +156,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * Limites : vérifier que ça fonctionne hors routes (normalement oui car ça ne map pas sur un itinéraire
      *
      */
+    // Instantiates a new Polyline object and adds points to define a rectangle
+    PolylineOptions rectOptions = new PolylineOptions()
+            /*
+            * Ici on va rentrer la liste des points a relier sur la carte
+             */
+            .add(new LatLng(37.35, -122.0))
+            .add(new LatLng(37.45, -122.0))  // North of the previous point, but at the same longitude
+            .add(new LatLng(37.45, -122.2))  // Same latitude, and 30km to the west
+            .add(new LatLng(37.35, -122.2))  // Same longitude, and 16km to the south
+            .add(new LatLng(37.35, -122.0)); // Closes the polyline.
+
+    // Get back the mutable Polyline
+    //Polyline polyline = mMap.addPolyline(rectOptions);
 
 
 
