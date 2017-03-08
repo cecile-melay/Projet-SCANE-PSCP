@@ -34,6 +34,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.lang.reflect.Array;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -55,6 +60,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private ArrayList<Double[]> zones = new ArrayList<Double[]>();
     private ArrayList<String> nomsZones = new ArrayList<String>();
+
+    private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
+    private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
+    private com.google.android.gms.maps.model.PolygonOptions PolygonOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,4 +207,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return this.tabMarkers;
     }
 
+    /**
+     * Partie Creation d'itineraire a suivre
+     * TODO  récupérer les points sur l'arraylist de position de la fonction addProximityAlerts
+     * TODO Utiliser les polylines https://developers.google.com/maps/documentation/android-api/shapes?hl=fr pour les reliér
+     * Limites : vérifier que ça fonctionne hors routes (normalement oui car ça ne map pas sur un itinéraire
+     *
+     */
+    // Instantiates a new Polyline object and adds points to define a rectangle
+    PolylineOptions rectOptions = new PolylineOptions()
+            /*
+            * Ici on va rentrer la liste des points a relier sur la carte
+             */
+            .add(new LatLng(37.35, -122.0))
+            .add(new LatLng(37.45, -122.0))  // North of the previous point, but at the same longitude
+            .add(new LatLng(37.45, -122.2))  // Same latitude, and 30km to the west
+            .add(new LatLng(37.35, -122.2))  // Same longitude, and 16km to the south
+            .add(new LatLng(37.35, -122.0)); // Closes the polyline.
+
+    // Get back the mutable Polyline
+    //Polyline polyline = mMap.addPolyline(rectOptions);
+
+
+
+    /*
+    * Partie controle de trajectoire
+    * Réutiliser la geolocalisation et comparer deux listes de points : celle de la trajectoire de base et celle de l'utilisateur
+    * TODO Calculer la distance entre chaque point pour éviter les erreurs gps, vérifier la bonne direction en combinant : distance au point suivant (ligne droite) et angle entre la polylines et le segment tracé par l'utilisateur
+     */
+    public double calculCoeffiscientDirecteur(double xa, double ya, double xb, double yb ){
+        /*
+        * Le coeffiscient directeur sera la valeur a comparer pour savoir si un utilisateur fait demi tour
+         */
+        return (yb-ya)/(xb-xa);
+    }
+
+    public double calculDistance(double xa, double ya, double xb, double yb){
+        /*
+        *On va pouvoir savoir si un utilisateur reste dans la bonne direction en vérifiant que la distance avec le point prochain n'est pas trop grande
+         */
+        return Math.sqrt(((int)(xa-xb)^2)-((int)(yb-ya)^2));
+    }
 }
