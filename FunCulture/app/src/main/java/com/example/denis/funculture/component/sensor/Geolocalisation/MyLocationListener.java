@@ -1,12 +1,17 @@
 package com.example.denis.funculture.component.sensor.Geolocalisation;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationProvider;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.denis.funculture.R;
 import com.example.denis.funculture.activities.MapsActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,6 +53,21 @@ public class MyLocationListener implements android.location.LocationListener {
     @Override
     public void onLocationChanged(final Location loc)
     {
+        /*Toast.makeText( this.context,
+                String.valueOf(loc.getAccuracy())+"m d'imprécision GPS",
+                Toast.LENGTH_SHORT ).show();*/
+
+        if(loc.getAccuracy()>8) {
+            //mMap.setMyLocationEnabled(false);
+            Toast.makeText( this.context,
+                    "Bad signal. Location in progress ...",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            //mMap.setMyLocationEnabled(true);
+
         this.myposition = new LatLng(loc.getLatitude(),loc.getLongitude());
         this.myOldPosition = this.myposition;
         Log.e("myLocalisation", String.valueOf(this.myposition));
@@ -65,7 +85,8 @@ public class MyLocationListener implements android.location.LocationListener {
             public void run() {
                 marker = mMap.addMarker(new MarkerOptions()
                         .position(myposition)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.me))
+                        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                         .title("Me")
                         .snippet("Jux")
                 );
@@ -77,6 +98,7 @@ public class MyLocationListener implements android.location.LocationListener {
                 //}
             }
         });
+        iAmNearToPointOfInterest(myposition);
         //}
         compteur++;
     }
@@ -102,9 +124,19 @@ public class MyLocationListener implements android.location.LocationListener {
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras)
     {
-        /*Toast.makeText( this.context,
-                provider+"  "+status+"  "+extras,
-                Toast.LENGTH_SHORT).show();*/
+        /*String newStatus = "";
+        switch (status) {
+            case LocationProvider.OUT_OF_SERVICE:
+                newStatus = "OUT_OF_SERVICE";
+                break;
+            case LocationProvider.TEMPORARILY_UNAVAILABLE:
+                newStatus = "TEMPORARILY_UNAVAILABLE";
+                break;
+            case LocationProvider.AVAILABLE:
+                newStatus = "AVAILABLE";
+                break;
+        }
+        Toast.makeText(this.context, provider+" "+newStatus, Toast.LENGTH_SHORT).show();*/
     }
 
     public Boolean shoudlIRealyMoveMap(LatLng newPosition, LatLng oldPosition){
@@ -112,6 +144,24 @@ public class MyLocationListener implements android.location.LocationListener {
         android.location.Location.distanceBetween(newPosition.latitude, newPosition.longitude,oldPosition.latitude,oldPosition.longitude,distance);
         //Toast.makeText(context, Arrays.toString(distance), Toast.LENGTH_SHORT).show();
         return distance[0]>=2;
+
+    }
+
+    public void iAmNearToPointOfInterest(LatLng myposition)
+    {
+        float[] distanceBetween = {3};
+        for (int i=0 ; i<MapsActivity.zones.size() ; i++)
+        {
+            android.location.Location.distanceBetween(myposition.latitude, myposition.longitude, MapsActivity.zones.get(i)[0], MapsActivity.zones.get(i)[1], distanceBetween);
+            if(distanceBetween[0]<=10)
+            {
+                Toast.makeText( this.context,
+                        distanceBetween[0]+"m de "+MapsActivity.nomsZones.get(i),
+                        Toast.LENGTH_SHORT ).show();
+            }
+
+        }
+
 
     }
 

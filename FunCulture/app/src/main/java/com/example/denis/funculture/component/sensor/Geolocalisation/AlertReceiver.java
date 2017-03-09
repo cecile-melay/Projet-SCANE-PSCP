@@ -53,12 +53,12 @@ public class AlertReceiver extends BroadcastReceiver {
                     case AudioManager.RINGER_MODE_VIBRATE:
                         Log.i("Mode"," mode vibreur");
                         v = (Vibrator) MyLocationListener.MA.getSystemService(Context.VIBRATOR_SERVICE);
-                        v.vibrate(NOTIFICATIONTIMER);
+                        //v.vibrate(NOTIFICATIONTIMER);
                         break;
                     case AudioManager.RINGER_MODE_NORMAL:
                         Log.i("Mode"," mode normale");
                         v = (Vibrator) MyLocationListener.MA.getSystemService(Context.VIBRATOR_SERVICE);
-                        v.vibrate(NOTIFICATIONTIMER);
+                        //v.vibrate(NOTIFICATIONTIMER);
                         break;
                 }
                 //PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, null, 0);
@@ -99,12 +99,12 @@ public class AlertReceiver extends BroadcastReceiver {
                     case AudioManager.RINGER_MODE_VIBRATE:
                         Log.i("Mode"," mode vibreur");
                         v = (Vibrator) MyLocationListener.MA.getSystemService(Context.VIBRATOR_SERVICE);
-                        v.vibrate(NOTIFICATIONTIMER);
+                        //v.vibrate(NOTIFICATIONTIMER);
                         break;
                     case AudioManager.RINGER_MODE_NORMAL:
                         Log.i("Mode"," mode normale");
                         v = (Vibrator) MyLocationListener.MA.getSystemService(Context.VIBRATOR_SERVICE);
-                        v.vibrate(NOTIFICATIONTIMER);
+                        //v.vibrate(NOTIFICATIONTIMER);
                         break;
                 }
             }

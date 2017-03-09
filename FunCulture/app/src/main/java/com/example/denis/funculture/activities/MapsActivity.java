@@ -22,6 +22,8 @@ import com.example.denis.funculture.component.sensor.Geolocalisation.AlertReceiv
 import com.example.denis.funculture.component.sensor.Geolocalisation.MyLocationListener;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.Util;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -58,8 +60,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location startLocation;
     private ArrayList<Marker> tabMarkers = new ArrayList<Marker>();
 
-    private ArrayList<Double[]> zones = new ArrayList<Double[]>();
-    private ArrayList<String> nomsZones = new ArrayList<String>();
+    public static ArrayList<Double[]> zones = new ArrayList<Double[]>();
+    public static ArrayList<String> nomsZones = new ArrayList<String>();
 
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
@@ -75,6 +77,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
+    @Override
+    protected void onStop() {
+        super.onPause();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            locManager.removeUpdates(locListener);
+        Toast.makeText(this, "OnStop()", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            locManager.removeUpdates(locListener);
+        Toast.makeText(this, "OnStop()", Toast.LENGTH_SHORT).show();
+    }
 
     /**
      * Manipulates the map once available.
@@ -93,22 +110,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Util.checkPrivileges(this, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
         }
         else {
-            mMap.setMyLocationEnabled(true);
+
             // Use the LocationManager class to obtain GPS locations
             locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            if(!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-            {
-                Toast.makeText(this,
-                        "Activez le GPS",
-                        Toast.LENGTH_SHORT).show();
-            }
-
             startLocation = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             locListener = new MyLocationListener(this, mMap);
+            if(locManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            {
+                locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locListener);
+                /*Toast.makeText(this,
+                        "Activez le GPS",
+                        Toast.LENGTH_SHORT).show();*/
+            }
             if(startLocation!=null) {
                 locListener.onLocationChanged(startLocation);
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(25), 2000, null);
             }
+            else
+                locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
+
             looper = Looper.myLooper();
 
             //Intent intent = new Intent(this, AlertReceiver.class);
@@ -145,7 +165,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .strokeColor(Color.RED)
                     .fillColor(Color.BLUE));
 
-            addProximityAlerts(zones, nomsZones);
+            //addProximityAlerts(zones, nomsZones);
 
             mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(43.616909, 7.064413))
@@ -159,7 +179,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .title("Ping Pong")
                     .snippet("Table de ping pong")
             );
-            mMap.setMyLocationEnabled(false);
+
 
             //locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
             // Launch the Geolocation loop with a forced timeout
