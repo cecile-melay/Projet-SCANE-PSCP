@@ -47,22 +47,24 @@ public class MyLocationListener implements android.location.LocationListener {
         this.MA = ma;
         this.context = this.MA.getApplicationContext();
         this.mMap = gm;
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(25), 2000, null);
     }
 
     @Override
     public void onLocationChanged(final Location loc)
     {
         /*Toast.makeText( this.context,
+                "Moved",
+                Toast.LENGTH_SHORT).show();
+        Toast.makeText( this.context,
                 String.valueOf(loc.getAccuracy())+"m d'imprécision GPS",
                 Toast.LENGTH_SHORT ).show();*/
 
-        if(loc.getAccuracy()>8) {
+        if(loc.getAccuracy()>10) {
             //mMap.setMyLocationEnabled(false);
             Toast.makeText( this.context,
-                    "Bad signal. Location in progress ...",
+                    "Bad GPS signal",
                     Toast.LENGTH_SHORT).show();
-            return;
+            //return;
         }
 
         if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
@@ -72,7 +74,7 @@ public class MyLocationListener implements android.location.LocationListener {
         this.myOldPosition = this.myposition;
         Log.e("myLocalisation", String.valueOf(this.myposition));
 
-        if(compteur==0) {
+        /*if(compteur==0) {
             mMap.moveCamera(CameraUpdateFactory.newLatLng(myposition));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(25), 2000, null);
         }
@@ -97,8 +99,8 @@ public class MyLocationListener implements android.location.LocationListener {
                   //mMap.animateCamera(CameraUpdateFactory.zoomTo(20), 2000, null);
                 //}
             }
-        });
-        iAmNearToPointOfInterest(myposition);
+        });*/
+        amINearToPointOfInterest(myposition);
         //}
         compteur++;
     }
@@ -118,7 +120,7 @@ public class MyLocationListener implements android.location.LocationListener {
         Toast.makeText( this.context,
                 "Gps Enabled. Location in progress ...",
                 Toast.LENGTH_SHORT).show();
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(25), 2000, null);
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(21), 2000, null);
     }
 
     @Override
@@ -139,7 +141,7 @@ public class MyLocationListener implements android.location.LocationListener {
         Toast.makeText(this.context, provider+" "+newStatus, Toast.LENGTH_SHORT).show();*/
     }
 
-    public Boolean shoudlIRealyMoveMap(LatLng newPosition, LatLng oldPosition){
+    public Boolean shoudlIRealyMoveMap(LatLng newPosition, LatLng oldPosition) {
         float[] distance = {3};
         android.location.Location.distanceBetween(newPosition.latitude, newPosition.longitude,oldPosition.latitude,oldPosition.longitude,distance);
         //Toast.makeText(context, Arrays.toString(distance), Toast.LENGTH_SHORT).show();
@@ -147,7 +149,7 @@ public class MyLocationListener implements android.location.LocationListener {
 
     }
 
-    public void iAmNearToPointOfInterest(LatLng myposition)
+    public void amINearToPointOfInterest(LatLng myposition)
     {
         float[] distanceBetween = {3};
         for (int i=0 ; i<MapsActivity.zones.size() ; i++)

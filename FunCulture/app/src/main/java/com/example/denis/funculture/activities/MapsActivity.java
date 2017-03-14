@@ -80,17 +80,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onStop() {
         super.onPause();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locManager.removeUpdates(locListener);
+            mMap.setMyLocationEnabled(false);
+        }
         Toast.makeText(this, "OnStop()", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locManager.removeUpdates(locListener);
-        Toast.makeText(this, "OnStop()", Toast.LENGTH_SHORT).show();
+            mMap.setMyLocationEnabled(false);
+        }
+        Toast.makeText(this, "OnPause()", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            //locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
+            //locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListener);;
+            //mMap.setMyLocationEnabled(true);
+        }
+        Toast.makeText(this, "OnResume()", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRestart(){
+        super.onResume();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
+            locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListener);;
+            mMap.setMyLocationEnabled(true);
+        }
+        Toast.makeText(this, "OnRestart()", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -111,16 +137,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         else {
 
+            mMap.setMyLocationEnabled(true);
             // Use the LocationManager class to obtain GPS locations
+            locListener = new MyLocationListener(this, mMap);
             locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
+            locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListener);
+            if(!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            {
+                Toast.makeText(this,
+                        "Activez le GPS",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            // Use the LocationManager class to obtain GPS locations
+            /*locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             startLocation = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             locListener = new MyLocationListener(this, mMap);
             if(locManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
             {
                 locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locListener);
-                /*Toast.makeText(this,
+                Toast.makeText(this,
                         "Activez le GPS",
-                        Toast.LENGTH_SHORT).show();*/
+                        Toast.LENGTH_SHORT).show();
             }
             if(startLocation!=null) {
                 locListener.onLocationChanged(startLocation);
@@ -148,22 +187,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             nomsZones.add("Eglise");
             zones.add(new Double[]{43.206334, 6.025166});  // Boulangerie
             nomsZones.add("Boulangerie");
+            */
 
             zones.add(new Double[]{43.616909, 7.064413});  // Parking
             nomsZones.add("Parking");
             zones.add(new Double[]{43.616824, 7.064771});  // Ping Pong
             nomsZones.add("Table de ping pong");
+            zones.add(new Double[]{43.624938, 7.050284});  // Bord gauche Newton
+            nomsZones.add("Bord gauche Newton");
+            zones.add(new Double[]{43.624557, 7.050940});  // Passerelle Newton
+            nomsZones.add("Passerelle Newton");
+
             Circle circle;
             circle = mMap.addCircle(new CircleOptions()
                     .center(new LatLng(43.616909, 7.064413))
-                    .radius(2.5)
+                    .radius(5)
                     .strokeColor(Color.BLUE)
                     .fillColor(Color.RED));
             circle = mMap.addCircle(new CircleOptions()
                     .center(new LatLng(43.616824, 7.064771))
-                    .radius(2.5)
+                    .radius(5)
                     .strokeColor(Color.RED)
                     .fillColor(Color.BLUE));
+            circle = mMap.addCircle(new CircleOptions()
+                    .center(new LatLng(43.624938, 7.050284))
+                    .radius(5)
+                    .strokeColor(Color.RED)
+                    .fillColor(Color.GREEN));
+            circle = mMap.addCircle(new CircleOptions()
+                    .center(new LatLng(43.624557, 7.050940))
+                    .radius(5)
+                    .strokeColor(Color.BLUE)
+                    .fillColor(Color.YELLOW));
 
             //addProximityAlerts(zones, nomsZones);
 
@@ -179,11 +234,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .title("Ping Pong")
                     .snippet("Table de ping pong")
             );
-
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.624938, 7.050284))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Bord gauche Newton")
+                    .snippet("Bord gauche Newton")
+            );
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.624557, 7.050940))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Passerelle Newton")
+                    .snippet("Passerelle Newton")
+            );
 
             //locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
             // Launch the Geolocation loop with a forced timeout
-            timer.schedule(new TimerTask() {
+            /*timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
@@ -194,7 +260,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }, 0, intervalGeolocRefresh);
 
             //mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
-            //Location l = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            //Location l = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);*/
+
         }
 
     }
