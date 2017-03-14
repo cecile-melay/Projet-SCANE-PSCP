@@ -62,6 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public static ArrayList<Double[]> zones = new ArrayList<Double[]>();
     public static ArrayList<String> nomsZones = new ArrayList<String>();
+    public static ArrayList<Marker> markers = new ArrayList<Marker>();
 
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
@@ -222,30 +223,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             //addProximityAlerts(zones, nomsZones);
 
-            mMap.addMarker(new MarkerOptions()
+            Marker markerParking = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(43.616909, 7.064413))
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
                     .title("Parking")
                     .snippet("parking de la formation MIAGE")
             );
-            mMap.addMarker(new MarkerOptions()
+            Marker markerPingPong = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(43.616824, 7.064771))
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.pingpong))
                     .title("Ping Pong")
                     .snippet("Table de ping pong")
             );
-            mMap.addMarker(new MarkerOptions()
+            Marker markerBordGaucheNewton = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(43.624938, 7.050284))
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
                     .title("Bord gauche Newton")
                     .snippet("Bord gauche Newton")
             );
-            mMap.addMarker(new MarkerOptions()
+            Marker markerPasserelleNewton = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(43.624557, 7.050940))
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
                     .title("Passerelle Newton")
                     .snippet("Passerelle Newton")
             );
+
+            markers.add(markerParking);
+            markers.add(markerPingPong);
+            markers.add(markerBordGaucheNewton);
+            markers.add(markerPasserelleNewton);
 
             //locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
             // Launch the Geolocation loop with a forced timeout

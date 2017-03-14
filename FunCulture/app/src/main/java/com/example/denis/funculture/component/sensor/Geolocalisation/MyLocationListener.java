@@ -60,10 +60,9 @@ public class MyLocationListener implements android.location.LocationListener {
                 Toast.LENGTH_SHORT ).show();*/
 
         if(loc.getAccuracy()>10) {
-            //mMap.setMyLocationEnabled(false);
-            Toast.makeText( this.context,
-                    "Bad GPS signal",
-                    Toast.LENGTH_SHORT).show();
+            //Toast.makeText( this.context,
+                    //"Bad GPS signal",
+                    //Toast.LENGTH_SHORT).show();
             //return;
         }
 
@@ -160,6 +159,7 @@ public class MyLocationListener implements android.location.LocationListener {
                 Toast.makeText( this.context,
                         distanceBetween[0]+"m de "+MapsActivity.nomsZones.get(i),
                         Toast.LENGTH_SHORT ).show();
+                MapsActivity.markers.get(i).showInfoWindow();
             }
 
         }
