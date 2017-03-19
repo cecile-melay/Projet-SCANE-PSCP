@@ -21,6 +21,7 @@ import com.example.denis.funculture.R;
 import com.example.denis.funculture.activities.AccelerometerActivity;
 import com.example.denis.funculture.activities.MapsActivity;
 import com.example.denis.funculture.activities.PedometerActivity;
+import com.example.denis.funculture.activities.RecognitionActivity;
 import com.example.denis.funculture.component.sensor.Pedometer;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.Util;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.getSingleton().setCurrentActivity(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -122,7 +124,7 @@ public class MainActivity extends AppCompatActivity
 
     //ici on fera toutes les actions nécessaires au démarrage de l'app
     private void init() {
-        App.setContext(getApplicationContext());
+        App.getSingleton().setContext(this);
 
         findViews();
         fillSensorSpinner();
@@ -141,6 +143,7 @@ public class MainActivity extends AppCompatActivity
         spinnerArray.add(MyResources.GPS);
         spinnerArray.add(MyResources.ACCELEROMETER);
         spinnerArray.add(MyResources.PEDOMETER);
+        spinnerArray.add(MyResources.RECOGNIZE_ACTIVITY);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, spinnerArray);
@@ -170,6 +173,12 @@ public class MainActivity extends AppCompatActivity
                     //PEDOMETER
                     case 2 :
                         intent = new Intent(this, PedometerActivity.class);
+                        this.startActivity(intent);
+                        break;
+
+                    //ACTIVITY SERVICe
+                    case 3 :
+                        intent = new Intent(this, RecognitionActivity.class);
                         this.startActivity(intent);
                         break;
                 }

@@ -14,17 +14,14 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.component.sensor.Geolocalisation.AlertReceiver;
 import com.example.denis.funculture.component.sensor.Geolocalisation.MyLocationListener;
+import com.example.denis.funculture.main.App;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.Util;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -34,16 +31,9 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.lang.reflect.Array;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolygonOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
 
 
 /*
@@ -71,6 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.getSingleton().setCurrentActivity(this);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

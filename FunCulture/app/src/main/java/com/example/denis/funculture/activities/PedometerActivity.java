@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.component.sensor.Accelerometer;
 import com.example.denis.funculture.component.sensor.Pedometer;
+import com.example.denis.funculture.main.App;
 
 /**
  * Created by denis on 05/03/2017.
@@ -19,6 +20,7 @@ public class PedometerActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.getSingleton().setCurrentActivity(this);
         this.contentView = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_view, null, false);
         setContentView(this.contentView);
 
@@ -28,7 +30,7 @@ public class PedometerActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        init();
+        //init();
     }
 
     private void init() {
@@ -42,7 +44,7 @@ public class PedometerActivity extends Activity {
 
     @Override
     protected void onPause() {
-        this.pedometer.stop();
+        //this.pedometer.stop();
         super.onPause();
     }
 }

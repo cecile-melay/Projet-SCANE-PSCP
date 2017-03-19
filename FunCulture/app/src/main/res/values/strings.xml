@@ -17,6 +17,7 @@
 
     <string name="gps">Géolocalisation</string>
     <string name="pedometer">Podomètre</string>
+    <string name="recognize_activity">Reconnaissance d\'activité</string>
     <string name="accelerometer">Accéléromètre</string>
     <string name="step_count">Accéléromètre</string>
 

@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.component.sensor.Accelerometer;
+import com.example.denis.funculture.main.App;
 
 /**
  * Created by denis on 05/03/2017.
@@ -18,6 +19,7 @@ public class AccelerometerActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.getSingleton().setCurrentActivity(this);
         this.contentView = (LinearLayout) getLayoutInflater().inflate(R.layout.activity_view, null, false);
         setContentView(this.contentView);
 
