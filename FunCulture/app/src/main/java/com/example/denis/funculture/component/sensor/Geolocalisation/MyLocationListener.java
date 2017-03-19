@@ -1,24 +1,18 @@
-package com.example.denis.funculture.component.sensor.Geolocalisation;
+package com.example.denis.funculture.component.sensor.geolocalisation;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationProvider;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.denis.funculture.R;
-import com.example.denis.funculture.activities.MapsActivity;
-import com.google.android.gms.maps.CameraUpdateFactory;
+import com.example.denis.funculture.fragments.MapsFragment;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Timer;
 
@@ -33,7 +27,7 @@ import java.util.Timer;
 public class MyLocationListener implements android.location.LocationListener {
 
     private Context context;
-    public static MapsActivity MA;
+    public static MapsFragment MA;
     private GoogleMap mMap;
     private int compteur = 0;
     private Timer timer = new Timer();
@@ -42,10 +36,10 @@ public class MyLocationListener implements android.location.LocationListener {
     private Marker marker;
     private Boolean shoudlIRealyMoveMap = true;
 
-    public MyLocationListener(MapsActivity ma, GoogleMap gm)
+    public MyLocationListener(MapsFragment ma, GoogleMap gm)
     {
         this.MA = ma;
-        this.context = this.MA.getApplicationContext();
+        this.context = this.MA.getActivity().getApplicationContext();
         this.mMap = gm;
     }
 
@@ -151,15 +145,15 @@ public class MyLocationListener implements android.location.LocationListener {
     public void amINearToPointOfInterest(LatLng myposition)
     {
         float[] distanceBetween = {3};
-        for (int i=0 ; i<MapsActivity.zones.size() ; i++)
+        for (int i = 0; i< MapsFragment.zones.size() ; i++)
         {
-            android.location.Location.distanceBetween(myposition.latitude, myposition.longitude, MapsActivity.zones.get(i)[0], MapsActivity.zones.get(i)[1], distanceBetween);
+            android.location.Location.distanceBetween(myposition.latitude, myposition.longitude, MapsFragment.zones.get(i)[0], MapsFragment.zones.get(i)[1], distanceBetween);
             if(distanceBetween[0]<=10)
             {
                 Toast.makeText( this.context,
-                        distanceBetween[0]+"m de "+MapsActivity.nomsZones.get(i),
+                        distanceBetween[0]+"m de "+ MapsFragment.nomsZones.get(i),
                         Toast.LENGTH_SHORT ).show();
-                MapsActivity.markers.get(i).showInfoWindow();
+                MapsFragment.markers.get(i).showInfoWindow();
             }
 
         }

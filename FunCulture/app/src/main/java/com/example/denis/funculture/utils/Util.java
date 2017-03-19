@@ -2,7 +2,6 @@ package com.example.denis.funculture.utils;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -10,9 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 
-import com.example.denis.funculture.activities.MapsActivity;
 import com.example.denis.funculture.main.App;
-import com.example.denis.funculture.main.MainActivity;
 
 /**
  * Created by denis on 05/03/2017.

@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:screenOrientation="portrait">
-        <receiver android:name=".component.sensor.Geolocalisation.AlertReceiver" />
+        <receiver android:name=".component.sensor.geolocalisation.AlertReceiver" />
 
         <activity
             android:name=".main.MainActivity"
@@ -29,9 +29,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.AccelerometerActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activities.PedometerActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".activities.RecognitionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".fragments.AccelerometerFragment" android:screenOrientation="portrait"/>
+        <activity android:name=".fragments.PedometerFragment" android:screenOrientation="portrait"/>
+        <activity android:name=".fragments.RecognitionActivityFragment" android:screenOrientation="portrait"/>
         <service android:enabled="true" android:name="com.example.denis.funculture.component.sensor.ActivityRecognizedService" />
 
         <!--
@@ -47,7 +47,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".activities.MapsActivity"
+            android:name=".fragments.MapsFragment"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_maps">
             <uses-library android:name="com.google.android.maps"/>

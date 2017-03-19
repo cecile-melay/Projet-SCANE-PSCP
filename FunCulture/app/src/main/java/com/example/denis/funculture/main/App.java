@@ -1,9 +1,9 @@
 package com.example.denis.funculture.main;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 
-import com.example.denis.funculture.activities.RecognitionActivity;
 import com.example.denis.funculture.component.sensor.ActivityRecognizedService;
 
 /**
@@ -15,6 +15,7 @@ public class App {
     private static App instance;
     private Context context;
     private Activity currentActivity;
+    private Fragment currentFragment;
     private ActivityRecognizedService recognitionActivity;
 
     public static App getSingleton() {
@@ -47,5 +48,13 @@ public class App {
 
     public ActivityRecognizedService getRecognitionActivity() {
         return this.recognitionActivity;
+    }
+
+    public void setCurrentFragment(Fragment currentFragment) {
+        this.currentFragment = currentFragment;
+    }
+
+    public Fragment getCurrentFragment() {
+        return currentFragment;
     }
 }

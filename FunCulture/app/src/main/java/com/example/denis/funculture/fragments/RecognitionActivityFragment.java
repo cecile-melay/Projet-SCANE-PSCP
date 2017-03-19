@@ -1,25 +1,24 @@
-package com.example.denis.funculture.activities;
+package com.example.denis.funculture.fragments;
 
-import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.denis.funculture.R;
-import com.example.denis.funculture.component.sensor.ActivityRecognizedService;
 import com.example.denis.funculture.main.App;
-import com.example.denis.funculture.utils.Util;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.DetectedActivity;
 
 import java.util.List;
 
-public class RecognitionActivity extends Activity {
+public class RecognitionActivityFragment extends Fragment {
     private View contentView;
     private TextView textActivity;
     private TextView textVehicule;
@@ -31,12 +30,8 @@ public class RecognitionActivity extends Activity {
     private TextView textTitling;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         this.contentView = inflater.inflate(R.layout.activity_service_view, null);
-        setContentView(this.contentView);
 
         this.textActivity = (TextView) this.contentView.findViewById(R.id.activity);
         this.textVehicule = (TextView) this.contentView.findViewById(R.id.vehicule);
@@ -47,8 +42,26 @@ public class RecognitionActivity extends Activity {
         this.textStill = (TextView) this.contentView.findViewById(R.id.still);
         this.textTitling = (TextView) this.contentView.findViewById(R.id.titling);
 
-        App.getSingleton().getSingleton().setCurrentActivity(this);
-        App.getSingleton().getRecognitionActivity().init(this);
+        return this.contentView;
+    }
+
+    @Override
+    public View getView() {
+        return this.contentView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        App.getSingleton().getSingleton().setCurrentFragment(this);
+        App.getSingleton().getRecognitionActivity().initClient();
+    }
+
+    @Override
+    public void onDestroy() {
+        App.getSingleton().getRecognitionActivity().stopService();
+
+        super.onDestroy();
     }
 
     public void handleServiceConnected() {
@@ -56,7 +69,7 @@ public class RecognitionActivity extends Activity {
     }
 
     public void handleDetectedActivities(final List<DetectedActivity> probableActivities) {
-        runOnUiThread(new Runnable() {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 for( DetectedActivity activity : probableActivities ) {
@@ -88,11 +101,11 @@ public class RecognitionActivity extends Activity {
                         case DetectedActivity.WALKING: {
                             textWalking.setText("Walking : " + activity.getConfidence() );
                             if( activity.getConfidence() >= 75 ) {
-                                NotificationCompat.Builder builder = new NotificationCompat.Builder(RecognitionActivity.this);
+                                NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity());
                                 builder.setContentText( "Are you walking?" );
                                 builder.setSmallIcon( R.mipmap.ic_launcher );
                                 builder.setContentTitle( getString( R.string.app_name ) );
-                                NotificationManagerCompat.from(RecognitionActivity.this).notify(0, builder.build());
+                                NotificationManagerCompat.from(getActivity()).notify(0, builder.build());
                             }
                             break;
                         }

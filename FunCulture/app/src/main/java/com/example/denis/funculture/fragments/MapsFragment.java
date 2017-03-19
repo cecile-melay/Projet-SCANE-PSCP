@@ -1,4 +1,4 @@
-package com.example.denis.funculture.activities;
+package com.example.denis.funculture.fragments;
 
 import android.Manifest;
 import android.app.PendingIntent;
@@ -12,19 +12,25 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+import com.google.android.gms.maps.SupportMapFragment;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.denis.funculture.R;
-import com.example.denis.funculture.component.sensor.Geolocalisation.AlertReceiver;
-import com.example.denis.funculture.component.sensor.Geolocalisation.MyLocationListener;
+import com.example.denis.funculture.component.sensor.geolocalisation.AlertReceiver;
+import com.example.denis.funculture.component.sensor.geolocalisation.MyLocationListener;
 import com.example.denis.funculture.main.App;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.Util;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -32,6 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+
 import java.util.ArrayList;
 import java.util.Timer;
 
@@ -39,7 +46,7 @@ import java.util.Timer;
 /*
  * Main Activity which contains the Google Map
  */
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Timer timer = new Timer();
@@ -58,57 +65,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
     private com.google.android.gms.maps.model.PolygonOptions polygonOptions;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        App.getSingleton().setCurrentActivity(this);
-        setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View contentView = inflater.inflate(R.layout.maps_fragment, null);
+        SupportMapFragment mapFragment = new SupportMapFragment();
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.map_fragment_frame, mapFragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.addToBackStack(null);
+        ft.commit();
         mapFragment.getMapAsync(this);
+        return contentView;
     }
 
     @Override
-    protected void onStop() {
+    public void onPause() {
         super.onPause();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locManager.removeUpdates(locListener);
             mMap.setMyLocationEnabled(false);
         }
-        Toast.makeText(this, "OnStop()", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "OnPause()", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locManager.removeUpdates(locListener);
-            mMap.setMyLocationEnabled(false);
-        }
-        Toast.makeText(this, "OnPause()", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        App.getSingleton().setCurrentFragment(this);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
             //locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListener);;
             //mMap.setMyLocationEnabled(true);
         }
-        Toast.makeText(this, "OnResume()", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onRestart(){
-        super.onResume();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
-            locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListener);;
-            mMap.setMyLocationEnabled(true);
-        }
-        Toast.makeText(this, "OnRestart()", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "OnResume()", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -122,22 +112,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        MapsActivity ma = this;
+        MapsFragment ma = this;
         // Check Geolocation permission
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Util.checkPrivileges(this, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
-        }
-        else {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Util.checkPrivileges(getActivity(), MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
+        } else {
 
             mMap.setMyLocationEnabled(true);
             // Use the LocationManager class to obtain GPS locations
             locListener = new MyLocationListener(this, mMap);
-            locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
             locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListener);
-            if(!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-            {
-                Toast.makeText(this,
+            if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                Toast.makeText(getActivity(),
                         "Activez le GPS",
                         Toast.LENGTH_SHORT).show();
             }
@@ -249,7 +237,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             /*timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                    if (ActivityCompat.checkSelfPermission(MapsFragment.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsFragment.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
                         locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locListener, looper);
                     else
                         return;
@@ -266,10 +254,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void addProximityAlerts(ArrayList<Double[]> positions, ArrayList<String> name) {
         int requestCode = 0;
         for (int i = 0; i < name.size(); i++) {
-            Intent intent = new Intent(this, AlertReceiver.class);
+            Intent intent = new Intent(getActivity(), AlertReceiver.class);
             intent.putExtra("name", name.get(i));
-            PendingIntent proximityIntent = PendingIntent.getBroadcast(this, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            PendingIntent proximityIntent = PendingIntent.getBroadcast(getActivity(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 locManager.addProximityAlert(
                         positions.get(i)[0], // the latitude of the central point of the alert region
                         positions.get(i)[1], // the longitude of the central point of the alert region
@@ -278,16 +266,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         proximityIntent // will be used to generate an Intent to fire when entry to or exit from the alert region is detected
                 );
                 requestCode++;
-            }
-            else
+            } else
                 return;
         }
         IntentFilter filter = new IntentFilter("com.example.denis.funculture.activities");
-        registerReceiver(new AlertReceiver(), filter);
+        getActivity().registerReceiver(new AlertReceiver(), filter);
     }
 
-    public ArrayList<Marker> getTabMarkers()
-    {
+    public ArrayList<Marker> getTabMarkers() {
         return this.tabMarkers;
     }
 
@@ -296,7 +282,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * TODO  récupérer les points sur l'arraylist de position de la fonction addProximityAlerts
      * TODO Utiliser les polylines https://developers.google.com/maps/documentation/android-api/shapes?hl=fr pour les reliér
      * Limites : vérifier que ça fonctionne hors routes (normalement oui car ça ne map pas sur un itinéraire
-     *
      */
     // Instantiates a new Polyline object and adds points to define a rectangle
     PolylineOptions rectOptions = new PolylineOptions()
@@ -313,23 +298,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //Polyline polyline = mMap.addPolyline(rectOptions);
 
 
-
     /*
     * Partie controle de trajectoire
     * Réutiliser la geolocalisation et comparer deux listes de points : celle de la trajectoire de base et celle de l'utilisateur
     * TODO Calculer la distance entre chaque point pour éviter les erreurs gps, vérifier la bonne direction en combinant : distance au point suivant (ligne droite) et angle entre la polylines et le segment tracé par l'utilisateur
      */
-    public double calculCoeffiscientDirecteur(double xa, double ya, double xb, double yb ){
+    public double calculCoeffiscientDirecteur(double xa, double ya, double xb, double yb) {
         /*
         * Le coeffiscient directeur sera la valeur a comparer pour savoir si un utilisateur fait demi tour
          */
-        return (yb-ya)/(xb-xa);
+        return (yb - ya) / (xb - xa);
     }
 
-    public double calculDistance(double xa, double ya, double xb, double yb){
+    public double calculDistance(double xa, double ya, double xb, double yb) {
         /*
         *On va pouvoir savoir si un utilisateur reste dans la bonne direction en vérifiant que la distance avec le point prochain n'est pas trop grande
          */
-        return Math.sqrt(((int)(xa-xb)^2)-((int)(yb-ya)^2));
+        return Math.sqrt(((int) (xa - xb) ^ 2) - ((int) (yb - ya) ^ 2));
     }
 }
