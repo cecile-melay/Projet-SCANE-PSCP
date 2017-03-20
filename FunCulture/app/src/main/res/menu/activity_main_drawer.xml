@@ -20,7 +20,7 @@
             android:title="Légende" />
     </group>
 
-   <!-- <item android:title="Communicate"
+   <item android:title="Communicate"
         android:visible="true">
         <menu>
             <item
@@ -32,6 +32,6 @@
                 android:icon="@drawable/ic_menu_send"
                 android:title="Send" />
         </menu>
-    </item>-->
+    </item>
 
 </menu>
