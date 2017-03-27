@@ -1,21 +1,23 @@
 package com.example.denis.funculture.main;
 
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.denis.funculture.R;
+import com.example.denis.funculture.fragments.AppareilPhoto;
 import com.example.denis.funculture.fragments.ChooseSensorFragment;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.Util;
@@ -63,6 +65,10 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
+            Intent homepage = new Intent(this, AppareilPhoto.class);
+            startActivity(homepage);
+        } else if (id == R.id.nav_accueil) {
+
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

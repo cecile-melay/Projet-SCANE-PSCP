@@ -1,4 +1,4 @@
-package com.example.denis.funculture.component.sensor.geolocalisation;
+package com.example.denis.funculture.component.sensor.Geolocalisation;
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;

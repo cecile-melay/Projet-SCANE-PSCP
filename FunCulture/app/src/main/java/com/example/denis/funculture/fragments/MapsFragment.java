@@ -14,8 +14,6 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import com.google.android.gms.maps.SupportMapFragment;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -24,13 +22,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.denis.funculture.R;
-import com.example.denis.funculture.component.sensor.geolocalisation.AlertReceiver;
-import com.example.denis.funculture.component.sensor.geolocalisation.MyLocationListener;
+import com.example.denis.funculture.component.sensor.Geolocalisation.AlertReceiver;
+import com.example.denis.funculture.component.sensor.Geolocalisation.MyLocationListener;
 import com.example.denis.funculture.main.App;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.Util;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
