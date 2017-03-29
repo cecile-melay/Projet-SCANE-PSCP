@@ -176,35 +176,91 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             nomsZones.add("Bord gauche Newton");
             zones.add(new Double[]{43.624557, 7.050940});  // Passerelle Newton
             nomsZones.add("Passerelle Newton");
-            zones.add(new Double[]{43.617337, 7.064026});
+            zones.add(new Double[]{43.617337, 7.064026});  // Administration MIAGE
             nomsZones.add("Administration");
+            zones.add(new Double[]{43.721782, 7.252956});  // Entrée Villa Arson
+            nomsZones.add("Entrée Villa Arson");
+            zones.add(new Double[]{43.721575, 7.252669});  // Pinède Villa Arson
+            nomsZones.add("Pinède Villa Arson");
+            zones.add(new Double[]{43.721603, 7.252355});  // Vieux batiment pinède Villa Arson
+            nomsZones.add("Vieux batiment pinède Villa Arson");
+            zones.add(new Double[]{43.721338, 7.252879});  // Pareterre carrelage Villa Arson
+            nomsZones.add("Pareterre carrelage Villa Arson");
+            zones.add(new Double[]{43.721031, 7.252900});  // Passerelle entrée rouge Villa Arson
+            nomsZones.add("Passerelle entrée rouge de la Villa Arson");
+            zones.add(new Double[]{43.721018, 7.253120});  // Gauche rouge Villa Arson
+            nomsZones.add("Gauche rouge de la Villa Arson");
+            zones.add(new Double[]{43.720887, 7.253013});  // Arrière rouge Villa Arson
+            nomsZones.add("Arrière rouge de la Villa Arson");
+            zones.add(new Double[]{43.720976, 7.253480});  // Grand plateau gauche Villa Arson
+            nomsZones.add("Grand plateau gauche Villa Arson");
+            zones.add(new Double[]{43.719751, 7.253722});  // Terrasse finale avec pyramide aztec Villa Arson
+            nomsZones.add("Terrasse finale avec pyramide aztec Villa Arson");
+
 
             Circle circle;
-            circle = mMap.addCircle(new CircleOptions()
+            circle = mMap.addCircle(new CircleOptions() // Parking
                     .center(new LatLng(43.616909, 7.064413))
                     .radius(5)
                     .strokeColor(Color.BLUE)
                     .fillColor(Color.RED));
-            circle = mMap.addCircle(new CircleOptions()
+            circle = mMap.addCircle(new CircleOptions() // Ping Pong
                     .center(new LatLng(43.616824, 7.064771))
                     .radius(5)
                     .strokeColor(Color.RED)
                     .fillColor(Color.BLUE));
-            circle = mMap.addCircle(new CircleOptions()
+            circle = mMap.addCircle(new CircleOptions() // Bord gauche Newton
                     .center(new LatLng(43.624938, 7.050284))
                     .radius(5)
                     .strokeColor(Color.RED)
                     .fillColor(Color.GREEN));
-            circle = mMap.addCircle(new CircleOptions()
+            circle = mMap.addCircle(new CircleOptions() // Passerelle Newton
                     .center(new LatLng(43.624557, 7.050940))
                     .radius(5)
                     .strokeColor(Color.BLUE)
                     .fillColor(Color.YELLOW));
-            circle = mMap.addCircle(new CircleOptions()
+            circle = mMap.addCircle(new CircleOptions() // Administration MIAGE
                     .center(new LatLng(43.617337, 7.064026))
                     .radius(15)
                     .strokeColor(Color.BLUE)
                     .fillColor(Color.WHITE));
+            circle = mMap.addCircle(new CircleOptions() // Entrée Villa Arson
+                    .center(new LatLng(43.721782, 7.252956))
+                    .radius(5)
+                    .strokeColor(Color.BLUE));
+            circle = mMap.addCircle(new CircleOptions() // Pinède Villa Arson
+                    .center(new LatLng(43.721575, 7.252669))
+                    .radius(5)
+                    .strokeColor(Color.GREEN));
+            circle = mMap.addCircle(new CircleOptions() // Vieux batiment pinède Villa Arson
+                    .center(new LatLng(43.721603, 7.252355))
+                    .radius(5)
+                    .strokeColor(Color.RED));
+            circle = mMap.addCircle(new CircleOptions() // Pareterre carrelage Villa Arson
+                    .center(new LatLng(43.721338, 7.252879))
+                    .radius(5)
+                    .strokeColor(Color.YELLOW));
+            circle = mMap.addCircle(new CircleOptions() // Passerelle entrée rouge Villa Arson
+                    .center(new LatLng(43.721031, 7.252900))
+                    .radius(5)
+                    .strokeColor(Color.RED));
+            circle = mMap.addCircle(new CircleOptions() // Gauche rouge Villa Arson
+                    .center(new LatLng(43.721018, 7.253120))
+                    .radius(5)
+                    .strokeColor(Color.WHITE));
+            circle = mMap.addCircle(new CircleOptions() // Arrière rouge Villa Arson
+                    .center(new LatLng(43.720887, 7.253013))
+                    .radius(5)
+                    .strokeColor(Color.BLUE));
+            circle = mMap.addCircle(new CircleOptions() // Grand plateau gauche Villa Arson
+                    .center(new LatLng(43.720976, 7.253480))
+                    .radius(5)
+                    .strokeColor(Color.YELLOW));
+            circle = mMap.addCircle(new CircleOptions() // Terrasse finale avec pyramide aztec Villa Arson
+                    .center(new LatLng(43.719751, 7.253722))
+                    .radius(5)
+                    .strokeColor(Color.GREEN));
+
 
             //addProximityAlerts(zones, nomsZones);
 
@@ -238,12 +294,75 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     .title("Administration")
                     .snippet("Administration MIAGE")
             );
+            Marker markerEntreeVillaArson= mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.721782, 7.252956))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Entrée Villa Arson")
+                    .snippet("Accueil Villa Arson")
+            );
+            Marker markerPinedeVillaArson= mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.721575, 7.252669))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Pinède Villa Arson")
+                    .snippet("Un espace de verdure")
+            );
+            Marker markerAncienBatimentVillaArson= mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.721603, 7.252355))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Vieux batiment pinède Villa Arson")
+                    .snippet("Un ancien batiment dans la pinède de la Villa Arson")
+            );
+            Marker markerPareterreVillaArson= mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.721338, 7.252879))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Pareterre carrelage Villa Arson")
+                    .snippet("Retour à la civilisation")
+            );
+            Marker markerEntreeRougeVillaArson= mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.721031, 7.252900))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Passerelle rouge entrée Villa Arson")
+                    .snippet("L'entrée Rouge")
+            );
+            Marker markerBordGaucheVillaArson= mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.721018, 7.253120))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Bord gauche batiment rouge Villa Arson")
+                    .snippet("Le bord gauche rouge")
+            );
+            Marker markerArriereVillaArson= mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.720887, 7.253013))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Bord arrière batiment rouge de la Villa Arson")
+                    .snippet("L'arrière rouge")
+            );
+            Marker markerGrandPlateauVillaArson= mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.720976, 7.253480))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Grand plateau gauche Villa Arson")
+                    .snippet("Grand espace bétonné")
+            );
+            Marker markerTerrasseFinaleVillaArson= mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.719751, 7.253722))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Terrasse finale avec pyramide aztec Villa Arson")
+                    .snippet("Pyramide aztec")
+            );
 
             markers.add(markerParking);
             markers.add(markerPingPong);
             markers.add(markerBordGaucheNewton);
             markers.add(markerPasserelleNewton);
             markers.add(markerAdministrationMIAGE);
+            markers.add(markerEntreeVillaArson);
+            markers.add(markerPinedeVillaArson);
+            markers.add(markerPareterreVillaArson);
+            markers.add(markerAncienBatimentVillaArson);
+            markers.add(markerEntreeRougeVillaArson);
+            markers.add(markerBordGaucheVillaArson);
+            markers.add(markerArriereVillaArson);
+            markers.add(markerGrandPlateauVillaArson);
+            markers.add(markerTerrasseFinaleVillaArson);
 
             //locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
             // Launch the Geolocation loop with a forced timeout
