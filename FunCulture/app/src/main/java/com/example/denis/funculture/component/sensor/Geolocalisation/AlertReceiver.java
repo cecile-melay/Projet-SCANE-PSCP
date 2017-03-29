@@ -10,8 +10,6 @@ import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.denis.funculture.activities.MapsActivity;
-
 /**
  * Created by jux on 23/02/2017.
  */
@@ -52,12 +50,12 @@ public class AlertReceiver extends BroadcastReceiver {
                         break;
                     case AudioManager.RINGER_MODE_VIBRATE:
                         Log.i("Mode"," mode vibreur");
-                        v = (Vibrator) MyLocationListener.MA.getSystemService(Context.VIBRATOR_SERVICE);
+                        v = (Vibrator) MyLocationListener.MA.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
                         //v.vibrate(NOTIFICATIONTIMER);
                         break;
                     case AudioManager.RINGER_MODE_NORMAL:
                         Log.i("Mode"," mode normale");
-                        v = (Vibrator) MyLocationListener.MA.getSystemService(Context.VIBRATOR_SERVICE);
+                        v = (Vibrator) MyLocationListener.MA.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
                         //v.vibrate(NOTIFICATIONTIMER);
                         break;
                 }
@@ -98,12 +96,12 @@ public class AlertReceiver extends BroadcastReceiver {
                         break;
                     case AudioManager.RINGER_MODE_VIBRATE:
                         Log.i("Mode"," mode vibreur");
-                        v = (Vibrator) MyLocationListener.MA.getSystemService(Context.VIBRATOR_SERVICE);
+                        v = (Vibrator) MyLocationListener.MA.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
                         //v.vibrate(NOTIFICATIONTIMER);
                         break;
                     case AudioManager.RINGER_MODE_NORMAL:
                         Log.i("Mode"," mode normale");
-                        v = (Vibrator) MyLocationListener.MA.getSystemService(Context.VIBRATOR_SERVICE);
+                        v = (Vibrator) MyLocationListener.MA.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
                         //v.vibrate(NOTIFICATIONTIMER);
                         break;
                 }

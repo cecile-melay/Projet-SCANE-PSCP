@@ -3,9 +3,10 @@ package com.example.denis.funculture.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,29 +14,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
+import android.view.View;
 
 import com.example.denis.funculture.R;
-import com.example.denis.funculture.activities.AccelerometerActivity;
-import com.example.denis.funculture.activities.MapsActivity;
-import com.example.denis.funculture.activities.PedometerActivity;
-import com.example.denis.funculture.component.sensor.Pedometer;
+import com.example.denis.funculture.fragments.AppareilPhoto;
+import com.example.denis.funculture.fragments.ChooseSensorFragment;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.Util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
-    Spinner senssorSpinner;
-    Button testButton;
+        implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String FRAGMENT_TAG = "fragmentTag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.getSingleton().setCurrentActivity(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,6 +55,35 @@ public class MainActivity extends AppCompatActivity
         init();
 
         Util.checkPrivileges(this, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
+        startFragment(ChooseSensorFragment.class);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+            Intent homepage = new Intent(this, AppareilPhoto.class);
+            startActivity(homepage);
+        } else if (id == R.id.nav_accueil) {
+
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
@@ -95,85 +118,29 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
     //ici on fera toutes les actions nécessaires au démarrage de l'app
     private void init() {
-        App.setContext(getApplicationContext());
-
-        findViews();
-        fillSensorSpinner();
+        App.getSingleton().setContext(this);
     }
 
-    //ici on récupère les vues de notre layout xml
-    private void findViews() {
-        this.senssorSpinner = (Spinner) findViewById(R.id.sensorSpinner);
-        this.testButton = (Button) findViewById(R.id.testButton);
-        this.testButton.setOnClickListener(this);
-    }
 
-    //ici on ajoute les capteurs au spinner
-    private void fillSensorSpinner() {
-        List<String> spinnerArray =  new ArrayList<>();
-        spinnerArray.add(MyResources.GPS);
-        spinnerArray.add(MyResources.ACCELEROMETER);
-        spinnerArray.add(MyResources.PEDOMETER);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, spinnerArray);
-        this.senssorSpinner.setAdapter(adapter);
-    }
-
-    @Override
-    public void onClick(View v) {
-        if(v == this.testButton) {
-            if(senssorSpinner != null && senssorSpinner.getSelectedItem() != null) {
-                int position = senssorSpinner.getSelectedItemPosition();
-                Intent intent;
-
-                switch (position) {
-                    //GPS
-                    case 0 :
-                        intent = new Intent(this, MapsActivity.class);
-                        this.startActivity(intent);
-                        break;
-
-                    //ACCELEROMETER
-                    case 1 :
-                        intent = new Intent(this, AccelerometerActivity.class);
-                        this.startActivity(intent);
-                        break;
-
-                    //PEDOMETER
-                    case 2 :
-                        intent = new Intent(this, PedometerActivity.class);
-                        this.startActivity(intent);
-                        break;
+    public void startFragment(final Class<? extends Fragment> fragmentClass) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Fragment fragment = fragmentClass.newInstance();
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_frame, fragment, FRAGMENT_TAG);
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
                 }
             }
-        }
+        });
     }
 }

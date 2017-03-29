@@ -1,6 +1,10 @@
 package com.example.denis.funculture.main;
 
+import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.Context;
+
+import com.example.denis.funculture.component.sensor.ActivityRecognizedService;
 
 /**
  * Created by denis on 05/03/2017.
@@ -9,21 +13,48 @@ import android.content.Context;
 public class App {
     //Ici on stockera toutes les variables globales de l'app
     private static App instance;
-    private static Context context;
+    private Context context;
+    private Activity currentActivity;
+    private Fragment currentFragment;
+    private ActivityRecognizedService recognitionActivity;
 
     public static App getSingleton() {
-        if(instance != null) {
-            return instance;
+        if(instance == null) {
+            instance = new App();
         }
 
-        return new App();
+        return instance;
     }
 
-    public static Context getContext() {
-        return context;
+    private App() {
+        this.recognitionActivity = new ActivityRecognizedService();
     }
 
-    public static void setContext (Context c) {
-        context = c;
+    public Context getContext() {
+        return this.context;
+    }
+
+    public void setContext (Context c) {
+        this.context = c;
+    }
+
+    public Activity getCurrentActivity() {
+        return currentActivity;
+    }
+
+    public void setCurrentActivity(Activity currentActivity) {
+        this.currentActivity = currentActivity;
+    }
+
+    public ActivityRecognizedService getRecognitionActivity() {
+        return this.recognitionActivity;
+    }
+
+    public void setCurrentFragment(Fragment currentFragment) {
+        this.currentFragment = currentFragment;
+    }
+
+    public Fragment getCurrentFragment() {
+        return currentFragment;
     }
 }

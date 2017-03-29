@@ -2,15 +2,14 @@ package com.example.denis.funculture.utils;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 
-import com.example.denis.funculture.activities.MapsActivity;
 import com.example.denis.funculture.main.App;
-import com.example.denis.funculture.main.MainActivity;
 
 /**
  * Created by denis on 05/03/2017.
@@ -18,15 +17,20 @@ import com.example.denis.funculture.main.MainActivity;
 
 //Ici on mettra toutes les fonctions usuelles nécessaires à différents endroits du code
 public class Util {
-    public Dialog createDialog(String message)
+
+    public static void createDialog(String message)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(App.getContext());
+        Activity activity = App.getSingleton().getCurrentActivity();
+        if(activity == null)
+            return;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage(message)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                     }
                 });
-        return builder.create();
+        builder.show();
     }
 
     public static void checkPrivileges(Activity AC, int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE)
@@ -40,5 +44,17 @@ public class Util {
                     new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
         }
+    }
+
+    public static void writeInPrefs(String key, String value) {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(App.getSingleton().getContext());
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    public static String readFromPrefs(String key) {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(App.getSingleton().getContext());
+        return settings.getString(key, null);
     }
 }

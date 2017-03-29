@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
@@ -80,4 +83,6 @@ public class ActivityRecognizedService extends IntentService {
             }
         }
     }
+
+
 }
