@@ -154,7 +154,7 @@ public class MyLocationListener implements android.location.LocationListener {
         for (int i=0 ; i<MapsActivity.zones.size() ; i++)
         {
             android.location.Location.distanceBetween(myposition.latitude, myposition.longitude, MapsActivity.zones.get(i)[0], MapsActivity.zones.get(i)[1], distanceBetween);
-            if(distanceBetween[0]<=10)
+            if(distanceBetween[0]<=15)
             {
                 Toast.makeText( this.context,
                         distanceBetween[0]+"m de "+MapsActivity.nomsZones.get(i),

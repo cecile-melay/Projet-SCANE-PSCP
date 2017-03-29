@@ -198,6 +198,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             nomsZones.add("Bord gauche Newton");
             zones.add(new Double[]{43.624557, 7.050940});  // Passerelle Newton
             nomsZones.add("Passerelle Newton");
+            zones.add(new Double[]{43.617337, 7.064026});
+            nomsZones.add("Administration");
 
             Circle circle;
             circle = mMap.addCircle(new CircleOptions()
@@ -220,6 +222,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .radius(5)
                     .strokeColor(Color.BLUE)
                     .fillColor(Color.YELLOW));
+            circle = mMap.addCircle(new CircleOptions()
+                    .center(new LatLng(43.617337, 7.064026))
+                    .radius(15)
+                    .strokeColor(Color.BLUE)
+                    .fillColor(Color.WHITE));
 
             //addProximityAlerts(zones, nomsZones);
 
@@ -247,11 +254,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .title("Passerelle Newton")
                     .snippet("Passerelle Newton")
             );
+            Marker markerAdministrationMIAGE = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.617337, 7.064026))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Administration")
+                    .snippet("Administration MIAGE")
+            );
 
             markers.add(markerParking);
             markers.add(markerPingPong);
             markers.add(markerBordGaucheNewton);
             markers.add(markerPasserelleNewton);
+            markers.add(markerAdministrationMIAGE);
 
             //locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
             // Launch the Geolocation loop with a forced timeout
