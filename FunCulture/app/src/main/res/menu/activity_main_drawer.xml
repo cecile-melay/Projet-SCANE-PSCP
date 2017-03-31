@@ -7,21 +7,21 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Accueil" />
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Appareil Photo" />
-        <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_map"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Rejoindre le parcours" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_desc"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Description du parcours" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_legende"
             android:icon="@drawable/ic_menu_manage"
             android:title="Légende" />
+        <item
+            android:id="@+id/nav_camera"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Appareil Photo" />
     </group>
 
    <item android:title="Communicate"

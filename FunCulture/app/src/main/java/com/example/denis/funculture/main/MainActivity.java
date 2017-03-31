@@ -17,8 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.denis.funculture.R;
+import com.example.denis.funculture.fragments.Accueil;
 import com.example.denis.funculture.fragments.AppareilPhoto;
 import com.example.denis.funculture.fragments.ChooseSensorFragment;
+import com.example.denis.funculture.fragments.MapsFragment;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.Util;
 
@@ -69,11 +71,19 @@ public class MainActivity extends AppCompatActivity
             startActivity(homepage);
         } else if (id == R.id.nav_accueil) {
 
-        } else if (id == R.id.nav_gallery) {
+            startFragment(Accueil.class);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_map) {
 
-        } else if (id == R.id.nav_manage) {
+            startFragment(MapsFragment.class);
+
+        } else if (id == R.id.nav_desc) {
+
+            startFragment(ChooseSensorFragment.class);
+
+        } else if (id == R.id.nav_legende) {
+
+            startFragment(ChooseSensorFragment.class);
 
         } else if (id == R.id.nav_share) {
 
