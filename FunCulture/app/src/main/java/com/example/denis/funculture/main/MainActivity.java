@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.denis.funculture.R;
+import com.example.denis.funculture.fragments.Accueil;
 import com.example.denis.funculture.fragments.AppareilPhoto;
 import com.example.denis.funculture.fragments.ChooseSensorFragment;
 import com.example.denis.funculture.fragments.MapsFragment;
@@ -70,13 +71,19 @@ public class MainActivity extends AppCompatActivity
             startActivity(homepage);
         } else if (id == R.id.nav_accueil) {
 
+            startFragment(Accueil.class);
+
         } else if (id == R.id.nav_map) {
 
             startFragment(MapsFragment.class);
 
         } else if (id == R.id.nav_desc) {
 
-        } else if (id == R.id.nav_manage) {
+            startFragment(ChooseSensorFragment.class);
+
+        } else if (id == R.id.nav_legende) {
+
+            startFragment(ChooseSensorFragment.class);
 
         } else if (id == R.id.nav_share) {
 
