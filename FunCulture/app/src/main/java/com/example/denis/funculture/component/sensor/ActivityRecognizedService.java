@@ -29,7 +29,7 @@ public class ActivityRecognizedService extends IntentService implements GoogleAp
     protected void onHandleIntent(Intent intent) {
         if(ActivityRecognitionResult.hasResult(intent)) {
             ActivityRecognitionResult result = ActivityRecognitionResult.extractResult(intent);
-            ((RecognitionActivityFragment) App.getSingleton().getCurrentFragment()).handleDetectedActivities( result.getProbableActivities() );
+            //((RecognitionActivityFragment) App.getSingleton().getCurrentFragment()).handleDetectedActivities( result.getProbableActivities() );
         }
     }
 
