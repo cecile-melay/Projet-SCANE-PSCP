@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.example.denis.funculture.R;
+import com.example.denis.funculture.activities.AppareilPhoto;
 import com.example.denis.funculture.main.MainActivity;
 import com.example.denis.funculture.utils.MyResources;
 
@@ -45,6 +46,7 @@ public class ChooseSensorFragment extends Fragment implements View.OnClickListen
         spinnerArray.add(MyResources.ACCELEROMETER);
         spinnerArray.add(MyResources.PEDOMETER);
         spinnerArray.add(MyResources.RECOGNIZE_ACTIVITY);
+        spinnerArray.add(MyResources.CAMERA);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
@@ -77,6 +79,12 @@ public class ChooseSensorFragment extends Fragment implements View.OnClickListen
                     //ACTIVITY SERVICE
                     case 3 :
                         ((MainActivity) getActivity()).startFragment(RecognitionActivityFragment.class);
+                        break;
+
+                    //ACTIVITY SERVICE
+                    case 4 :
+                        Intent cameraIntent = new Intent(getActivity(), AppareilPhoto.class);
+                        startActivity(cameraIntent);
                         break;
                 }
             }

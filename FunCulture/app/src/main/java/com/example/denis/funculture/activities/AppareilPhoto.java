@@ -1,4 +1,4 @@
-package com.example.denis.funculture.fragments;
+package com.example.denis.funculture.activities;
 
 import android.Manifest;
 import android.app.Activity;
@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.denis.funculture.R;
+import com.example.denis.funculture.fragments.CameraSurface;
+import com.example.denis.funculture.fragments.SavePhoto;
 
 import java.io.File;
 import java.io.FileNotFoundException;

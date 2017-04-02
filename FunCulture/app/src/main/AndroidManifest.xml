@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:screenOrientation="portrait">
-        <receiver android:name=".component.sensor.Geolocalisation.AlertReceiver" />
+        <receiver android:name=".component.sensor.geoloc.AlertReceiver" />
 
         <activity
             android:name=".main.MainActivity"
@@ -37,7 +37,7 @@
         <fragment android:name=".fragments.AccelerometerqhFragment" android:screenOrientation="portrait"/>
         <fragment android:name=".fragments.PedometerFragment" android:screenOrientation="portrait"/>
         <fragment android:name=".fragments.RecognitionActivityFragment" android:screenOrientation="portrait"/>
-        <activity android:name=".fragments.AppareilPhoto" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.AppareilPhoto" android:screenOrientation="portrait"/>
 
         <service android:enabled="true" android:name="com.example.denis.funculture.component.sensor.ActivityRecognizedService" />
 

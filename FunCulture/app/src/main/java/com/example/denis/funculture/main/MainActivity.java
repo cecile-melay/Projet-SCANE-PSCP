@@ -18,7 +18,7 @@ import android.view.View;
 
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.fragments.Accueil;
-import com.example.denis.funculture.fragments.AppareilPhoto;
+import com.example.denis.funculture.activities.AppareilPhoto;
 import com.example.denis.funculture.fragments.ChooseSensorFragment;
 import com.example.denis.funculture.fragments.MapsFragment;
 import com.example.denis.funculture.utils.MyResources;
@@ -67,8 +67,6 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-            Intent homepage = new Intent(this, AppareilPhoto.class);
-            startActivity(homepage);
         } else if (id == R.id.nav_accueil) {
 
             startFragment(Accueil.class);
