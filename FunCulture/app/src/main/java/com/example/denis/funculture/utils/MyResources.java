@@ -10,6 +10,7 @@ public class MyResources {
         public static final String PEDOMETER = App.getSingleton().getContext().getString(R.string.pedometer);
         public static final String CAMERA = App.getSingleton().getContext().getString(R.string.camera);
         public static final String RECOGNIZE_ACTIVITY = App.getSingleton().getContext().getString(R.string.recognize_activity);
+        public static final String CHOOSE_SENSOR = App.getSingleton().getContext().getString(R.string.choose_sensor);
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
 

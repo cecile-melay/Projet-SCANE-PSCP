@@ -1,4 +1,4 @@
-package com.example.denis.funculture.fragments;
+package com.example.denis.funculture.component.sensor.camera;
 
 /**
  * Created by Rihab on 08/03/17.

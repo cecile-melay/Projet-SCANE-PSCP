@@ -22,8 +22,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.denis.funculture.R;
-import com.example.denis.funculture.component.sensor.Geolocalisation.AlertReceiver;
-import com.example.denis.funculture.component.sensor.Geolocalisation.MyLocationListener;
+import com.example.denis.funculture.component.sensor.geoloc.AlertReceiver;
+import com.example.denis.funculture.component.sensor.geoloc.MyLocationListener;
 import com.example.denis.funculture.main.App;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.Util;
@@ -45,7 +45,7 @@ import java.util.Timer;
 /*
  * Main Activity which contains the Google Map
  */
-public class MapsFragment extends Fragment implements OnMapReadyCallback {
+public class MapsFragment extends MyFragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Timer timer = new Timer();
@@ -64,10 +64,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
     private com.google.android.gms.maps.model.PolygonOptions polygonOptions;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View contentView = inflater.inflate(R.layout.maps_fragment, null);
+    protected int getLayoutId() {
+        return R.layout.maps_fragment;
+    }
+
+    @Override
+    protected String getTitle(){
+        return MyResources.GPS;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+
         SupportMapFragment mapFragment = new SupportMapFragment();
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.map_fragment_frame, mapFragment);
@@ -75,7 +85,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         ft.addToBackStack(null);
         ft.commit();
         mapFragment.getMapAsync(this);
-        return contentView;
     }
 
     @Override

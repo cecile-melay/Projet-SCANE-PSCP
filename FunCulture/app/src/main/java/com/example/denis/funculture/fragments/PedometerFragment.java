@@ -11,13 +11,13 @@ import android.widget.LinearLayout;
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.component.sensor.Pedometer;
 import com.example.denis.funculture.main.App;
+import com.example.denis.funculture.utils.MyResources;
 
 /**
  * Created by denis on 05/03/2017.
  */
 
-public class PedometerFragment extends Fragment {
-    LinearLayout contentView;
+public class PedometerFragment extends MyFragment {
     Pedometer pedometer;
 
     @Override
@@ -33,13 +33,17 @@ public class PedometerFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        this.contentView = (LinearLayout) inflater.inflate(R.layout.activity_view, null);
-        init();
-        return this.contentView;
+    protected int getLayoutId(){
+        return R.layout.activity_view;
     }
 
-    private void init() {
+    @Override
+    protected String getTitle(){
+        return MyResources.PEDOMETER;
+    }
+
+    @Override
+    protected void init() {
         if(this.pedometer == null) {
             this.pedometer = new Pedometer(getActivity());
             this.contentView.addView(pedometer.getView());

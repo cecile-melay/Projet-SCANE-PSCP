@@ -23,20 +23,27 @@ import java.util.List;
  * Created by denis on 19/03/2017.
  */
 
-public class ChooseSensorFragment extends Fragment implements View.OnClickListener {
-    private View contentView;
+public class ChooseSensorFragment extends MyFragment implements View.OnClickListener {
     private Spinner senssorSpinner;
     private Button testButton;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        this.contentView = inflater.inflate(R.layout.choose_sensor_fragment, null);
+    protected int getLayoutId(){
+        return R.layout.choose_sensor_fragment;
+    }
+
+    @Override
+    protected String getTitle(){
+        return MyResources.CHOOSE_SENSOR;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
         this.senssorSpinner = (Spinner) contentView.findViewById(R.id.sensorSpinner);
         this.testButton = (Button) contentView.findViewById(R.id.testButton);
         this.testButton.setOnClickListener(this);
         fillSensorSpinner();
-
-        return this.contentView;
     }
 
     //ici on ajoute les capteurs au spinner

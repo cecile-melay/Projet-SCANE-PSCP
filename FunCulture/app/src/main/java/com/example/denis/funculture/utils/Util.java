@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 
 import com.example.denis.funculture.main.App;
+import com.example.denis.funculture.main.MainActivity;
 
 /**
  * Created by denis on 05/03/2017.
@@ -17,6 +18,7 @@ import com.example.denis.funculture.main.App;
 
 //Ici on mettra toutes les fonctions usuelles nécessaires à différents endroits du code
 public class Util {
+    private static MainActivity mainActivity;
 
     public static void createDialog(String message)
     {
@@ -56,5 +58,13 @@ public class Util {
     public static String readFromPrefs(String key) {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(App.getSingleton().getContext());
         return settings.getString(key, null);
+    }
+
+    public static MainActivity getMainActivity() {
+        return mainActivity;
+    }
+
+    public static void setMainActivity(MainActivity activity) {
+        mainActivity = activity;
     }
 }

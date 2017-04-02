@@ -1,6 +1,5 @@
 package com.example.denis.funculture.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -18,22 +17,24 @@ import android.view.View;
 
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.fragments.Accueil;
-import com.example.denis.funculture.activities.AppareilPhoto;
 import com.example.denis.funculture.fragments.ChooseSensorFragment;
 import com.example.denis.funculture.fragments.MapsFragment;
+import com.example.denis.funculture.fragments.MyFragment;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.Util;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static final String FRAGMENT_TAG = "fragmentTag";
+    private Toolbar toolbar;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.getSingleton().setCurrentActivity(this);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        this.toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -51,11 +52,12 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        this.navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         init();
 
+        Util.setMainActivity(this);
         Util.checkPrivileges(this, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
         startFragment(ChooseSensorFragment.class);
     }
@@ -132,12 +134,12 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void startFragment(final Class<? extends Fragment> fragmentClass) {
+    public void startFragment(final Class<? extends MyFragment> fragmentClass) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Fragment fragment = fragmentClass.newInstance();
+                    MyFragment fragment = fragmentClass.newInstance();
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                     ft.replace(R.id.fragment_frame, fragment, FRAGMENT_TAG);
                     ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -150,5 +152,9 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+    }
+
+    public void setNavTitle(String title) {
+        this.toolbar.setTitle(title);
     }
 }

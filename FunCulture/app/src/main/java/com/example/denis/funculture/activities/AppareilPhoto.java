@@ -16,8 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.denis.funculture.R;
-import com.example.denis.funculture.fragments.CameraSurface;
-import com.example.denis.funculture.fragments.SavePhoto;
+import com.example.denis.funculture.component.sensor.camera.CameraSurface;
+import com.example.denis.funculture.component.sensor.camera.SavePhoto;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -14,12 +14,12 @@ import android.widget.TextView;
 
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.main.App;
+import com.example.denis.funculture.utils.MyResources;
 import com.google.android.gms.location.DetectedActivity;
 
 import java.util.List;
 
-public class RecognitionActivityFragment extends Fragment {
-    private View contentView;
+public class RecognitionActivityFragment extends MyFragment {
     private TextView textActivity;
     private TextView textVehicule;
     private TextView textBicycle;
@@ -30,9 +30,17 @@ public class RecognitionActivityFragment extends Fragment {
     private TextView textTitling;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        this.contentView = inflater.inflate(R.layout.activity_service_view, null);
+    protected int getLayoutId() {
+        return R.layout.activity_service_view;
+    }
 
+    @Override
+    protected String getTitle(){
+        return MyResources.RECOGNIZE_ACTIVITY;
+    }
+
+    @Override
+    protected void init() {
         this.textActivity = (TextView) this.contentView.findViewById(R.id.activity);
         this.textVehicule = (TextView) this.contentView.findViewById(R.id.vehicule);
         this.textBicycle = (TextView) this.contentView.findViewById(R.id.bicycle);
@@ -41,8 +49,6 @@ public class RecognitionActivityFragment extends Fragment {
         this.textWalking = (TextView) this.contentView.findViewById(R.id.walking);
         this.textStill = (TextView) this.contentView.findViewById(R.id.still);
         this.textTitling = (TextView) this.contentView.findViewById(R.id.titling);
-
-        return this.contentView;
     }
 
     @Override

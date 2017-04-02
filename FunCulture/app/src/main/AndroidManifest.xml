@@ -24,7 +24,6 @@
 
         <activity
             android:name=".main.MainActivity"
-            android:label="@string/home"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait">
             <intent-filter>
