@@ -359,13 +359,13 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
                     .snippet("Route Newton 1")
             );
             Marker markerRouteNewton2 = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.625718, 7.050260))
+                    .position(new LatLng(43.625738, 7.050184))
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
                     .title("Route Newton 2")
                     .snippet("Route Newton 2")
             );
             Marker markerRouteNewton3 = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.626096, 7.051115))
+                    .position(new LatLng(43.626132, 7.051074))
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
                     .title("Route Newton 3")
                     .snippet("Route Newton 3")
@@ -407,7 +407,18 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
                         Toast.LENGTH_SHORT).show();
             }
 
-            Polyline polygon = mMap.addPolyline(new PolylineOptions()
+            // Chemin MIAGE
+            Polyline polygonMIAGE = mMap.addPolyline(new PolylineOptions()
+                    .add(new LatLng(markerRouteNewton1.getPosition().latitude, markerRouteNewton1.getPosition().longitude),
+                            new LatLng(markerRouteNewton2.getPosition().latitude, markerRouteNewton2.getPosition().longitude),
+                            new LatLng(markerRouteNewton3.getPosition().latitude, markerRouteNewton3.getPosition().longitude),
+                            new LatLng(markerRouteNewton4.getPosition().latitude, markerRouteNewton4.getPosition().longitude))
+                    .width(25)
+                    .color(Color.BLUE)
+                    .geodesic(true));
+
+            // Chemin NEWTON
+            Polyline polygonNEWTON = mMap.addPolyline(new PolylineOptions()
                     .add(new LatLng(43.616824, 7.064771), new LatLng(43.617156, 7.063899), new LatLng(43.617465, 7.063620),
                             new LatLng(43.617447, 7.063478), new LatLng(43.617005, 7.063652))
                     .width(25)
