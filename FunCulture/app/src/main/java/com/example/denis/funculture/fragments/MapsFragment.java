@@ -351,7 +351,31 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
                     .snippet("Pyramide aztec")
             );
 
-            
+            // Test route Newton
+            Marker markerRouteNewton1 = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.625312, 7.049848))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Route Newton 1")
+                    .snippet("Route Newton 1")
+            );
+            Marker markerRouteNewton2 = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.625718, 7.050260))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Route Newton 2")
+                    .snippet("Route Newton 2")
+            );
+            Marker markerRouteNewton3 = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.626096, 7.051115))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Route Newton 3")
+                    .snippet("Route Newton 3")
+            );
+            Marker markerRouteNewton4 = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.626344, 7.051955))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Route Newton 4")
+                    .snippet("Route Newton 4")
+            );
 
             markers.add(markerParking);
             markers.add(markerPingPong);
@@ -367,7 +391,10 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
             markers.add(markerArriereVillaArson);
             markers.add(markerGrandPlateauVillaArson);
             markers.add(markerTerrasseFinaleVillaArson);
-
+            markers.add(markerRouteNewton1);
+            markers.add(markerRouteNewton2);
+            markers.add(markerRouteNewton3);
+            markers.add(markerRouteNewton4);
 
             // Use the LocationManager class to obtain GPS locations
             locListener = new MyLocationListener(this, mMap);
