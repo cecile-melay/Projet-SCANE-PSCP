@@ -198,7 +198,15 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
             nomsZones.add("Grand plateau gauche Villa Arson");
             zones.add(new Double[]{43.719751, 7.253722});  // Terrasse finale avec pyramide aztec Villa Arson
             nomsZones.add("Terrasse finale avec pyramide aztec Villa Arson");
-
+            // zones route NEWTON
+            zones.add(new Double[]{43.625312, 7.049848});
+            nomsZones.add("Route Newton 1");
+            zones.add(new Double[]{43.625738, 7.050184});
+            nomsZones.add("Route Newton 2");
+            zones.add(new Double[]{43.626132, 7.051074});
+            nomsZones.add("Route Newton 3");
+            zones.add(new Double[]{43.626344, 7.051955});
+            nomsZones.add("Route Newton 4");
 
             Circle circle;
             circle = mMap.addCircle(new CircleOptions() // Parking
