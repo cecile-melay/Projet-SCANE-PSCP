@@ -3,6 +3,7 @@ package com.example.denis.funculture.component.sensor.geoloc;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -13,6 +14,8 @@ import com.example.denis.funculture.fragments.MapsFragment;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.Timer;
 
@@ -35,12 +38,15 @@ public class MyLocationListener implements android.location.LocationListener {
     private LatLng myOldPosition;
     private Marker marker;
     private Boolean shoudlIRealyMoveMap = true;
+    private LatLng myPreviousInterestPoint;
+    private LatLng myCurrentInterestPoint;
 
     public MyLocationListener(MapsFragment ma, GoogleMap gm)
     {
         this.MA = ma;
         this.context = this.MA.getActivity().getApplicationContext();
         this.mMap = gm;
+        //this.myPreviousInterestPoint = new LatLng(MapsFragment.zones.get(0)[0], MapsFragment.zones.get(0)[1]);
     }
 
     @Override
@@ -154,12 +160,28 @@ public class MyLocationListener implements android.location.LocationListener {
                         distanceBetween[0]+"m de "+ MapsFragment.nomsZones.get(i),
                         Toast.LENGTH_SHORT ).show();
                 MapsFragment.markers.get(i).showInfoWindow();
-            }
 
+                if(i>0)
+                {
+                    this.myPreviousInterestPoint = new LatLng(MapsFragment.zones.get(i - 1)[0], MapsFragment.zones.get(i - 1)[1]);
+                    this.myCurrentInterestPoint = new LatLng(MapsFragment.zones.get(i)[0], MapsFragment.zones.get(i)[1]);
+                    changePolylineColor(this.myPreviousInterestPoint, this.myCurrentInterestPoint);
+                }
+
+            }
         }
 
-
     }
+
+    public void changePolylineColor(LatLng start, LatLng end)
+    {
+        Polyline polygon = mMap.addPolyline(new PolylineOptions()
+                .add(new LatLng(start.latitude, start.longitude), new LatLng(end.latitude, end.longitude))
+                .width(25)
+                .color(Color.GREEN)
+                .geodesic(true));
+    }
+
 
 }
 

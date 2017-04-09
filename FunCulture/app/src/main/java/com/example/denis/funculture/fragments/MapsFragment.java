@@ -36,6 +36,9 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
@@ -127,16 +130,6 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
         } else {
 
             mMap.setMyLocationEnabled(true);
-            // Use the LocationManager class to obtain GPS locations
-            locListener = new MyLocationListener(this, mMap);
-            locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
-            locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListener);
-            if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                Toast.makeText(getActivity(),
-                        "Activez le GPS",
-                        Toast.LENGTH_SHORT).show();
-            }
 
             // Use the LocationManager class to obtain GPS locations
             /*locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -358,6 +351,8 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
                     .snippet("Pyramide aztec")
             );
 
+            
+
             markers.add(markerParking);
             markers.add(markerPingPong);
             markers.add(markerBordGaucheNewton);
@@ -372,6 +367,26 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
             markers.add(markerArriereVillaArson);
             markers.add(markerGrandPlateauVillaArson);
             markers.add(markerTerrasseFinaleVillaArson);
+
+
+            // Use the LocationManager class to obtain GPS locations
+            locListener = new MyLocationListener(this, mMap);
+            locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
+            locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListener);
+            if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                Toast.makeText(getActivity(),
+                        "Activez le GPS",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            Polyline polygon = mMap.addPolyline(new PolylineOptions()
+                    .add(new LatLng(43.616824, 7.064771), new LatLng(43.617156, 7.063899), new LatLng(43.617465, 7.063620),
+                            new LatLng(43.617447, 7.063478), new LatLng(43.617005, 7.063652))
+                    .width(25)
+                    .color(Color.BLUE)
+                    .geodesic(true));
+
 
             //locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
             // Launch the Geolocation loop with a forced timeout
