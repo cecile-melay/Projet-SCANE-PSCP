@@ -96,8 +96,8 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     public void onPause() {
         super.onPause();
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locManager.removeUpdates(locListener);
-            mMap.setMyLocationEnabled(false);
+            //locManager.removeUpdates(locListener);
+            //mMap.setMyLocationEnabled(false);
         }
         Toast.makeText(getActivity(), "OnPause()", Toast.LENGTH_SHORT).show();
     }
@@ -126,6 +126,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         MapsFragment ma = this;
+        mMap.setOnMarkerClickListener(this);
         // Check Geolocation permission
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Util.checkPrivileges(getActivity(), MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
@@ -435,22 +436,6 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
                     .color(Color.BLUE)
                     .geodesic(true));
 
-
-            //locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
-            // Launch the Geolocation loop with a forced timeout
-            /*timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    if (ActivityCompat.checkSelfPermission(MapsFragment.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsFragment.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-                        locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locListener, looper);
-                    else
-                        return;
-                }
-            }, 0, intervalGeolocRefresh);
-
-            //mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
-            //Location l = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);*/
-
         }
 
     }
@@ -527,7 +512,6 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
         // Retrieve the data from the marker.
         Integer clickCount = (Integer) marker.getTag();
-        Log.d("myTag", "This is my message");
         mediaPlayer = MediaPlayer.create(getActivity(), R.raw.song);
         mediaPlayer.start();
 
