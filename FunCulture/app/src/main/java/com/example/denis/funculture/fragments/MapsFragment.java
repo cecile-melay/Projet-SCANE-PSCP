@@ -14,6 +14,7 @@ import android.media.MediaPlayer;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.denis.funculture.R;
@@ -53,6 +54,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     private int intervalGeolocRefresh = 3000;
     private Location startLocation;
     private ArrayList<Marker> tabMarkers = new ArrayList<Marker>();
+    private String previousMarkerName = "";
 
     public static ArrayList<Double[]> zones = new ArrayList<Double[]>();
     public static ArrayList<String> nomsZones = new ArrayList<String>();
@@ -60,6 +62,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
+
     private com.google.android.gms.maps.model.PolygonOptions polygonOptions;
 
     @Override
@@ -505,7 +508,9 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
-        // Check which maker have been clicked
+        marker.showInfoWindow();
+        // Check which maker have been clicked or approched
+        mediaPlayer = null;
         switch(marker.getTitle()) {
             case ("Ping Pong"):
                 mediaPlayer = MediaPlayer.create(getActivity(), R.raw.ping);
@@ -517,13 +522,27 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
                 mediaPlayer = MediaPlayer.create(getActivity(), R.raw.administration);
                 break;
             default:
-                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.song);
+                if(marker.getSnippet().contains("o"))
+                    mediaPlayer = MediaPlayer.create(getActivity(), R.raw.abr);
+                else
+                    mediaPlayer = MediaPlayer.create(getActivity(), R.raw.song);
                 break;
         }
 
+        Log.e("previousMarkerName", this.previousMarkerName);
+        Log.e("actualMarkerName", marker.getTitle());
+        // Avoid sound repetition for auto start sound
+        if(!this.previousMarkerName.equals(marker.getTitle())) {
+            if (mediaPlayer != null)
+                mediaPlayer.start();
+        }
+        else
+            {
+                // TO DO : ASK IF I WANT TO REPEAT THE SOUND
+            }
+
         // Retrieve the data from the marker.
         Integer clickCount = (Integer) marker.getTag();
-        mediaPlayer.start();
 
         // Check if a click count was set, then display the click count.
         if (clickCount != null) {
@@ -536,6 +555,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
             // marker is centered and for the marker's info window to open, if it has one).
             return false;
         }
+        this.previousMarkerName = marker.getTitle();
         return true;
     }
 

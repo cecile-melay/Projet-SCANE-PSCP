@@ -159,7 +159,7 @@ public class MyLocationListener implements android.location.LocationListener {
                 Toast.makeText( this.context,
                         distanceBetween[0]+"m de "+ MapsFragment.nomsZones.get(i),
                         Toast.LENGTH_SHORT ).show();
-                MapsFragment.markers.get(i).showInfoWindow();
+                MA.onMarkerClick(MapsFragment.markers.get(i));
 
                 if(i>0)
                 {
