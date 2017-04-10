@@ -521,6 +521,18 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
             case ("Administration"):
                 mediaPlayer = MediaPlayer.create(getActivity(), R.raw.administration);
                 break;
+            case ("Route Newton 1"):
+                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.entreenewton);
+                break;
+            case ("Route Newton 2"):
+                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.newton2);
+                break;
+            case ("Route Newton 3"):
+                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.newton3);
+                break;
+            case ("Route Newton 4"):
+                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.finnewton);
+                break;
             default:
                 if(marker.getSnippet().contains("o"))
                     mediaPlayer = MediaPlayer.create(getActivity(), R.raw.abr);
