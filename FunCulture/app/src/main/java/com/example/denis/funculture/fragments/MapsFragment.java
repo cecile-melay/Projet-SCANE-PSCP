@@ -11,14 +11,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.denis.funculture.R;
@@ -510,9 +505,24 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
+        // Check which maker have been clicked
+        switch(marker.getTitle()) {
+            case ("Ping Pong"):
+                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.ping);
+                break;
+            case ("Parking"):
+                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.parking);
+                break;
+            case ("Administration"):
+                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.administration);
+                break;
+            default:
+                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.song);
+                break;
+        }
+
         // Retrieve the data from the marker.
         Integer clickCount = (Integer) marker.getTag();
-        mediaPlayer = MediaPlayer.create(getActivity(), R.raw.song);
         mediaPlayer.start();
 
         // Check if a click count was set, then display the click count.
