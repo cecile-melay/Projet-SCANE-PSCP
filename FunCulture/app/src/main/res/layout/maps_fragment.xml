@@ -4,8 +4,20 @@
 
     <FrameLayout
         android:id="@+id/map_fragment_frame"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="400dp"
+
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+
+        android:layout_below="@+id/map_fragment_frame"
+        android:layout_marginTop="39dp" />
 </RelativeLayout>
