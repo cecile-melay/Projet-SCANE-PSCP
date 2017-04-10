@@ -10,12 +10,12 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Looper;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,8 +36,6 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -48,8 +46,10 @@ import java.util.Timer;
 /*
  * Main Activity which contains the Google Map
  */
-public class MapsFragment extends MyFragment implements OnMapReadyCallback {
+public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickListener,
+                                                        OnMapReadyCallback {
 
+    private MediaPlayer mediaPlayer;
     private GoogleMap mMap;
     private Timer timer = new Timer();
     private LocationManager locManager;
@@ -76,6 +76,8 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
     protected String getTitle(){
         return MyResources.GPS;
     }
+
+
 
     @Override
     protected void init() {
@@ -518,4 +520,29 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
          */
         return Math.sqrt(((int) (xa - xb) ^ 2) - ((int) (yb - ya) ^ 2));
     }
+
+    /** Called when the user clicks a marker. */
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+
+        // Retrieve the data from the marker.
+        Integer clickCount = (Integer) marker.getTag();
+        Log.d("myTag", "This is my message");
+        mediaPlayer = MediaPlayer.create(getActivity(), R.raw.song);
+        mediaPlayer.start();
+
+        // Check if a click count was set, then display the click count.
+        if (clickCount != null) {
+            clickCount = clickCount + 1;
+            marker.setTag(clickCount);
+
+
+            // Return false to indicate that we have not consumed the event and that we wish
+            // for the default behavior to occur (which is for the camera to move such that the
+            // marker is centered and for the marker's info window to open, if it has one).
+            return false;
+        }
+        return true;
+    }
+
 }
