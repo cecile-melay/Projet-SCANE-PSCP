@@ -35,10 +35,12 @@ public class MyLocationListener implements android.location.LocationListener {
     private LatLng myOldPosition;
     private Marker marker;
     private Boolean shoudlIRealyMoveMap = true;
+    private Boolean trackingMode = true;
 
     public MyLocationListener(MapsFragment ma, GoogleMap gm)
     {
         this.MA = ma;
+       // this.MA.addStructChemin(myposition);
         this.context = this.MA.getActivity().getApplicationContext();
         this.mMap = gm;
     }
@@ -46,6 +48,22 @@ public class MyLocationListener implements android.location.LocationListener {
     @Override
     public void onLocationChanged(final Location loc)
     {
+        if (trackingMode == false) {
+            if (LocationControle.calculCoeffiscientDirecteur(myOldPosition, myposition) >= 0.1) {
+                Toast.makeText(this.context,
+                        "Tu t'égares - mauvais chemin",
+                        Toast.LENGTH_SHORT).show();
+            }
+            ;
+
+
+            if (LocationControle.calculDistance(myOldPosition, myposition) >= 0.1) {
+                Toast.makeText(this.context,
+                        "Tu t'égares - distance avec le dernier point anormal",
+                        Toast.LENGTH_SHORT).show();
+            }
+            ;
+        }
         /*Toast.makeText( this.context,
                 "Moved",
                 Toast.LENGTH_SHORT).show();
@@ -66,6 +84,16 @@ public class MyLocationListener implements android.location.LocationListener {
         this.myposition = new LatLng(loc.getLatitude(),loc.getLongitude());
         this.myOldPosition = this.myposition;
         Log.e("myLocalisation", String.valueOf(this.myposition));
+
+        /*
+        * En cas de mode reperage
+         */
+        if (trackingMode == true){
+            this.MA.addPositionToWay(myposition);
+        }
+
+
+
 
         /*if(compteur==0) {
             mMap.moveCamera(CameraUpdateFactory.newLatLng(myposition));
@@ -160,6 +188,5 @@ public class MyLocationListener implements android.location.LocationListener {
 
 
     }
-
 }
 
