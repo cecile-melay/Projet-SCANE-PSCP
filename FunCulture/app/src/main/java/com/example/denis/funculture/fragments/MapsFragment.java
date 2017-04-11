@@ -19,9 +19,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.denis.funculture.R;
+import com.example.denis.funculture.component.sensor.Pedometer;
 import com.example.denis.funculture.component.sensor.geoloc.AlertReceiver;
 import com.example.denis.funculture.component.sensor.geoloc.MyLocationListener;
 import com.example.denis.funculture.main.App;
@@ -37,6 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.vision.text.Line;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -51,6 +54,7 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
     private Timer timer = new Timer();
     private LocationManager locManager;
     private LocationListener locListener;
+    private Pedometer pedometer;
     private Looper looper;
     private int intervalGeolocRefresh = 3000;
     private Location startLocation;
@@ -85,6 +89,14 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
         ft.addToBackStack(null);
         ft.commit();
         mapFragment.getMapAsync(this);
+
+        if(this.pedometer == null) {
+            this.pedometer = new Pedometer(getActivity());
+            LinearLayout llPerdometer = (LinearLayout) contentView.findViewById(R.id.ll_pedometer_view);
+            llPerdometer.addView(pedometer.getView());
+        }
+
+        this.pedometer.start();
     }
 
     @Override
