@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.denis.funculture.R;
+import com.example.denis.funculture.component.sensor.MyTimer;
 import com.example.denis.funculture.component.sensor.Pedometer;
 import com.example.denis.funculture.component.sensor.geoloc.AlertReceiver;
 import com.example.denis.funculture.component.sensor.geoloc.MyLocationListener;
@@ -54,7 +55,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
     private MediaPlayer mediaPlayer;
     private GoogleMap mMap;
-    private Timer timer = new Timer();
+    private MyTimer timer;
     PolylineOptions polylineOptions;
     private LocationManager locManager;
     private MyLocationListener locListener;
@@ -110,7 +111,14 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
             llPerdometer.addView(pedometer.getView());
         }
 
+        if(this.timer == null) {
+            this.timer = new MyTimer(getActivity());
+            LinearLayout llTimer = (LinearLayout) contentView.findViewById(R.id.ll_timer_view);
+            llTimer.addView(timer.getView());
+        }
+
         this.pedometer.start();
+        this.timer.start();
     }
 
     @Override
