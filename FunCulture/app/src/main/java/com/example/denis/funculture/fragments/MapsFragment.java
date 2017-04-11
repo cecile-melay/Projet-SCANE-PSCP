@@ -482,11 +482,12 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         getActivity().registerReceiver(new AlertReceiver(), filter);
     }
     public void addPositionToWay(LatLng position){
-        if(polylineOptions == null) {
-            polylineOptions = new PolylineOptions().add(position);
-            mMap.addPolyline(polylineOptions);
-        } else {
-            polylineOptions.add(position);
+        if(way != null && way.size()!=0){
+            Polyline polygon = mMap.addPolyline(new PolylineOptions()
+                    .add(way.get(way.size()-1), position)
+                    .width(25)
+                    .color(Color.GREEN)
+                    .geodesic(true));
         }
         Log.d("MapsFragment" ,"new pos : " + position.toString() + " way size : " + way.size());
         way.add(position);
