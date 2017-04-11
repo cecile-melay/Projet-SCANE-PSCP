@@ -26,6 +26,7 @@ import com.example.denis.funculture.component.sensor.Pedometer;
 import com.example.denis.funculture.component.sensor.geoloc.AlertReceiver;
 import com.example.denis.funculture.component.sensor.geoloc.MyLocationListener;
 import com.example.denis.funculture.main.App;
+import com.example.denis.funculture.main.MainActivity;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.Util;
 import com.google.android.gms.maps.GoogleMap;
@@ -56,7 +57,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     private Timer timer = new Timer();
     PolylineOptions polylineOptions;
     private LocationManager locManager;
-    private LocationListener locListener;
+    private MyLocationListener locListener;
     private Pedometer pedometer;
     private Looper looper;
     private int intervalGeolocRefresh = 3000;
@@ -458,6 +459,17 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
         }
 
+        ((MainActivity) getActivity()).setFabClicListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                locListener.setTrackingMode(!locListener.getTrackingMode());
+                Toast.makeText(getActivity(), "Tracking mode =" +
+                        ""+locListener.getTrackingMode(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
     }
 
     private void addProximityAlerts(ArrayList<Double[]> positions, ArrayList<String> name) {
@@ -485,8 +497,8 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         if(way != null && way.size()!=0){
             Polyline polygon = mMap.addPolyline(new PolylineOptions()
                     .add(way.get(way.size()-1), position)
-                    .width(25)
-                    .color(Color.GREEN)
+                    .width(5)
+                    .color(Color.RED)
                     .geodesic(true));
         }
         Log.d("MapsFragment" ,"new pos : " + position.toString() + " way size : " + way.size());
@@ -496,12 +508,6 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         return this.tabMarkers;
     }
 
-    public double calculDistance(double xa, double ya, double xb, double yb) {
-        /*
-        *On va pouvoir savoir si un utilisateur reste dans la bonne direction en vérifiant que la distance avec le point prochain n'est pas trop grande
-         */
-        return Math.sqrt(((int) (xa - xb) ^ 2) - ((int) (yb - ya) ^ 2));
-    }
 
     /** Called when the user clicks a marker. */
     @Override

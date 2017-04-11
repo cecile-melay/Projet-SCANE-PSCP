@@ -28,7 +28,11 @@ public class MainActivity extends AppCompatActivity
     private static final String FRAGMENT_TAG = "fragmentTag";
     private Toolbar toolbar;
     NavigationView navigationView;
+    FloatingActionButton fab;
 
+    public void setFabClicListener(View.OnClickListener listener) {
+        this.fab.setOnClickListener(listener);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +41,7 @@ public class MainActivity extends AppCompatActivity
         this.toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        this.fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

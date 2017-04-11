@@ -38,7 +38,6 @@ public class MyLocationListener implements android.location.LocationListener {
     private LatLng myOldPosition;
     private Marker marker;
     private Boolean shoudlIRealyMoveMap = true;
-
     private Boolean trackingMode = true;
 
     private LatLng myPreviousInterestPoint;
@@ -57,22 +56,8 @@ public class MyLocationListener implements android.location.LocationListener {
     @Override
     public void onLocationChanged(final Location loc)
     {
-        if (trackingMode == false) {
-            if (LocationControle.calculCoeffiscientDirecteur(myOldPosition, myposition) >= 0.1) {
-                Toast.makeText(this.context,
-                        "Tu t'égares - mauvais chemin",
-                        Toast.LENGTH_SHORT).show();
-            }
-            ;
 
-
-            if (LocationControle.calculDistance(myOldPosition, myposition) >= 0.1) {
-                Toast.makeText(this.context,
-                        "Tu t'égares - distance avec le dernier point anormal",
-                        Toast.LENGTH_SHORT).show();
-            }
-            ;
-        }
+        ;
         /*Toast.makeText( this.context,
                 "Moved",
                 Toast.LENGTH_SHORT).show();
@@ -95,12 +80,38 @@ public class MyLocationListener implements android.location.LocationListener {
         Log.e("myLocalisation", String.valueOf(this.myposition));
 
         /*
-        * En cas de mode reperage
+        * Controle de position hors du mode tracking
          */
-        if (trackingMode == true){
-            this.MA.addPositionToWay(myposition);
+        if (trackingMode == false) {
+            /*
+            Est-ce qu'on y passe? 
+             */
+            if (LocationControle.calculCoeffiscientDirecteur(myOldPosition, myposition) >= 0.1) {
+                Toast.makeText(this.context,
+                        "Tu t'égares - mauvais chemin",
+                        Toast.LENGTH_SHORT).show();
+            }
+            ;
+
+        }
+        if ( myOldPosition != null && LocationControle.calculDistance(myOldPosition, myposition) >= 0.000000001) {
+            Toast.makeText(this.context,
+                    "Tu t'égares - distance avec le dernier point anormal",
+                    Toast.LENGTH_SHORT).show();
         }
 
+        /*
+        * En cas de mode reperage
+         */
+
+        if (trackingMode == true){
+            /*
+            TODO Trouver comment mettre le trajet dans les données du cache de l'application.
+             */
+            if ( myOldPosition != null && LocationControle.calculDistance(myOldPosition, myposition) <= 0.000000000000001) {
+                this.MA.addPositionToWay(myposition);
+            }
+        }
 
 
 
@@ -211,6 +222,14 @@ public class MyLocationListener implements android.location.LocationListener {
                 .width(25)
                 .color(Color.GREEN)
                 .geodesic(true));
+    }
+
+    public Boolean getTrackingMode() {
+        return trackingMode;
+    }
+
+    public void setTrackingMode(Boolean trackingMode) {
+        this.trackingMode = trackingMode;
     }
 
 }
