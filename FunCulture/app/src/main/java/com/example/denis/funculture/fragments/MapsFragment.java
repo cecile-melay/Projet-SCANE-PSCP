@@ -10,11 +10,9 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
+import android.media.MediaPlayer;
 import android.os.Looper;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,8 +45,10 @@ import java.util.Timer;
 /*
  * Main Activity which contains the Google Map
  */
-public class MapsFragment extends MyFragment implements OnMapReadyCallback {
+public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickListener,
+                                                        OnMapReadyCallback {
 
+    private MediaPlayer mediaPlayer;
     private GoogleMap mMap;
     private Timer timer = new Timer();
     PolylineOptions polylineOptions;
@@ -58,7 +58,9 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
     private int intervalGeolocRefresh = 3000;
     private Location startLocation;
     private ArrayList<Marker> tabMarkers = new ArrayList<Marker>();
+
     public ArrayList<LatLng> way = new ArrayList<LatLng>();
+    private String previousMarkerName = "";
 
     public static ArrayList<Double[]> zones = new ArrayList<Double[]>();
     public static ArrayList<String> nomsZones = new ArrayList<String>();
@@ -66,6 +68,7 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
 
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
+
     private com.google.android.gms.maps.model.PolygonOptions polygonOptions;
 
     public MapsFragment() {
@@ -81,6 +84,8 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
     protected String getTitle(){
         return MyResources.GPS;
     }
+
+
 
     @Override
     protected void init() {
@@ -99,8 +104,8 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
     public void onPause() {
         super.onPause();
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locManager.removeUpdates(locListener);
-            mMap.setMyLocationEnabled(false);
+            //locManager.removeUpdates(locListener);
+            //mMap.setMyLocationEnabled(false);
         }
         Toast.makeText(getActivity(), "OnPause()", Toast.LENGTH_SHORT).show();
     }
@@ -129,22 +134,13 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         MapsFragment ma = this;
+        mMap.setOnMarkerClickListener(this);
         // Check Geolocation permission
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Util.checkPrivileges(getActivity(), MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
         } else {
 
             mMap.setMyLocationEnabled(true);
-            // Use the LocationManager class to obtain GPS locations
-            locListener = new MyLocationListener(this, mMap);
-            locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
-            locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListener);
-            if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                Toast.makeText(getActivity(),
-                        "Activez le GPS",
-                        Toast.LENGTH_SHORT).show();
-            }
 
             // Use the LocationManager class to obtain GPS locations
             /*locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -213,7 +209,15 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
             nomsZones.add("Grand plateau gauche Villa Arson");
             zones.add(new Double[]{43.719751, 7.253722});  // Terrasse finale avec pyramide aztec Villa Arson
             nomsZones.add("Terrasse finale avec pyramide aztec Villa Arson");
-
+            // zones route NEWTON
+            zones.add(new Double[]{43.625312, 7.049848});
+            nomsZones.add("Route Newton 1");
+            zones.add(new Double[]{43.625738, 7.050184});
+            nomsZones.add("Route Newton 2");
+            zones.add(new Double[]{43.626132, 7.051074});
+            nomsZones.add("Route Newton 3");
+            zones.add(new Double[]{43.626344, 7.051955});
+            nomsZones.add("Route Newton 4");
 
             Circle circle;
             circle = mMap.addCircle(new CircleOptions() // Parking
@@ -366,6 +370,32 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
                     .snippet("Pyramide aztec")
             );
 
+            // Test route Newton
+            Marker markerRouteNewton1 = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.625312, 7.049848))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Route Newton 1")
+                    .snippet("Route Newton 1")
+            );
+            Marker markerRouteNewton2 = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.625738, 7.050184))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Route Newton 2")
+                    .snippet("Route Newton 2")
+            );
+            Marker markerRouteNewton3 = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.626132, 7.051074))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Route Newton 3")
+                    .snippet("Route Newton 3")
+            );
+            Marker markerRouteNewton4 = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(43.626344, 7.051955))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title("Route Newton 4")
+                    .snippet("Route Newton 4")
+            );
+
             markers.add(markerParking);
             markers.add(markerPingPong);
             markers.add(markerBordGaucheNewton);
@@ -380,21 +410,39 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
             markers.add(markerArriereVillaArson);
             markers.add(markerGrandPlateauVillaArson);
             markers.add(markerTerrasseFinaleVillaArson);
+            markers.add(markerRouteNewton1);
+            markers.add(markerRouteNewton2);
+            markers.add(markerRouteNewton3);
+            markers.add(markerRouteNewton4);
 
-            //locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
-            // Launch the Geolocation loop with a forced timeout
-            /*timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    if (ActivityCompat.checkSelfPermission(MapsFragment.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsFragment.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-                        locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locListener, looper);
-                    else
-                        return;
-                }
-            }, 0, intervalGeolocRefresh);
+            // Use the LocationManager class to obtain GPS locations
+            locListener = new MyLocationListener(this, mMap);
+            locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
+            locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListener);
+            if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                Toast.makeText(getActivity(),
+                        "Activez le GPS",
+                        Toast.LENGTH_SHORT).show();
+            }
 
-            //mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mlocListener);
-            //Location l = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);*/
+            // Chemin MIAGE
+            Polyline polygonMIAGE = mMap.addPolyline(new PolylineOptions()
+                    .add(new LatLng(markerRouteNewton1.getPosition().latitude, markerRouteNewton1.getPosition().longitude),
+                            new LatLng(markerRouteNewton2.getPosition().latitude, markerRouteNewton2.getPosition().longitude),
+                            new LatLng(markerRouteNewton3.getPosition().latitude, markerRouteNewton3.getPosition().longitude),
+                            new LatLng(markerRouteNewton4.getPosition().latitude, markerRouteNewton4.getPosition().longitude))
+                    .width(25)
+                    .color(Color.BLUE)
+                    .geodesic(true));
+
+            // Chemin NEWTON
+            Polyline polygonNEWTON = mMap.addPolyline(new PolylineOptions()
+                    .add(new LatLng(43.616824, 7.064771), new LatLng(43.617156, 7.063899), new LatLng(43.617465, 7.063620),
+                            new LatLng(43.617447, 7.063478), new LatLng(43.617005, 7.063652))
+                    .width(25)
+                    .color(Color.BLUE)
+                    .geodesic(true));
 
         }
 
@@ -435,8 +483,78 @@ public class MapsFragment extends MyFragment implements OnMapReadyCallback {
         return this.tabMarkers;
     }
 
+    public double calculDistance(double xa, double ya, double xb, double yb) {
+        /*
+        *On va pouvoir savoir si un utilisateur reste dans la bonne direction en vérifiant que la distance avec le point prochain n'est pas trop grande
+         */
+        return Math.sqrt(((int) (xa - xb) ^ 2) - ((int) (yb - ya) ^ 2));
+    }
+
+    /** Called when the user clicks a marker. */
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+
+        marker.showInfoWindow();
+        // Check which maker have been clicked or approched
+        mediaPlayer = null;
+        switch(marker.getTitle()) {
+            case ("Ping Pong"):
+                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.ping);
+                break;
+            case ("Parking"):
+                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.parking);
+                break;
+            case ("Administration"):
+                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.administration);
+                break;
+            case ("Route Newton 1"):
+                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.entreenewton);
+                break;
+            case ("Route Newton 2"):
+                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.newton2);
+                break;
+            case ("Route Newton 3"):
+                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.newton3);
+                break;
+            case ("Route Newton 4"):
+                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.finnewton);
+                break;
+            default:
+                if(marker.getSnippet().contains("o"))
+                    mediaPlayer = MediaPlayer.create(getActivity(), R.raw.abr);
+                else
+                    mediaPlayer = MediaPlayer.create(getActivity(), R.raw.song);
+                break;
+        }
+
+        Log.e("previousMarkerName", this.previousMarkerName);
+        Log.e("actualMarkerName", marker.getTitle());
+        // Avoid sound repetition for auto start sound
+        if(!this.previousMarkerName.equals(marker.getTitle())) {
+            if (mediaPlayer != null)
+                mediaPlayer.start();
+        }
+        else
+            {
+                // TO DO : ASK IF I WANT TO REPEAT THE SOUND
+            }
+
+        // Retrieve the data from the marker.
+        Integer clickCount = (Integer) marker.getTag();
+
+        // Check if a click count was set, then display the click count.
+        if (clickCount != null) {
+            clickCount = clickCount + 1;
+            marker.setTag(clickCount);
 
 
-
+            // Return false to indicate that we have not consumed the event and that we wish
+            // for the default behavior to occur (which is for the camera to move such that the
+            // marker is centered and for the marker's info window to open, if it has one).
+            return false;
+        }
+        this.previousMarkerName = marker.getTitle();
+        return true;
+    }
 
 }
