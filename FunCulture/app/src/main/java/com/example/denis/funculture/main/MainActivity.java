@@ -18,8 +18,10 @@ import android.view.View;
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.fragments.Accueil;
 import com.example.denis.funculture.fragments.ChooseSensorFragment;
+import com.example.denis.funculture.fragments.Inscription;
 import com.example.denis.funculture.fragments.MapsFragment;
 import com.example.denis.funculture.fragments.MyFragment;
+import com.example.denis.funculture.fragments.SeConnecter;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.Util;
 
@@ -88,6 +90,14 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_legende) {
 
             startFragment(ChooseSensorFragment.class);
+
+        } else if (id == R.id.nav_inscription) {
+
+            startFragment(Inscription.class);
+
+        } else if (id == R.id.nav_connexion) {
+
+            startFragment(SeConnecter.class);
 
         } else if (id == R.id.nav_share) {
 
