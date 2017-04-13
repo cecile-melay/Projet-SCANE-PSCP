@@ -1,18 +1,14 @@
 package com.example.denis.funculture.fragments;
 
-import android.support.v4.app.Fragment;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.activities.AppareilPhoto;
+import com.example.denis.funculture.activities.QRCodeScanner;
 import com.example.denis.funculture.main.MainActivity;
 import com.example.denis.funculture.utils.MyResources;
 
@@ -54,6 +50,8 @@ public class ChooseSensorFragment extends MyFragment implements View.OnClickList
         spinnerArray.add(MyResources.PEDOMETER);
         spinnerArray.add(MyResources.RECOGNIZE_ACTIVITY);
         spinnerArray.add(MyResources.CAMERA);
+        spinnerArray.add(MyResources.QRCODE);
+
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 getActivity(), android.R.layout.simple_spinner_item, spinnerArray);
@@ -88,10 +86,15 @@ public class ChooseSensorFragment extends MyFragment implements View.OnClickList
                         ((MainActivity) getActivity()).startFragment(RecognitionActivityFragment.class);
                         break;
 
-                    //ACTIVITY SERVICE
+                    //Appareil Photo
                     case 4 :
                         Intent cameraIntent = new Intent(getActivity(), AppareilPhoto.class);
                         startActivity(cameraIntent);
+                        break;
+                    //QR Code Scanner
+                    case 5:
+                        Intent qrcs = new Intent(getActivity(), QRCodeScanner.class);
+                        ((MainActivity) getActivity()).startActivity(qrcs);
                         break;
                 }
             }

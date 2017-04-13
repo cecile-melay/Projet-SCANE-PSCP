@@ -37,6 +37,7 @@
         <fragment android:name=".fragments.PedometerFragment" android:screenOrientation="portrait"/>
         <fragment android:name=".fragments.RecognitionActivityFragment" android:screenOrientation="portrait"/>
         <activity android:name=".activities.AppareilPhoto" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.QRCodeScanner" android:screenOrientation="portrait"/>
 
         <service android:enabled="true" android:name="com.example.denis.funculture.component.sensor.ActivityRecognizedService" />
 
