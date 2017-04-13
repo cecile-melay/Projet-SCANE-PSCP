@@ -633,16 +633,19 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
         // Avoid sound repetition for auto start sound
         if(!this.previousMarkerName.equals(marker.getTitle())) {
-            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            if (mediaPlayer != null) {
                 mediaPlayer.pause();
                 mediaPlayer = MediaPlayer.create(getActivity(), son);
+                myHandler.postDelayed(UpdateSongTime,100);
                 PlayControlleurAudio();
                 mediaPlayer.start();
             } else if (mediaPlayer != null && mediaPlayer.getCurrentPosition() != 0){
+                myHandler.postDelayed(UpdateSongTime,100);
                 PlayControlleurAudio();
                 mediaPlayer.start();
             } else {
                 mediaPlayer = MediaPlayer.create(getActivity(), son);
+                myHandler.postDelayed(UpdateSongTime,100);
                 PlayControlleurAudio();
                 mediaPlayer.start();
             }
