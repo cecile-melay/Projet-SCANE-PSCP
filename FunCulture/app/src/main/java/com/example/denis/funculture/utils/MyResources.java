@@ -12,6 +12,7 @@ public class MyResources {
         public static final String QRCODE = App.getSingleton().getContext().getString(R.string.qrcode);
         public static final String RECOGNIZE_ACTIVITY = App.getSingleton().getContext().getString(R.string.recognize_activity);
         public static final String CHOOSE_SENSOR = App.getSingleton().getContext().getString(R.string.choose_sensor);
+        public static final String STEP_COUNT = App.getSingleton().getContext().getString(R.string.step_count);
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
 

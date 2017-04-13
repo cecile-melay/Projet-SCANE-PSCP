@@ -1,4 +1,10 @@
 <resources>
+
+    <string name="back"><![CDATA[<]]></string>
+    <string name="rewind"><![CDATA[<<]]></string>
+    <string name="forward"><![CDATA[>>]]></string>
+    <string name="pause">||</string>
+
     <string name="app_name">FunCulture</string>
 
     <string name="navigation_drawer_open">Ouvrir le menu de navigation</string>
@@ -24,7 +30,7 @@
     <string name="qrcode">QRCode Scanner</string>
 
 
-    <string name="step_count">Accéléromètre</string>
+    <string name="step_count">Nombre de pas : %d</string>
 
     <string name="title_activity_maps">Map</string>
     <string name="new_location">New Location : Latitude = %1$s, Longitude = %2$s, Altitude = %3$s avec une précision de %4$s mètres </string>

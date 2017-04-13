@@ -38,12 +38,16 @@ public class MyLocationListener implements android.location.LocationListener {
     private LatLng myOldPosition;
     private Marker marker;
     private Boolean shoudlIRealyMoveMap = true;
+    private Boolean trackingMode = true;
+
     private LatLng myPreviousInterestPoint;
     private LatLng myCurrentInterestPoint;
+
 
     public MyLocationListener(MapsFragment ma, GoogleMap gm)
     {
         this.MA = ma;
+       // this.MA.addStructChemin(myposition);
         this.context = this.MA.getActivity().getApplicationContext();
         this.mMap = gm;
         //this.myPreviousInterestPoint = new LatLng(MapsFragment.zones.get(0)[0], MapsFragment.zones.get(0)[1]);
@@ -52,6 +56,8 @@ public class MyLocationListener implements android.location.LocationListener {
     @Override
     public void onLocationChanged(final Location loc)
     {
+
+        ;
         /*Toast.makeText( this.context,
                 "Moved",
                 Toast.LENGTH_SHORT).show();
@@ -72,6 +78,42 @@ public class MyLocationListener implements android.location.LocationListener {
         this.myposition = new LatLng(loc.getLatitude(),loc.getLongitude());
         this.myOldPosition = this.myposition;
         Log.e("myLocalisation", String.valueOf(this.myposition));
+
+        /*
+        * Controle de position hors du mode tracking
+         */
+        if (trackingMode == false) {
+            /*
+            Est-ce qu'on y passe? 
+             */
+            if (LocationControle.calculCoeffiscientDirecteur(myOldPosition, myposition) >= 0.1) {
+                Toast.makeText(this.context,
+                        "Tu t'égares - mauvais chemin",
+                        Toast.LENGTH_SHORT).show();
+            }
+            ;
+
+        }
+        if ( myOldPosition != null && LocationControle.calculDistance(myOldPosition, myposition) >= 0.000000001) {
+            Toast.makeText(this.context,
+                    "Tu t'égares - distance avec le dernier point anormal",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        /*
+        * En cas de mode reperage
+         */
+
+        if (trackingMode == true){
+            /*
+            TODO Trouver comment mettre le trajet dans les données du cache de l'application.
+             */
+            if ( myOldPosition != null && LocationControle.calculDistance(myOldPosition, myposition) <= 0.000000000000001) {
+                this.MA.addPositionToWay(myposition);
+            }
+        }
+
+
 
         /*if(compteur==0) {
             mMap.moveCamera(CameraUpdateFactory.newLatLng(myposition));
@@ -159,7 +201,7 @@ public class MyLocationListener implements android.location.LocationListener {
                 Toast.makeText( this.context,
                         distanceBetween[0]+"m de "+ MapsFragment.nomsZones.get(i),
                         Toast.LENGTH_SHORT ).show();
-                MapsFragment.markers.get(i).showInfoWindow();
+                MA.onMarkerClick(MapsFragment.markers.get(i));
 
                 if(i>0)
                 {
@@ -182,6 +224,13 @@ public class MyLocationListener implements android.location.LocationListener {
                 .geodesic(true));
     }
 
+    public Boolean getTrackingMode() {
+        return trackingMode;
+    }
+
+    public void setTrackingMode(Boolean trackingMode) {
+        this.trackingMode = trackingMode;
+    }
 
 }
 

@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.denis.funculture.R;
+import com.example.denis.funculture.utils.MyResources;
+import com.example.denis.funculture.utils.Util;
 
 /**
  * Created by denis on 05/03/2017.
@@ -48,7 +50,8 @@ public class Pedometer implements SensorEventListener {
         LayoutInflater inflater = activity.getLayoutInflater();
         this.view = inflater.inflate(R.layout.pedometer_view, null, false);
 
-        textPedometer = (TextView) this.view.findViewById(R.id.pedometer);
+        textPedometer = (TextView) this.view.findViewById(R.id.tv_pedometer);
+        changeText(0);
 
         manager = (SensorManager) activity.getSystemService(activity.SENSOR_SERVICE);
         pedometer = manager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
@@ -67,7 +70,13 @@ public class Pedometer implements SensorEventListener {
         }
         float count = current - startCount;
 
-        textPedometer.setText("Nombre de pas : " + Float.toString(count));
+        changeText(count);
         Log.d(TAG, "start : " + startCount + " current : " + current + " diff : " + count);
+    }
+
+    private void changeText(float count) {
+        String s = MyResources.STEP_COUNT;
+        s = String.format(s, (int) count);
+        textPedometer.setText(s);
     }
 }

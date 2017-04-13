@@ -22,6 +22,14 @@
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
             android:title="Appareil Photo" />
+        <item
+            android:id="@+id/nav_connexion"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Connexion" />
+        <item
+            android:id="@+id/nav_inscription"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Inscription" />
     </group>
 
    <item android:title="Communicate"

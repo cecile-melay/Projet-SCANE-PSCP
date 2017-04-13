@@ -18,8 +18,10 @@ import android.view.View;
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.fragments.Accueil;
 import com.example.denis.funculture.fragments.ChooseSensorFragment;
+import com.example.denis.funculture.fragments.Inscription;
 import com.example.denis.funculture.fragments.MapsFragment;
 import com.example.denis.funculture.fragments.MyFragment;
+import com.example.denis.funculture.fragments.SeConnecter;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.Util;
 
@@ -28,7 +30,11 @@ public class MainActivity extends AppCompatActivity
     private static final String FRAGMENT_TAG = "fragmentTag";
     private Toolbar toolbar;
     NavigationView navigationView;
+    FloatingActionButton fab;
 
+    public void setFabClicListener(View.OnClickListener listener) {
+        this.fab.setOnClickListener(listener);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +43,7 @@ public class MainActivity extends AppCompatActivity
         this.toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        this.fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +90,14 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_legende) {
 
             startFragment(ChooseSensorFragment.class);
+
+        } else if (id == R.id.nav_inscription) {
+
+            startFragment(Inscription.class);
+
+        } else if (id == R.id.nav_connexion) {
+
+            startFragment(SeConnecter.class);
 
         } else if (id == R.id.nav_share) {
 
