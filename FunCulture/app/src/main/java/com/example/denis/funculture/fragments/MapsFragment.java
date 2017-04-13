@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.View;
 
 import android.widget.Button;
@@ -150,11 +151,6 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
         this.pedometer.start();
         this.timer.start();
-
-
-
-
-
     }
 
     private void controlleurAudio() {
@@ -174,27 +170,28 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         seekbar.setClickable(false);
         b2.setEnabled(false);
 
+        BoutonsControlleurAudio();
+    }
+
+    private void BoutonsControlleurAudio() {
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PlayControlleurAudio();
             }
         });
-
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PauseControlleurAudio();
             }
         });
-
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SautAvantControlleurAudio();
             }
         });
-
         b4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -235,7 +232,6 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     }
 
     private void PlayControlleurAudio() {
-
         Toast.makeText(getActivity().getApplicationContext(), "Playing sound",Toast.LENGTH_SHORT).show();
         mediaPlayer.start();
 
@@ -309,45 +305,6 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         } else {
 
             mMap.setMyLocationEnabled(true);
-
-            // Use the LocationManager class to obtain GPS locations
-            /*locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            startLocation = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            locListener = new MyLocationListener(this, mMap);
-            if(locManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-            {
-                locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locListener);
-                Toast.makeText(this,
-                        "Activez le GPS",
-                        Toast.LENGTH_SHORT).show();
-            }
-            if(startLocation!=null) {
-                locListener.onLocationChanged(startLocation);
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(25), 2000, null);
-            }
-            else
-                locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
-
-            looper = Looper.myLooper();
-
-            //Intent intent = new Intent(this, AlertReceiver.class);
-            //PendingIntent pending = PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-            zones.add(new Double[]{43.210103, 6.025803}); // Maison Jux
-            nomsZones.add("Maison Jux");
-            zones.add(new Double[]{43.209415, 6.026087}); // Cimetière
-            nomsZones.add("Cimetière");
-            zones.add(new Double[]{43.209254, 6.027240}); // Pharmacie
-            nomsZones.add("Pharmacie");
-            zones.add(new Double[]{43.208314, 6.025117});  // Banc montée
-            nomsZones.add("Banc montée");
-            zones.add(new Double[]{43.207563, 6.024693});  // Square Leo Lagrange
-            nomsZones.add("Square Leo Lagrange");
-            zones.add(new Double[]{43.205904, 6.024352});  // Eglise
-            nomsZones.add("Eglise");
-            zones.add(new Double[]{43.206334, 6.025166});  // Boulangerie
-            nomsZones.add("Boulangerie");
-            */
 
             zones.add(new Double[]{43.616909, 7.064413});  // Parking
             nomsZones.add("Parking");
@@ -669,44 +626,26 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     public boolean onMarkerClick(final Marker marker) {
 
         marker.showInfoWindow();
-        // Check which maker have been clicked or approched
-        mediaPlayer = null;
-        switch(marker.getTitle()) {
-            case ("Ping Pong"):
-                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.ping);
-                break;
-            case ("Parking"):
-                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.parking);
-                break;
-            case ("Administration"):
-                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.administration);
-                break;
-            case ("Route Newton 1"):
-                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.entreenewton);
-                break;
-            case ("Route Newton 2"):
-                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.newton2);
-                break;
-            case ("Route Newton 3"):
-                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.newton3);
-                break;
-            case ("Route Newton 4"):
-                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.finnewton);
-                break;
-            default:
-                if(marker.getSnippet().contains("o"))
-                    mediaPlayer = MediaPlayer.create(getActivity(), R.raw.abr);
-                else
-                    mediaPlayer = MediaPlayer.create(getActivity(), R.raw.song);
-                break;
-        }
+        int son = LancerSon(marker);
 
         Log.e("previousMarkerName", this.previousMarkerName);
         Log.e("actualMarkerName", marker.getTitle());
+
         // Avoid sound repetition for auto start sound
         if(!this.previousMarkerName.equals(marker.getTitle())) {
-            if (mediaPlayer != null)
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+                mediaPlayer = MediaPlayer.create(getActivity(), son);
+                PlayControlleurAudio();
                 mediaPlayer.start();
+            } else if (mediaPlayer != null && mediaPlayer.getCurrentPosition() != 0){
+                PlayControlleurAudio();
+                mediaPlayer.start();
+            } else {
+                mediaPlayer = MediaPlayer.create(getActivity(), son);
+                PlayControlleurAudio();
+                mediaPlayer.start();
+            }
         }
         else
             {
@@ -731,8 +670,40 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         return true;
     }
 
-
-
+    private int LancerSon(Marker marker) {
+        // Check which maker have been clicked or approched
+        int son = 0;
+        switch(marker.getTitle()) {
+            case ("Ping Pong"):
+                son = R.raw.ping;
+                break;
+            case ("Parking"):
+                son = R.raw.parking;
+                break;
+            case ("Administration"):
+                son = R.raw.administration;
+                break;
+            case ("Route Newton 1"):
+                son = R.raw.entreenewton;
+                break;
+            case ("Route Newton 2"):
+                son = R.raw.newton2;
+                break;
+            case ("Route Newton 3"):
+                son = R.raw.newton3;
+                break;
+            case ("Route Newton 4"):
+                son = R.raw.finnewton;
+                break;
+            default:
+                if(marker.getSnippet().contains("o"))
+                    son = R.raw.abr;
+                else
+                    son = R.raw.song;
+                break;
+        }
+        return son;
+    }
 
     private Runnable UpdateSongTime = new Runnable() {
         public void run() {
@@ -748,3 +719,42 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         }
     };
 }
+
+// Use the LocationManager class to obtain GPS locations
+            /*locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            startLocation = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            locListener = new MyLocationListener(this, mMap);
+            if(locManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+            {
+                locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, locListener);
+                Toast.makeText(this,
+                        "Activez le GPS",
+                        Toast.LENGTH_SHORT).show();
+            }
+            if(startLocation!=null) {
+                locListener.onLocationChanged(startLocation);
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(25), 2000, null);
+            }
+            else
+                locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
+
+            looper = Looper.myLooper();
+
+            //Intent intent = new Intent(this, AlertReceiver.class);
+            //PendingIntent pending = PendingIntent.getBroadcast(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+            zones.add(new Double[]{43.210103, 6.025803}); // Maison Jux
+            nomsZones.add("Maison Jux");
+            zones.add(new Double[]{43.209415, 6.026087}); // Cimetière
+            nomsZones.add("Cimetière");
+            zones.add(new Double[]{43.209254, 6.027240}); // Pharmacie
+            nomsZones.add("Pharmacie");
+            zones.add(new Double[]{43.208314, 6.025117});  // Banc montée
+            nomsZones.add("Banc montée");
+            zones.add(new Double[]{43.207563, 6.024693});  // Square Leo Lagrange
+            nomsZones.add("Square Leo Lagrange");
+            zones.add(new Double[]{43.205904, 6.024352});  // Eglise
+            nomsZones.add("Eglise");
+            zones.add(new Double[]{43.206334, 6.025166});  // Boulangerie
+            nomsZones.add("Boulangerie");
+            */
