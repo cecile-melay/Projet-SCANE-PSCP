@@ -27,6 +27,8 @@
     <string name="choose_sensor">Capteurs</string>
     <string name="accelerometer">Accéléromètre</string>
     <string name="camera">Appareil Photo</string>
+    <string name="qrcode">QRCode Scanner</string>
+
 
     <string name="step_count">Nombre de pas : %d</string>
 
