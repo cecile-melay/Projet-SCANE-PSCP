@@ -70,7 +70,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     private MediaPlayer mediaPlayer;
     private GoogleMap mMap;
 
-    private Button b1,b2,b3,b4;
+    private Button b1,b2,b3,b4,tr;
     private ImageView iv;
 
     private double startTime = 0;
@@ -575,9 +575,12 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
             @Override
             public void onClick(View v) {
-                locListener.setTrackingMode(!locListener.getTrackingMode());
-                Toast.makeText(getActivity(), "Tracking mode =" +
-                        ""+locListener.getTrackingMode(), Toast.LENGTH_SHORT).show();
+                if(locListener.getTrackingMode() == true) {
+                    MapsFragment.this.addPositionToWay(locListener.getMyposition());
+                    Toast.makeText(getActivity(), "Point sauvegardé " +
+                            "" + locListener.getMyposition().toString(), Toast.LENGTH_SHORT).show();
+
+                }
 
             }
         });
