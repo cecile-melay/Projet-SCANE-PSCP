@@ -39,6 +39,7 @@ public class MyLocationListener implements android.location.LocationListener {
     private Marker marker;
     private Boolean shoudlIRealyMoveMap = true;
     private Boolean trackingMode = true;
+    private Boolean followMode = false;
 
     private LatLng myPreviousInterestPoint;
     private LatLng myCurrentInterestPoint;
@@ -83,20 +84,32 @@ public class MyLocationListener implements android.location.LocationListener {
         * Controle de position hors du mode tracking
          */
         if (trackingMode == false) {
-
-            if (LocationControle.calculCoeffiscientDirecteur(myOldPosition, myposition) >= 0.1) {
+            /*
+            * ON se place dans le cas ou on va forcément suivre un chemin
+             */
+            if (followMode !=true && myposition!= null && LocationControle.calculDistance(this.MA.way.get(0), myposition) >= 0.000000001){
                 Toast.makeText(this.context,
-                        "Tu t'égares - mauvais chemin",
+                        "Go to "+this.MA.way.get(0).toString(),
                         Toast.LENGTH_SHORT).show();
+
             }
-            ;
+            followMode = true;
+            int step = 1;
+            while (step < this.MA.way.size()){
+                if (loc.getAccuracy()<5){
+                    if (LocationControle.calculDistance(this.MA.way.get(step),myposition)> LocationControle.calculDistance(this.MA.way.get(step),myOldPosition)) {
+                        Toast.makeText(this.context,
+                                "Wrong direction ",
+                                Toast.LENGTH_SHORT).show();
+                    }else if (LocationControle.calculDistance(this.MA.way.get(step),myposition)< LocationControle.calculDistance(this.MA.way.get(step-1),myposition)){
+                        step++;
+                    }
+                }
+
+            }
 
         }
-        if ( myOldPosition != null && LocationControle.calculDistance(myOldPosition, myposition) >= 0.000000001) {
-            Toast.makeText(this.context,
-                    "Tu t'égares - distance avec le dernier point anormal",
-                    Toast.LENGTH_SHORT).show();
-        }
+
 
 
         /*if(compteur==0) {

@@ -570,15 +570,21 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
                     .geodesic(true));
 
         }
-
+/*
+Pour les tests je vais faire que le mode tracking passe à false automatiquement quand on a 10 points dans le chemin
+ */
         ((MainActivity) getActivity()).setFabClicListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 if(locListener.getTrackingMode() == true) {
-                    MapsFragment.this.addPositionToWay(locListener.getMyposition());
-                    Toast.makeText(getActivity(), "Point sauvegardé " +
-                            "" + locListener.getMyposition().toString(), Toast.LENGTH_SHORT).show();
+                    if(MapsFragment.this.way.size()<= 10) {
+                        MapsFragment.this.addPositionToWay(locListener.getMyposition());
+                        Toast.makeText(getActivity(), "Point sauvegardé " +
+                                "" + locListener.getMyposition().toString(), Toast.LENGTH_SHORT).show();
+                    }else{
+                        locListener.setTrackingMode(false);
+                    }
 
                 }
 
