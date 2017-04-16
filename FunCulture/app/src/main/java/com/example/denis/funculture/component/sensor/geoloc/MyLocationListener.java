@@ -44,6 +44,12 @@ public class MyLocationListener implements android.location.LocationListener {
     private LatLng myPreviousInterestPoint;
     private LatLng myCurrentInterestPoint;
 
+    private LatLng myPreviousPoint;
+    private LatLng myCurrentPoint;
+
+
+
+
 
     public MyLocationListener(MapsFragment ma, GoogleMap gm)
     {
@@ -71,6 +77,7 @@ public class MyLocationListener implements android.location.LocationListener {
                     //"Bad GPS signal",
                     //Toast.LENGTH_SHORT).show();
             //return;
+
         }
 
         if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
@@ -80,33 +87,44 @@ public class MyLocationListener implements android.location.LocationListener {
         this.myOldPosition = this.myposition;
         Log.e("myLocalisation", String.valueOf(this.myposition));
 
+
         /*
         * Controle de position hors du mode tracking
          */
-        if (trackingMode == false) {
+        if (!trackingMode) {
             /*
             * ON se place dans le cas ou on va forcément suivre un chemin
              */
-            if (followMode !=true && myposition!= null && LocationControle.calculDistance(this.MA.way.get(0), myposition) >= 0.000000001){
+
+            canIChangeStep(myposition);
+
+            /*if (!followMode  && myposition!= null && LocationControle.calculDistance(this.MA.way.get(0), myposition) >= 0.00000001){
                 Toast.makeText(this.context,
                         "Go to "+this.MA.way.get(0).toString(),
                         Toast.LENGTH_SHORT).show();
 
-            }
-            followMode = true;
-            int step = 1;
-            while (step < this.MA.way.size()){
+            }*/
+            /*followMode = true;*/
+
+            /*Toast.makeText(this.context,
+                    "Follow mode on",
+                    Toast.LENGTH_SHORT).show();
+            int step = 1;*/
+            /*while (step < this.MA.way.size()){
                 if (loc.getAccuracy()<5){
                     if (LocationControle.calculDistance(this.MA.way.get(step),myposition)> LocationControle.calculDistance(this.MA.way.get(step),myOldPosition)) {
                         Toast.makeText(this.context,
                                 "Wrong direction ",
                                 Toast.LENGTH_SHORT).show();
-                    }else if (LocationControle.calculDistance(this.MA.way.get(step),myposition)< LocationControle.calculDistance(this.MA.way.get(step-1),myposition)){
+                    }else if (LocationControle.calculDistance(this.MA.way.get(step+1),myposition)< LocationControle.calculDistance(this.MA.way.get(step-1),myposition)){
                         step++;
+                        Toast.makeText(this.context,
+                                "Udpate step",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
 
-            }
+            }*/
 
         }
 
@@ -185,6 +203,44 @@ public class MyLocationListener implements android.location.LocationListener {
         //Toast.makeText(context, Arrays.toString(distance), Toast.LENGTH_SHORT).show();
         return distance[0]>=2;
 
+    }
+
+    public void canIChangeStep(LatLng myposition){
+        float[] distanceBetween = {3};
+            Toast.makeText( this.context,
+                    distanceBetween[0]+"m de départ : point  "+ this.MA.way.get(0),
+                    Toast.LENGTH_SHORT ).show();
+
+
+
+        for (int i = 0; i< this.MA.way.size() ; i++)
+        {
+            android.location.Location.distanceBetween(myposition.latitude, myposition.longitude, this.MA.way.get(i).latitude, this.MA.way.get(i).longitude, distanceBetween);
+            if(i==0 && distanceBetween[0]>3){
+                Toast.makeText( this.context,
+                        distanceBetween[0]+"m de départ : point  "+ this.MA.way.get(i),
+                        Toast.LENGTH_SHORT ).show();
+
+
+            }
+            else if(distanceBetween[0]<=3)
+            {
+                Toast.makeText( this.context,
+                        distanceBetween[0]+"m du point numéro"+i+" "+this.MA.way.get(i),
+                        Toast.LENGTH_SHORT ).show();
+                this.myPreviousPoint = new LatLng(this.MA.way.get(i - 1).latitude, this.MA.way.get(i - 1).longitude);
+                this.myCurrentPoint = new LatLng(this.MA.way.get(i).latitude, this.MA.way.get(i).longitude);
+                changePolylineColor(this.myPreviousPoint, this.myCurrentPoint);
+
+                /*
+                *
+                * Rajouter le cas ou l'utilisateur s'approche d'un autre point
+                 */
+
+
+
+            }
+        }
     }
 
     public void amINearToPointOfInterest(LatLng myposition)

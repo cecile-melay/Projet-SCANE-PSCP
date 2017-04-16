@@ -70,11 +70,12 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     private MediaPlayer mediaPlayer;
     private GoogleMap mMap;
 
-    private Button b1,b2,b3,b4,tr;
+    private Button b1,b2,b3,b4;
     private ImageView iv;
 
     private double startTime = 0;
     private double finalTime = 0;
+    private int nbPointChemin = 10;
 
     private Handler myHandler = new Handler();;
     private int forwardTime = 5000;
@@ -577,13 +578,14 @@ Pour les tests je vais faire que le mode tracking passe à false automatiquement
 
             @Override
             public void onClick(View v) {
-                if(locListener.getTrackingMode() == true) {
-                    if(MapsFragment.this.way.size()<= 10) {
+                if(locListener.getTrackingMode()) {
+                    if(MapsFragment.this.way.size()<= nbPointChemin) {
                         MapsFragment.this.addPositionToWay(locListener.getMyposition());
                         Toast.makeText(getActivity(), "Point sauvegardé " +
                                 "" + locListener.getMyposition().toString(), Toast.LENGTH_SHORT).show();
                     }else{
                         locListener.setTrackingMode(false);
+                        Toast.makeText(getActivity(), "Tracking mode"+locListener.getTrackingMode().toString(), Toast.LENGTH_SHORT).show();
                     }
 
                 }
