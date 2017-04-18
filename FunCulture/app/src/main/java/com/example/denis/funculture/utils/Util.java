@@ -12,6 +12,11 @@ import android.support.v7.app.AlertDialog;
 import com.example.denis.funculture.main.App;
 import com.example.denis.funculture.main.MainActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by denis on 05/03/2017.
  */
@@ -66,5 +71,72 @@ public class Util {
 
     public static void setMainActivity(MainActivity activity) {
         mainActivity = activity;
+    }
+
+    public static String formatTimeInMillis(long time) {
+        return String.format("%02d : %02d",
+                TimeUnit.MILLISECONDS.toMinutes(time),
+                TimeUnit.MILLISECONDS.toSeconds(time) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)));
+    }
+
+    public static String formatTimeInSec(int time) {
+        return formatTimeInMillis(time * 1000);
+    }
+
+    public static double timeDiff(Date startDate, Date endDate) {
+        if (startDate == null || endDate == null) {
+            return 0;
+        }
+        long diff = endDate.getTime() - startDate.getTime();
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+
+        long days = diff / daysInMilli;
+        diff = diff % daysInMilli;
+
+        long hours = diff / hoursInMilli;
+        diff = diff % hoursInMilli;
+
+        long minutes = diff / minutesInMilli;
+        diff = diff % minutesInMilli;
+
+        long seconds = diff / secondsInMilli;
+
+        double result = days * 24 + hours + (double)minutes / (double)60;
+        return result;
+    }
+
+    public static double getHourFromDate(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        int hours = cal.get(Calendar.HOUR_OF_DAY);
+        int mins = cal.get(Calendar.MINUTE);
+
+        double result = hours + (double)mins / (double)60;
+        return result;
+    }
+
+    public static String getStringDayMonth(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        String month = new SimpleDateFormat("MMMM").format(cal.getTime());
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        return String.format("%d %s.", day, month.substring(0, 4));
+    }
+
+    public static String getStringHourMinute(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minutes = cal.get(Calendar.MINUTE);
+
+        return String.format("%02d:%02d", hour, minutes);
     }
 }

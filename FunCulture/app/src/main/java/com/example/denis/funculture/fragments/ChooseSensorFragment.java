@@ -51,6 +51,7 @@ public class ChooseSensorFragment extends MyFragment implements View.OnClickList
         spinnerArray.add(MyResources.RECOGNIZE_ACTIVITY);
         spinnerArray.add(MyResources.CAMERA);
         spinnerArray.add(MyResources.QRCODE);
+        spinnerArray.add(MyResources.QCM);
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -91,10 +92,16 @@ public class ChooseSensorFragment extends MyFragment implements View.OnClickList
                         Intent cameraIntent = new Intent(getActivity(), AppareilPhoto.class);
                         startActivity(cameraIntent);
                         break;
+
                     //QR Code Scanner
                     case 5:
                         Intent qrcs = new Intent(getActivity(), QRCodeScanner.class);
-                        ((MainActivity) getActivity()).startActivity(qrcs);
+                        startActivity(qrcs);
+                        break;
+
+                    //QCM
+                    case 6:
+                        ((MainActivity) getActivity()).startFragment(QCMFragment.class);
                         break;
                 }
             }

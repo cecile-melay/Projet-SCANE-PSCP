@@ -34,5 +34,14 @@
 
     <string name="title_activity_maps">Map</string>
     <string name="new_location">New Location : Latitude = %1$s, Longitude = %2$s, Altitude = %3$s avec une précision de %4$s mètres </string>
+    <string name="qcm_no_selected">Veuillez sélectionner une réponse</string>
+    <string name="qcm_see_result">Voir les résultats</string>
+    <string name="ok">OK</string>
+    <string name="qcm">QCM</string>
+    <string name="next">Suivant</string>
+    <string name="end_qcm">Bravo ! Merci d\'avoir répondu au QCM, votre score est de : %d</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="leave_app">Souhaitez-vous vraiment quitter l\'application</string>
 
 </resources>

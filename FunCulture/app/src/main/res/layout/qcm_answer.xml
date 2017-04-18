@@ -1,0 +1,33 @@
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:minHeight="40dp"
+    android:layout_height="wrap_content"
+    xmlns:framework="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:layout_marginRight="20dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <TextView
+            android:id="@+id/tv_qcm_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/pv_check"
+            android:textSize="15sp"
+            android:layout_centerVertical="true"
+            android:text="Ici on test une réponse"/>
+
+        <ImageView
+            android:id="@+id/pv_check"
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:layout_marginLeft="2dp"
+            android:layout_alignParentRight="true"
+            android:visibility="visible"
+            android:layout_centerVertical="true"
+            android:src="@drawable/check"/>
+    </RelativeLayout>

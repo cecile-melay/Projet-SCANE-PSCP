@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.denis.funculture.main.MainActivity;
 import com.example.denis.funculture.utils.Util;
 
 /**
@@ -30,4 +32,14 @@ public abstract class MyFragment extends Fragment {
     protected abstract int getLayoutId();
 
     protected abstract String getTitle();
+
+    @Override
+    public void onStop() {
+        Util.getMainActivity().removeLastFragment();
+        super.onStop();
+    }
+
+    public void finish(boolean restoreMap) {
+        Util.getMainActivity().closeCurrentFragment(this, restoreMap);
+    }
 }

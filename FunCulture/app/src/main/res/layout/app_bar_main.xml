@@ -34,4 +34,14 @@
         app:layout_anchorGravity="right"
         app:srcCompat="@android:drawable/ic_dialog_info" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginTop="10dp"
+        app:layout_anchor="@+id/include2"
+        app:layout_anchorGravity="left"
+        app:srcCompat="@drawable/check" />
+
 </android.support.design.widget.CoordinatorLayout>

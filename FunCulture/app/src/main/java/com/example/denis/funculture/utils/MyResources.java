@@ -13,6 +13,14 @@ public class MyResources {
         public static final String RECOGNIZE_ACTIVITY = App.getSingleton().getContext().getString(R.string.recognize_activity);
         public static final String CHOOSE_SENSOR = App.getSingleton().getContext().getString(R.string.choose_sensor);
         public static final String STEP_COUNT = App.getSingleton().getContext().getString(R.string.step_count);
+        public static final String QCM_NO_SELECTED = App.getSingleton().getContext().getString(R.string.qcm_no_selected);
+        public static final String QCM_SEE_RESULT = App.getSingleton().getContext().getString(R.string.qcm_see_result);
+        public static final String QCM = App.getSingleton().getContext().getString(R.string.qcm);
+        public static final String OK = App.getSingleton().getContext().getString(R.string.ok);
+        public static final String END_QCM = App.getSingleton().getContext().getString(R.string.end_qcm);
+        public static final String YES = App.getSingleton().getContext().getString(R.string.yes);
+        public static final String NO = App.getSingleton().getContext().getString(R.string.no);
+        public static final String LEAVE_APP = App.getSingleton().getContext().getString(R.string.leave_app);
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
 

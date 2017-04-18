@@ -273,6 +273,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
             //mMap.setMyLocationEnabled(false);
         }
         Toast.makeText(getActivity(), "OnPause()", Toast.LENGTH_SHORT).show();
+        Util.getMainActivity().swithQCMButtonVisibility();
     }
 
     @Override
@@ -285,6 +286,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
             //mMap.setMyLocationEnabled(true);
         }
         Toast.makeText(getActivity(), "OnResume()", Toast.LENGTH_SHORT).show();
+        Util.getMainActivity().swithQCMButtonVisibility();
     }
 
     /**
