@@ -141,11 +141,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void validateRegister() {
         if(Util.isEmpty(etFirstName)
-                && Util.isEmpty(etSecondName)
-                && Util.isEmpty(etBirth)
-                && Util.isEmpty(etMail)
-                && Util.isEmpty(etVille)
-                && spLevel.getSelectedItemPosition() == 0) {
+                || Util.isEmpty(etSecondName)
+                || Util.isEmpty(etBirth)
+                || Util.isEmpty(etMail)
+                || Util.isEmpty(etVille)
+                || spLevel.getSelectedItemPosition() == 0) {
             Util.createDialog(MyResources.MISSING_FIELD_WARNING);
         }
 
