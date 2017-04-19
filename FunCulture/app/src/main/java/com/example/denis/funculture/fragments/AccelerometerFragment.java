@@ -6,6 +6,7 @@ import com.example.denis.funculture.R;
 import com.example.denis.funculture.component.sensor.Accelerometer;
 import com.example.denis.funculture.main.App;
 import com.example.denis.funculture.utils.MyResources;
+import com.example.denis.funculture.utils.MyServices;
 
 /**
  * Created by denis on 05/03/2017.
@@ -34,6 +35,7 @@ public class AccelerometerFragment extends MyFragment {
         }
 
         this.accelerometer.start();
+        MyServices.getSingleton().getZones();
     }
 
     @Override
