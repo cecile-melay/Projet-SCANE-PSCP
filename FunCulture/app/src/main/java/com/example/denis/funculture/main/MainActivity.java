@@ -17,6 +17,11 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.fragments.Accueil;
@@ -41,6 +46,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private List<MyFragment> fragments = new ArrayList<>();
     private MyFragment homeFragment;
     private MapsFragment mapFragment;
+
+    //Register Fields
+    private EditText etSecondName;
+    private EditText etFirstName;
+    private EditText etBirth;
+    private EditText etVille;
+    private EditText etMail;
+    private Spinner spLevel;
+    private Button btRegister;
+    private LinearLayout llRegister;
 
     public void setFabClicListener(View.OnClickListener listener) {
         this.fab.setOnClickListener(listener);
@@ -98,6 +113,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Util.setMainActivity(this);
         Util.checkPrivileges(this, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
         startFragment(ChooseSensorFragment.class);
+        initRegisterFields();
+    }
+
+    private void initRegisterFields() {
+        this.llRegister = (LinearLayout) findViewById(R.id.ll_register);
+        this.etFirstName = (EditText) findViewById(R.id.et_first_name);
+        this.etSecondName = (EditText) findViewById(R.id.et_second_name);
+        this.etBirth = (EditText) findViewById(R.id.et_birth);
+        this.etVille = (EditText) findViewById(R.id.et_ville);
+        this.etMail = (EditText) findViewById(R.id.et_mail);
+        this.spLevel = (Spinner) findViewById(R.id.sp_level);
+        this.btRegister = (Button) findViewById(R.id.bt_register);
+
+        this.btRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                validateRegister();
+            }
+        });
+
+        String[] sportLevels = new String[]{"Niveau sportif", "Débutant", "Intermédiaire", "Confirmé"};
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this,R.layout.spinner_item,sportLevels);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item_drop);
+        this.spLevel.setAdapter(spinnerArrayAdapter);
+    }
+
+    private void validateRegister() {
+        if(Util.isEmpty(etFirstName)
+                && Util.isEmpty(etSecondName)
+                && Util.isEmpty(etBirth)
+                && Util.isEmpty(etMail)
+                && Util.isEmpty(etVille)
+                && spLevel.getSelectedItemPosition() == 0) {
+            Util.createDialog(MyResources.MISSING_FIELD_WARNING);
+        }
+
+        else {
+            Util.createDialog(MyResources.SUCCESS_REGISTER);
+            llRegister.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -128,8 +183,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startFragment(Inscription.class);
 
         } else if (id == R.id.nav_connexion) {
-
-            startFragment(SeConnecter.class);
+            showRegisterLayout();
 
         } else if (id == R.id.nav_share) {
 
@@ -140,6 +194,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showRegisterLayout() {
+        this.llRegister.setVisibility(View.VISIBLE);
     }
 
     @Override

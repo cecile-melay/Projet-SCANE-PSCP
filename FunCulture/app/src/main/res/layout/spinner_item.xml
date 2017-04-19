@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:textColor="@color/white"
+    android:id="@+id/et_ville"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:textSize="22sp"
+    android:padding="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

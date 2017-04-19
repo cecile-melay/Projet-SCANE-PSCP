@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/content_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,9 +9,119 @@
     tools:context="com.example.denis.funculture.main.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-
     <FrameLayout
         android:id="@+id/fragment_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ll_register"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <EditText
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:id="@+id/et_second_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="textPersonName"
+            android:hint="Prénom"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="22sp"
+            android:padding="5dp"/>
+
+        <EditText
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:id="@+id/et_first_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="textPersonName"
+            android:hint="Nom"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="22sp"
+            android:padding="5dp"/>
+
+        <EditText
+            android:id="@+id/et_birth"
+            android:inputType="date"
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Date de naissance"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="22sp"
+            android:padding="5dp"/>
+
+        <Spinner
+            android:id="@+id/sp_level"
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="22sp"
+            android:padding="5dp"/>
+
+        <EditText
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:id="@+id/et_ville"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="textPersonName"
+            android:hint="Ville"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="22sp"
+            android:padding="5dp"/>
+
+        <EditText
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:id="@+id/et_mail"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="textPersonName"
+            android:hint="Email"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="22sp"
+            android:padding="5dp"/>
+
+        <Button
+            android:background="@color/blue"
+            android:textColor="@color/white"
+            android:id="@+id/bt_register"
+            android:text="@string/register"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="22sp"
+            android:padding="5dp"/>
+
+    </LinearLayout>
 </RelativeLayout>

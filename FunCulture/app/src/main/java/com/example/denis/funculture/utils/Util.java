@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.widget.EditText;
 
 import com.example.denis.funculture.main.App;
 import com.example.denis.funculture.main.MainActivity;
@@ -138,5 +139,17 @@ public class Util {
         int minutes = cal.get(Calendar.MINUTE);
 
         return String.format("%02d:%02d", hour, minutes);
+    }
+
+    public static boolean isEmpty(String s) {
+        if(s == null || s.length() == 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isEmpty(EditText et) {
+        return isEmpty(et.getText().toString());
     }
 }
