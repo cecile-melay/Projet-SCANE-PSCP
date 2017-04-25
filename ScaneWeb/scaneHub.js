@@ -29,15 +29,14 @@ moduleDb.getZones(function(err, result)
 
 
 //Insertion d'un point d'un chemin
-app.get('/insertPoint/:id/:lat/:lng/:posInPath/:associatePath', function (req, res) {
+app.get('/insertPoint/:lat/:lng/:posInPath/:associatePath', function (req, res) {
 console.log("/insertPoint");
 
-var id = req.params.id;
 var lat = req.params.lat;
 var lng = req.params.lng;
 var posInPath = req.params.posInPath;
 var associatePath = req.params.associatePath;
-moduleDb.insertPoint(id, lat, lng, posInPath, associatePath, function(err, result) {
+moduleDb.insertPoint(lat, lng, posInPath, associatePath, function(err, result) {
   if (err) {
       console.log('insertPoint error on dbQuery : ' + err);
       res.send('insertPoint error on dbQuery : ' + err);

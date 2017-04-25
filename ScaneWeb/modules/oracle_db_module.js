@@ -45,16 +45,35 @@ myModule.getZones = function(callback) {
 }
 
 //exemple pour guillaume
-myModule.insertPoint = function(id, lat, lng, posInPath, associatePath, callback) {
+myModule.insertPoint = function(lat, lng, posInPath, associatePath, callback) {
+	reqGetLastId = "SELECT * FROM (SELECT ID FROM PATHPOINTS ORDER BY ID DESC) WHERE ROWNUM = 1";
 	req = "INSERT INTO PATHPOINTS (ID, LAT, LNG, POSITIONINPATH, ASSOCIATEDPATH) VALUES (%d, %d, %d, %d, %d)"
-	req = util.format(req, id, lat, lng, posInPath, associatePath);
 	console.log(req);
 
 	myModule.connect(function(err, conn) {
   		if (err) {
           console.log('insertPoint error on dbConnexion');
         } else {
-          myModule.execQuery(conn, req, callback);
+        	conn.execute(reqGetLastId, function(err, result)
+		      {
+		      	//On récupère le dernier Id qu'on incrémente afin d'assurer un Id unique
+		      	var lastId = 0;
+		      	if(err) {
+		      		console.log("insertPoint getLastId error : " + err);
+		      	} else {
+		      		lastId = result.rows[0];
+
+		      		//test si c'est Nan pour prévoir le cas où la base n'a aucun point
+		      		if(isNaN(lastId)) {
+		      			lastId = 0;
+		      		}
+		      	}
+		      	var id = Number(lastId) + 1;
+
+		      	req = util.format(req, id, lat, lng, posInPath, associatePath);
+		      	console.log(req);
+		      	myModule.execQuery(conn, req, callback);
+		      });
         }
   	})
 }

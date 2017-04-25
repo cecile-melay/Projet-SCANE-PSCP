@@ -1,5 +1,6 @@
 package com.example.denis.funculture.component.localisation;
 
+import com.example.denis.funculture.utils.MyServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PointOfInterest;
 
@@ -35,5 +36,12 @@ public class Path {
 
     public String getName() {
         return name;
+    }
+
+    public void savePointsOfPath() {
+        for(int i=0; i<this.points.size(); i++) {
+            LatLng point = this.points.get(i);
+            MyServices.getSingleton().postPoint(point.latitude, point.longitude, i, id);
+        }
     }
 }

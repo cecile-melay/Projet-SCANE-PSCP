@@ -41,15 +41,14 @@ public class MyServices {
         task.execute(getUrl(functionName));
     }
 
-    public void postPoint(String id, String lat, String lng, String pos, String path) {
+    public void postPoint(double lat, double lng, int pos, int path) {
         MyTask task = new MyTask();
         String functionName = "insertPoint";
         String url = getUrl(functionName);
-        url = addParamToUrl(url, id);
-        url = addParamToUrl(url, lat);
-        url = addParamToUrl(url, lng);
-        url = addParamToUrl(url, pos);
-        url = addParamToUrl(url, path);
+        url = addParamToUrl(url, String.valueOf(lat));
+        url = addParamToUrl(url, String.valueOf(lng));
+        url = addParamToUrl(url, String.valueOf(pos));
+        url = addParamToUrl(url, String.valueOf(path));
 
         Log.d("PostPoint url : ", url);
         task.execute(url);

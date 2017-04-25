@@ -20,17 +20,6 @@
                 android:layout_centerInParent="true"/>
 
             <EditText
-                android:id="@+id/et_id"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Id"
-                android:inputType="number"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:padding="5dp"/>
-
-            <EditText
                 android:id="@+id/et_lat"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
