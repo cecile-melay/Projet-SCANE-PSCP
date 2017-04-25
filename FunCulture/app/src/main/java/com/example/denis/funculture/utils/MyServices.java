@@ -4,6 +4,9 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,6 +19,8 @@ import java.net.URL;
 
 public class MyServices {
     private static MyServices singleton;
+    private static final String SERVER_IP = "92.222.71.189";
+    private static final String SERVER_PORT = "1337";
 
     public static MyServices getSingleton() {
         if(singleton == null) {
@@ -25,11 +30,16 @@ public class MyServices {
         return singleton;
     }
 
+    private String getUrl(String function) {
+        return String.format("http://%s:%s/%s", SERVER_IP, SERVER_PORT, function);
+    }
+
     public void getZones() {
         JsonTask task = new JsonTask();
-
-        task.execute("http://92.222.71.189:1337/getZones");
+        String functionName = "getZones";
+        task.execute(getUrl(functionName));
     }
+
     private class JsonTask extends AsyncTask<String, String, String> {
         private static final String TAG = "JsonTask";
         ProgressDialog dialog;
@@ -50,21 +60,14 @@ public class MyServices {
                 URL url = new URL(params[0]);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
-
-
                 InputStream stream = connection.getInputStream();
-
                 reader = new BufferedReader(new InputStreamReader(stream));
-
                 StringBuffer buffer = new StringBuffer();
                 String line;
-
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line+"\n");
-                    Log.d("Response: ", "> " + line);
-
                 }
-
+                Log.d("getZones response : ", buffer.toString());
                 connection.disconnect();
                 reader.close();
                 return buffer.toString();
