@@ -12,7 +12,7 @@ app.listen(PORT, function () {
 
 //app.get permet d'ajouter une route, à reproduire autant de fois que l'on nécessite de requête différente (en Get)
 app.get('/getZones', function (req, res) {
-  console.log("/getZones");
+console.log("/getZones");
 
 //ici j'appelle ma requête en lui passant une fonction en callback (function(err, result))
 moduleDb.getZones(function(err, result)
@@ -24,4 +24,17 @@ moduleDb.getZones(function(err, result)
       res.send(result.rows);
     }
   })
+});
+
+
+//exemple pour guillaume
+app.get('/insertPoint/:lat/:long/:id', function (req, res) {
+console.log("/getPoint");
+
+var lat = req.params.lat;
+var long = req.params.long;
+var id = req.params.id;
+
+//ici j'appelle ma requête en lui passant une fonction en callback (function(err, result))
+moduleDb.insertPoint(lat, long, id);
 });
