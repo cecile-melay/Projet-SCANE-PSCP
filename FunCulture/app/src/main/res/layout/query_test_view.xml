@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/bt_getZones"
+                android:text="Get Zones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
+
+            <EditText
+                android:id="@+id/et_id"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Id"
+                android:inputType="number"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="5dp"/>
+
+            <EditText
+                android:id="@+id/et_lat"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Latitude"
+                android:inputType="numberDecimal"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="5dp"/>
+
+            <EditText
+                android:id="@+id/et_lng"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Longitude"
+                android:inputType="numberDecimal"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="5dp"/>
+
+            <EditText
+                android:id="@+id/et_pos"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Position (dans le chemin)"
+                android:inputType="number"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="5dp"/>
+
+            <EditText
+                android:id="@+id/et_path"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Chemin (id)"
+                android:inputType="number"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="5dp"/>
+            <Button
+                android:id="@+id/bt_post_point"
+                android:text="Post point"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

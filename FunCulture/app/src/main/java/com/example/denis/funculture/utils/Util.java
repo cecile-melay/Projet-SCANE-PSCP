@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.denis.funculture.main.App;
 import com.example.denis.funculture.main.MainActivity;
@@ -39,6 +40,15 @@ public class Util {
                     }
                 });
         builder.show();
+    }
+
+    public static void createToast(String message)
+    {
+        Activity activity = App.getSingleton().getCurrentActivity();
+        if(activity == null)
+            return;
+
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT);
     }
 
     public static void checkPrivileges(Activity AC, int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE)

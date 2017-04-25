@@ -4,9 +4,6 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,14 +31,32 @@ public class MyServices {
         return String.format("http://%s:%s/%s", SERVER_IP, SERVER_PORT, function);
     }
 
+    private String addParamToUrl(String url, String param) {
+        return String.format(url + "/%s", param);
+    }
+
     public void getZones() {
-        JsonTask task = new JsonTask();
+        MyTask task = new MyTask();
         String functionName = "getZones";
         task.execute(getUrl(functionName));
     }
 
-    private class JsonTask extends AsyncTask<String, String, String> {
-        private static final String TAG = "JsonTask";
+    public void postPoint(String id, String lat, String lng, String pos, String path) {
+        MyTask task = new MyTask();
+        String functionName = "insertPoint";
+        String url = getUrl(functionName);
+        url = addParamToUrl(url, id);
+        url = addParamToUrl(url, lat);
+        url = addParamToUrl(url, lng);
+        url = addParamToUrl(url, pos);
+        url = addParamToUrl(url, path);
+
+        Log.d("PostPoint url : ", url);
+        task.execute(url);
+    }
+
+    private class MyTask extends AsyncTask<String, String, String> {
+        private static final String TAG = "MyTask";
         ProgressDialog dialog;
         protected void onPreExecute() {
             super.onPreExecute();
@@ -85,6 +100,8 @@ public class MyServices {
             if (dialog.isShowing()){
                 dialog.dismiss();
             }
+
+            Util.createDialog(result);
             Log.d(TAG, result);
         }
     }

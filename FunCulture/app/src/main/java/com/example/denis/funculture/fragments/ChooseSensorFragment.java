@@ -52,6 +52,7 @@ public class ChooseSensorFragment extends MyFragment implements View.OnClickList
         spinnerArray.add(MyResources.CAMERA);
         spinnerArray.add(MyResources.QRCODE);
         spinnerArray.add(MyResources.QCM);
+        spinnerArray.add(MyResources.QUERIES);
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -102,6 +103,11 @@ public class ChooseSensorFragment extends MyFragment implements View.OnClickList
                     //QCM
                     case 6:
                         ((MainActivity) getActivity()).startFragment(QCMFragment.class);
+                        break;
+
+                    //Queries
+                    case 7:
+                        ((MainActivity) getActivity()).startFragment(QueriesFragment.class);
                         break;
                 }
             }

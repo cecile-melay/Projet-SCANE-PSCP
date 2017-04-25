@@ -23,6 +23,7 @@ public class MyResources {
         public static final String LEAVE_APP = App.getSingleton().getContext().getString(R.string.leave_app);
         public static final String SUCCESS_REGISTER = App.getSingleton().getContext().getString(R.string.success_register);
         public static final String MISSING_FIELD_WARNING = App.getSingleton().getContext().getString(R.string.missing_field_warning);
+        public static final String QUERIES = App.getSingleton().getContext().getString(R.string.queries);
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
 }

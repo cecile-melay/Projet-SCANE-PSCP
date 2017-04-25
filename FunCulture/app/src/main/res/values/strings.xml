@@ -47,5 +47,6 @@
     <string name="register">S\'inscrire</string>
     <string name="success_register">Félicitation ! Vous êtes désormais inscrit.</string>
     <string name="missing_field_warning">Veuillez renseigner tous les champs s\'il vous plaît.</string>
+    <string name="queries">Requêtes</string>
 
 </resources>
