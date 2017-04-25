@@ -18,23 +18,32 @@ console.log("/getZones");
 moduleDb.getZones(function(err, result)
   {
     if (err) {
-      console.log('getZones error on dbQuery');
+      console.log('getZones error on dbQuery : ' + err);
+      res.send('getZones error on dbQuery : ' + err);
     } else {
-       console.log('success');
+      console.log('success');
       res.send(result.rows);
     }
   })
 });
 
 
-//exemple pour guillaume
-app.get('/insertPoint/:lat/:long/:id', function (req, res) {
-console.log("/getPoint");
+//Insertion d'un point d'un chemin
+app.get('/insertPoint/:id/:lat/:lng/:posInPath/:associatePath', function (req, res) {
+console.log("/insertPoint");
 
-var lat = req.params.lat;
-var long = req.params.long;
 var id = req.params.id;
-
-//ici j'appelle ma requête en lui passant une fonction en callback (function(err, result))
-moduleDb.insertPoint(lat, long, id);
+var lat = req.params.lat;
+var lng = req.params.lng;
+var posInPath = req.params.posInPath;
+var associatePath = req.params.associatePath;
+moduleDb.insertPoint(id, lat, lng, posInPath, associatePath, function(err, result) {
+  if (err) {
+      console.log('insertPoint error on dbQuery : ' + err);
+      res.send('insertPoint error on dbQuery : ' + err);
+    } else {
+      console.log('success');
+      res.send(result);
+    }
+});
 });

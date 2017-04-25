@@ -1,8 +1,10 @@
 var myModule = new Object();
 var oracledb = require('oracledb');
+var util = require('util');
 
 //fonction de connexion a utiliser sur chaque requete
 myModule.connect = function(callback) {
+	oracledb.autoCommit = true;
     oracledb.getConnection(
       {
         user          : "scane",
@@ -43,24 +45,16 @@ myModule.getZones = function(callback) {
 }
 
 //exemple pour guillaume
-myModule.insertPoint(lat, long, id) {
-	//fake req à corriger suviant le schéma de données
-	req = "Insert into Points (lat, long, id) values (" + lat;
-	req += " , " + long;
-	req += " , " + id + ")";
+myModule.insertPoint = function(id, lat, lng, posInPath, associatePath, callback) {
+	req = "INSERT INTO PATHPOINTS (ID, LAT, LNG, POSITIONINPATH, ASSOCIATEDPATH) VALUES (%d, %d, %d, %d, %d)"
+	req = util.format(req, id, lat, lng, posInPath, associatePath);
 	console.log(req);
 
 	myModule.connect(function(err, conn) {
   		if (err) {
-          console.log('insertZone error on dbConnexion');
+          console.log('insertPoint error on dbConnexion');
         } else {
-          myModule.execQuery(conn, req, function(err, result) {
-          	if(err) {
-          		console.log('insertZone error on insert')
-          	} else {
-          		console.log('insertZone success');
-          	}
-          });
+          myModule.execQuery(conn, req, callback);
         }
   	})
 }
