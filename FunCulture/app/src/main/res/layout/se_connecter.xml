@@ -3,4 +3,47 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <EditText
+        android:background="@color/blue_alpha"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:id="@+id/et_mail"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:inputType="textPersonName"
+        android:hint="pseudo"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:textSize="22sp"
+        android:padding="5dp"/>
+
+    <EditText
+        android:background="@color/blue_alpha"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:id="@+id/et_pass"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:inputType="textPassword"
+        android:hint="mot de passe"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:textSize="22sp"
+        android:padding="5dp"/>
+
+    <Button
+        android:background="@color/blue"
+        android:textColor="@color/white"
+        android:id="@+id/bt_register"
+        android:text="Se connecter"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:textSize="22sp"
+        android:padding="5dp"/>
+
 </LinearLayout>
