@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.fragments.Accueil;
 import com.example.denis.funculture.fragments.ChooseSensorFragment;
+import com.example.denis.funculture.fragments.ChooseTags;
 import com.example.denis.funculture.fragments.Inscription;
 import com.example.denis.funculture.fragments.MapsFragment;
 import com.example.denis.funculture.fragments.MyFragment;
@@ -168,6 +169,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_accueil) {
 
             startFragment(Accueil.class);
+
+        } else if (id == R.id.nav_choose_tag) {
+
+            startFragment(ChooseTags.class);
 
         } else if (id == R.id.nav_map) {
 
