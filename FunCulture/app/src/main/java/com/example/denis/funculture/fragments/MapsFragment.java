@@ -1,13 +1,10 @@
 package com.example.denis.funculture.fragments;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.view.View;
 
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -21,18 +18,12 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.MediaPlayer;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.component.sensor.MyTimer;
@@ -54,11 +45,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.vision.text.Line;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.concurrent.TimeUnit;
 
 
 /*
@@ -70,8 +58,9 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     private MediaPlayer mediaPlayer;
     private GoogleMap mMap;
 
-    private Button b1,b2,b3,b4;
-    private ImageView iv;
+    private ImageView btNext;
+    private ImageView btPlay;
+    private ImageView btPrev;
 
     private double startTime = 0;
     private double finalTime = 0;
@@ -155,11 +144,9 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     }
 
     private void controlleurAudio() {
-        b1 = (Button) contentView.findViewById(R.id.button);
-        b2 = (Button) contentView.findViewById(R.id.button2);
-        b3 = (Button)contentView.findViewById(R.id.button3);
-        b4 = (Button)contentView.findViewById(R.id.button4);
-        iv = (ImageView)contentView.findViewById(R.id.imageView);
+        btNext = (ImageView) contentView.findViewById(R.id.btNext);
+        btPlay = (ImageView)contentView.findViewById(R.id.btPlay);
+        btPrev = (ImageView)contentView.findViewById(R.id.btPrev);
 
         tx1 = (TextView)contentView.findViewById(R.id.textView2);
         tx2 = (TextView)contentView.findViewById(R.id.textView3);
@@ -169,31 +156,31 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
         seekbar = (SeekBar)contentView.findViewById(R.id.seekBar);
         seekbar.setClickable(false);
-        b2.setEnabled(false);
 
         BoutonsControlleurAudio();
     }
 
     private void BoutonsControlleurAudio() {
-        b3.setOnClickListener(new View.OnClickListener() {
+        btPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PlayControlleurAudio();
+                if(mediaPlayer== null) {
+                    return;
+                }
+                if(mediaPlayer.isPlaying()) {
+                    PauseControlleurAudio();
+                } else {
+                    PlayControlleurAudio();
+                }
             }
         });
-        b2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PauseControlleurAudio();
-            }
-        });
-        b1.setOnClickListener(new View.OnClickListener() {
+        btNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SautAvantControlleurAudio();
             }
         });
-        b4.setOnClickListener(new View.OnClickListener() {
+        btPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SautArriereControlleurAudio();
@@ -231,16 +218,18 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         }
     }
 
+    @SuppressLint("NewApi")
     private void PauseControlleurAudio() {
         Toast.makeText(getActivity().getApplicationContext(), "Pausing sound",Toast.LENGTH_SHORT).show();
         if(mediaPlayer == null) {
             return;
         }
         mediaPlayer.pause();
-        b2.setEnabled(false);
-        b3.setEnabled(true);
+        btPlay.setImageDrawable(Util.getMainActivity().getDrawable(R.drawable.play));
+        btPlay.setEnabled(true);
     }
 
+    @SuppressLint("NewApi")
     private void PlayControlleurAudio() {
         Toast.makeText(getActivity().getApplicationContext(), "Playing sound",Toast.LENGTH_SHORT).show();
         if(mediaPlayer == null) {
@@ -248,6 +237,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         }
         mediaPlayer.start();
 
+        btPlay.setImageDrawable(Util.getMainActivity().getDrawable(R.drawable.pause));;
         finalTime = mediaPlayer.getDuration();
         startTime = mediaPlayer.getCurrentPosition();
 
@@ -272,8 +262,6 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
         seekbar.setProgress((int)startTime);
         myHandler.postDelayed(UpdateSongTime,100);
-        b2.setEnabled(true);
-        b3.setEnabled(false);
     }
 
 
