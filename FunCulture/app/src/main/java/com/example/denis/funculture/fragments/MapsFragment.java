@@ -202,6 +202,9 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     }
 
     private void SautArriereControlleurAudio() {
+        if(mediaPlayer == null) {
+            return;
+        }
         int temp = (int)startTime;
 
         if((temp-backwardTime)>0){
@@ -214,6 +217,9 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     }
 
     private void SautAvantControlleurAudio() {
+        if(mediaPlayer == null) {
+            return;
+        }
         int temp = (int)startTime;
 
         if((temp+forwardTime)<=finalTime){
@@ -227,6 +233,9 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
     private void PauseControlleurAudio() {
         Toast.makeText(getActivity().getApplicationContext(), "Pausing sound",Toast.LENGTH_SHORT).show();
+        if(mediaPlayer == null) {
+            return;
+        }
         mediaPlayer.pause();
         b2.setEnabled(false);
         b3.setEnabled(true);
@@ -234,6 +243,9 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
     private void PlayControlleurAudio() {
         Toast.makeText(getActivity().getApplicationContext(), "Playing sound",Toast.LENGTH_SHORT).show();
+        if(mediaPlayer == null) {
+            return;
+        }
         mediaPlayer.start();
 
         finalTime = mediaPlayer.getDuration();
@@ -723,6 +735,9 @@ Pour les tests je vais faire que le mode tracking passe à false automatiquement
 
     private Runnable UpdateSongTime = new Runnable() {
         public void run() {
+            if(mediaPlayer == null) {
+                return;
+            }
             startTime = mediaPlayer.getCurrentPosition();
             tx1.setText(String.format("%d min, %d sec",
                     TimeUnit.MILLISECONDS.toMinutes((long) startTime),
