@@ -28,13 +28,13 @@
             android:textColorHint="@color/white"
             android:id="@+id/et_second_name"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:inputType="textPersonName"
             android:hint="Prénom"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:textSize="22sp"
+            android:textSize="19sp"
             android:padding="5dp"/>
 
         <EditText
@@ -43,13 +43,13 @@
             android:textColorHint="@color/white"
             android:id="@+id/et_first_name"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:inputType="textPersonName"
             android:hint="Nom"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:textSize="22sp"
+            android:textSize="19sp"
             android:padding="5dp"/>
 
         <EditText
@@ -59,12 +59,12 @@
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:hint="Date de naissance"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:textSize="22sp"
+            android:textSize="19sp"
             android:padding="5dp"/>
 
         <Spinner
@@ -73,11 +73,26 @@
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:textSize="22sp"
+            android:textSize="19sp"
+            android:padding="5dp"/>
+
+        <EditText
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:id="@+id/et_fc"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:inputType="number"
+            android:hint="FC"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="19sp"
             android:padding="5dp"/>
 
         <EditText
@@ -86,13 +101,13 @@
             android:textColorHint="@color/white"
             android:id="@+id/et_ville"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:inputType="textPersonName"
             android:hint="Ville"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:textSize="22sp"
+            android:textSize="19sp"
             android:padding="5dp"/>
 
         <EditText
@@ -101,13 +116,13 @@
             android:textColorHint="@color/white"
             android:id="@+id/et_mail"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:inputType="textPersonName"
             android:hint="Email"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:textSize="22sp"
+            android:textSize="19sp"
             android:padding="5dp"/>
 
         <EditText
@@ -116,13 +131,13 @@
             android:textColorHint="@color/white"
             android:id="@+id/et_pass"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:inputType="textPassword"
             android:hint="Mot de passe"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:textSize="22sp"
+            android:textSize="19sp"
             android:padding="5dp"/>
 
         <Button
@@ -131,11 +146,11 @@
             android:id="@+id/bt_register"
             android:text="@string/register"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:textSize="22sp"
+            android:textSize="15sp"
             android:padding="5dp"/>
 
     </LinearLayout>

@@ -32,7 +32,7 @@
         android:layout_marginLeft="@dimen/fab_margin"
         android:layout_marginTop="100dp"
         app:layout_anchor="@+id/include2"
-        app:layout_anchorGravity="right"
+        app:layout_anchorGravity="left"
         app:srcCompat="@android:drawable/ic_dialog_info" />
 
     <android.support.design.widget.FloatingActionButton
@@ -42,7 +42,7 @@
         android:layout_marginLeft="@dimen/fab_margin"
         android:layout_marginTop="160dp"
         app:layout_anchor="@+id/include2"
-        app:layout_anchorGravity="right"
+        app:layout_anchorGravity="left"
         app:srcCompat="@drawable/check" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -580,6 +580,9 @@ Pour les tests je vais faire que le mode tracking passe à false automatiquement
 
             @Override
             public void onClick(View v) {
+                if(!locListener.getTrackingMode()) {
+                    //Id Path // First Pos
+                }
                 if(locListener.getTrackingMode()) {
                     if(MapsFragment.this.way.size()<= nbPointChemin) {
                         MapsFragment.this.addPositionToWay(locListener.getMyposition());

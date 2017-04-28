@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private EditText etVille;
     private EditText etMail;
     private EditText etPass;
+    private EditText etFc;
     private Spinner spLevel;
     private Button btRegister;
     private LinearLayout llRegister;
@@ -126,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.etVille = (EditText) findViewById(R.id.et_ville);
         this.etMail = (EditText) findViewById(R.id.et_mail);
         this.etPass = (EditText) findViewById(R.id.et_pass);
+        this.etFc = (EditText) findViewById(R.id.et_fc);
         this.spLevel = (Spinner) findViewById(R.id.sp_level);
         this.btRegister = (Button) findViewById(R.id.bt_register);
 
@@ -149,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 || Util.isEmpty(etMail)
                 || Util.isEmpty(etVille)
                 || Util.isEmpty(etPass)
+                || Util.isEmpty(etFc)
                 || spLevel.getSelectedItemPosition() == 0) {
             Util.createDialog(MyResources.MISSING_FIELD_WARNING);
         }
