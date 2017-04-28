@@ -46,36 +46,35 @@ myModule.getZones = function(callback) {
 
 //exemple pour guillaume
 myModule.insertPoint = function(lat, lng, posInPath, associatePath, callback) {
-	reqGetLastId = "SELECT * FROM (SELECT ID FROM PATHPOINTS ORDER BY ID DESC) WHERE ROWNUM = 1";
-	req = "INSERT INTO PATHPOINTS (ID, LAT, LNG, POSITIONINPATH, ASSOCIATEDPATH) VALUES (%d, %d, %d, %d, %d)"
+	req = "INSERT INTO PATHPOINT (LAT, LNG, POSITIONINPATH, ASSOCIATEDPATH) VALUES (%d, %d, %d, %d)"
+	req = util.format(req, lat, lng, posInPath, associatePath);
 	console.log(req);
 
 	myModule.connect(function(err, conn) {
   		if (err) {
           console.log('insertPoint error on dbConnexion');
         } else {
-        	conn.execute(reqGetLastId, function(err, result)
-		      {
-		      	//On récupère le dernier Id qu'on incrémente afin d'assurer un Id unique
-		      	var lastId = 0;
-		      	if(err) {
-		      		console.log("insertPoint getLastId error : " + err);
-		      	} else {
-		      		lastId = result.rows[0];
-
-		      		//test si c'est Nan pour prévoir le cas où la base n'a aucun point
-		      		if(isNaN(lastId)) {
-		      			lastId = 0;
-		      		}
-		      	}
-		      	var id = Number(lastId) + 1;
-
-		      	req = util.format(req, id, lat, lng, posInPath, associatePath);
-		      	console.log(req);
-		      	myModule.execQuery(conn, req, callback);
-		      });
-        }
-  	})
+		      console.log(req);
+		      myModule.execQuery(conn, req, callback);
+		  }
+  	});
 }
+
+myModule.insertUser = function(prenom, nom, dateNaiss, lvlSport, ville, mail, pass, fc, callback) {
+	req = "INSERT INTO USERSCANE (PRENOM, NOM, DATENAISS, SPORTLEVEL, VILLE, MAIL, PASS, FC) VALUES ('%s','%s', '%s', %d, '%s', '%s', '%s', %d)"
+	req = util.format(req, prenom, nom, dateNaiss, lvlSport, ville, mail, pass, fc);
+	console.log(req);
+
+	myModule.connect(function(err, conn) {
+  		if (err) {
+          console.log('insertUser error on dbConnexion');
+        } else {
+		      console.log(req);
+		      myModule.execQuery(conn, req, callback);
+		  }
+  	});
+}
+
+
 
 module.exports = myModule;
