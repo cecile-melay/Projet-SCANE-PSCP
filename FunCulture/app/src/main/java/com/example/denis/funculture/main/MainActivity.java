@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.example.denis.funculture.R;
+import com.example.denis.funculture.component.User;
 import com.example.denis.funculture.fragments.Accueil;
 import com.example.denis.funculture.fragments.ChooseSensorFragment;
 import com.example.denis.funculture.fragments.ChooseTags;
@@ -33,6 +34,7 @@ import com.example.denis.funculture.fragments.MyFragment;
 import com.example.denis.funculture.fragments.QCMFragment;
 import com.example.denis.funculture.fragments.SeConnecter;
 import com.example.denis.funculture.utils.MyResources;
+import com.example.denis.funculture.utils.MyServices;
 import com.example.denis.funculture.utils.Util;
 
 import java.util.ArrayList;
@@ -155,9 +157,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 || spLevel.getSelectedItemPosition() == 0) {
             Util.createDialog(MyResources.MISSING_FIELD_WARNING);
         }
-
         else {
-            Util.createDialog(MyResources.SUCCESS_REGISTER);
+            User newUser = new User(etFirstName.getText().toString(),
+                    etSecondName.getText().toString(),
+                    etBirth.getText().toString(),
+                    spLevel.getSelectedItemPosition(),
+                    Integer.parseInt(etFc.getText().toString()),
+                    etVille.getText().toString(),
+                    etMail.getText().toString(),
+                    etPass.getText().toString());
+
+            MyServices.getSingleton().insertUser(newUser);
+            //Util.createDialog(MyResources.SUCCESS_REGISTER);
             llRegister.setVisibility(View.GONE);
         }
     }

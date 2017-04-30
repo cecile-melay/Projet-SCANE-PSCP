@@ -59,6 +59,8 @@ var ville = req.params.ville;
 var mail = req.params.mail;
 var pass = req.params.pass;
 var fc = req.params.fc;
+console.log('fc : ' + fc);
+console.log('lvl : ' + lvlSport);
 moduleDb.insertUser(prenom, nom, dateNaiss, lvlSport, ville, mail, pass, fc, function(err, result) {
   if (err) {
       console.log('insertUser error on dbQuery : ' + err);

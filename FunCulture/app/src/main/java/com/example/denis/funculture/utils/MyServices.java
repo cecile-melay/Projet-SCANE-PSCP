@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.denis.funculture.component.User;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,6 +17,7 @@ import java.net.URL;
  */
 
 public class MyServices {
+    private static final String TAG = "MyServices";
     private static MyServices singleton;
     private static final String SERVER_IP = "92.222.71.189";
     private static final String SERVER_PORT = "1337";
@@ -41,6 +44,25 @@ public class MyServices {
         task.execute(getUrl(functionName));
     }
 
+    public void insertUser(User user) {
+        MyTask task = new MyTask();
+
+        ///insertUser/:prenom/:nom/:dateNaiss/:lvlSport/:fc/:ville/:mail/:pass
+        String functionName = String.format("insertUser/%s/%s/%s/%d/%d/%s/%s/%s",
+                user.getPrenom(),
+                user.getNom(),
+                user.getDateNaiss(),
+                user.getLvlSport(),
+                user.getFc(),
+                user.getVille(),
+                user.getMail(),
+                user.getPass());
+
+        String url = getUrl(functionName);
+        Log.d(TAG, "insertUser url : " + url);
+        task.execute(url);
+    }
+
     public void postPoint(double lat, double lng, int pos, int path) {
         MyTask task = new MyTask();
         String functionName = "insertPoint";
@@ -55,7 +77,6 @@ public class MyServices {
     }
 
     private class MyTask extends AsyncTask<String, String, String> {
-        private static final String TAG = "MyTask";
         ProgressDialog dialog;
         protected void onPreExecute() {
             super.onPreExecute();
@@ -99,9 +120,13 @@ public class MyServices {
             if (dialog.isShowing()){
                 dialog.dismiss();
             }
+            if (result != null) {
+                Util.createDialog(result);
+                Log.d(TAG, result);
+            } else {
+                Log.d(TAG, "result null");
+            }
 
-            Util.createDialog(result);
-            Log.d(TAG, result);
         }
     }
 }

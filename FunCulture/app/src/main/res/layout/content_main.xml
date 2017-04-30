@@ -60,7 +60,7 @@
             android:textColorHint="@color/white"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="Date de naissance"
+            android:hint="Date de naissance(jj.mm.aaaa)"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
