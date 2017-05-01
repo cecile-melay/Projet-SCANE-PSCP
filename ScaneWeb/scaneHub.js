@@ -47,7 +47,7 @@ moduleDb.insertPoint(lat, lng, posInPath, associatePath, function(err, result) {
 });
 });
 
-//Insertion d'un point d'un chemin
+//Insertion d'un utilisateur
 app.get('/insertUser/:prenom/:nom/:dateNaiss/:lvlSport/:fc/:ville/:mail/:pass', function (req, res) {
 console.log("/insertUser");
 
@@ -65,6 +65,24 @@ moduleDb.insertUser(prenom, nom, dateNaiss, lvlSport, ville, mail, pass, fc, fun
   if (err) {
       console.log('insertUser error on dbQuery : ' + err);
       res.send('insertUser error on dbQuery : ' + err);
+    } else {
+      console.log('success');
+      res.send(result);
+    }
+});
+});
+
+//Insertion d'un chemin
+app.get('/insertPath/:id/:name', function (req, res) {
+console.log("/insertPath");
+
+var id = req.params.id;
+var name = req.params.name;
+
+moduleDb.insertPath(id, name, function(err, result) {
+  if (err) {
+      console.log('insertPath error on dbQuery : ' + err);
+      res.send('insertPath error on dbQuery : ' + err);
     } else {
       console.log('success');
       res.send(result);

@@ -20,6 +20,8 @@ public class Path {
     public Path(int id, String name) {
         points = new ArrayList<>();
         pointsOfInterest = new ArrayList<>();
+        this.id = id;
+        this.name = name;
     }
 
     public void addPoint(LatLng point) {
@@ -43,5 +45,10 @@ public class Path {
             LatLng point = this.points.get(i);
             MyServices.getSingleton().postPoint(point.latitude, point.longitude, i, id);
         }
+    }
+
+    public void saveOnServer() {
+        MyServices.getSingleton().postPath(this);
+        savePointsOfPath();
     }
 }

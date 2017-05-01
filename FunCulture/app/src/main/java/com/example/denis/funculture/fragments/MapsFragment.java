@@ -1,10 +1,15 @@
 package com.example.denis.funculture.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.view.View;
 
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -26,6 +31,7 @@ import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.example.denis.funculture.R;
+import com.example.denis.funculture.component.localisation.Path;
 import com.example.denis.funculture.component.sensor.MyTimer;
 import com.example.denis.funculture.component.sensor.Pedometer;
 import com.example.denis.funculture.component.sensor.geoloc.AlertReceiver;
@@ -66,7 +72,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     private double finalTime = 0;
     private int nbPointChemin = 10;
 
-    private Handler myHandler = new Handler();;
+    private Handler myHandler = new Handler();
     private int forwardTime = 5000;
     private int backwardTime = 5000;
     private SeekBar seekbar;
@@ -84,8 +90,9 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     private int intervalGeolocRefresh = 3000;
     private Location startLocation;
     private ArrayList<Marker> tabMarkers = new ArrayList<Marker>();
+    private Path currentPath;
 
-    public ArrayList<LatLng> way = new ArrayList<LatLng>();
+    public ArrayList<LatLng> way = new ArrayList<>();
     private String previousMarkerName = "";
 
     public static ArrayList<Double[]> zones = new ArrayList<Double[]>();
@@ -580,24 +587,93 @@ Pour les tests je vais faire que le mode tracking passe à false automatiquement
 
             @Override
             public void onClick(View v) {
+                Context context = getContext();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                final LatLng currentPoint = locListener.getMyposition();
+
                 if(!locListener.getTrackingMode()) {
-                    //Id Path // First Pos
+                    LinearLayout layout = new LinearLayout(context);
+                    layout.setOrientation(LinearLayout.VERTICAL);
+
+                    final EditText etId = new EditText(context);
+                    etId.setHint("Id");
+                    etId.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    layout.addView(etId);
+
+                    final EditText etName = new EditText(context);
+                    etName.setHint("Nom");
+                    layout.addView(etName);
+
+                    builder.setView(layout);
+                    builder.setMessage(MyResources.CREATE_PATH)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    int pathId = Integer.parseInt(etId.getText().toString());
+                                    String pathName = etName.getText().toString();
+                                    currentPath = new Path(pathId, pathName);
+                                    Util.createToast("new Path id : " + pathId + " name : " + pathName);
+                                    locListener.setTrackingMode(true);
+                                }
+                            });
+                    builder.show();
                 }
                 if(locListener.getTrackingMode()) {
-                    if(MapsFragment.this.way.size()<= nbPointChemin) {
-                        MapsFragment.this.addPositionToWay(locListener.getMyposition());
-                        Toast.makeText(getActivity(), "Point sauvegardé " +
-                                "" + locListener.getMyposition().toString(), Toast.LENGTH_SHORT).show();
-                    }else{
-                        locListener.setTrackingMode(false);
-                        Toast.makeText(getActivity(), "Tracking mode"+locListener.getTrackingMode().toString(), Toast.LENGTH_SHORT).show();
-                    }
+                    LinearLayout layout = new LinearLayout(context);
+                    layout.setOrientation(LinearLayout.VERTICAL);
 
+                    TextView tvLat = new TextView(context);
+                    tvLat.setText("Latitude : ");
+                    layout.addView(tvLat);
+
+                    final EditText etLat = new EditText(context);
+                    etLat.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    etLat.setText(Double.toString(currentPoint.latitude));
+                    layout.addView(etLat);
+
+                    TextView tbLng = new TextView(context);
+                    tbLng.setText("Longitude : ");
+                    layout.addView(tbLng);
+
+                    final EditText etLng = new EditText(context);
+                    etLng.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    etLng.setText(Double.toString(currentPoint.longitude));
+                    layout.addView(etLng);
+
+                    builder.setView(layout);
+                    builder.setMessage(MyResources.ADD_POINT)
+                            .setNegativeButton("Ajouter au chemin", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    double lat = Double.parseDouble(etLat.getText().toString());
+                                    double lng = Double.parseDouble(etLng.getText().toString());
+                                    currentPath.addPoint(new LatLng(lat, lng));
+                                    Util.createToast("Add lat : " + lat + " lng : " + lng);
+                                }
+                            })
+                            .setNeutralButton("Annuler", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {}
+                            })
+                            .setPositiveButton("Sauvegarder chemin", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    savePath();
+                                }
+                            });
+                    builder.show();
+                    MapsFragment.this.addPositionToWay(locListener.getMyposition());
                 }
 
             }
         });
 
+    }
+
+    private void savePath() {
+        if(currentPath == null) {
+            return;
+        }
+
+        currentPath.saveOnServer();
     }
 
     private void addProximityAlerts(ArrayList<Double[]> positions, ArrayList<String> name) {

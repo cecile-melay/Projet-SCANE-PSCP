@@ -38,7 +38,7 @@ public class MyLocationListener implements android.location.LocationListener {
     private LatLng myOldPosition;
     private Marker marker;
     private Boolean shoudlIRealyMoveMap = true;
-    private Boolean trackingMode = true;
+    private Boolean trackingMode = false;
     private Boolean followMode = false;
 
     private LatLng myPreviousInterestPoint;
@@ -206,6 +206,10 @@ public class MyLocationListener implements android.location.LocationListener {
     }
 
     public void canIChangeStep(LatLng myposition){
+        if(this.MA.way == null || this.MA.way.size() == 0) {
+            return;
+        }
+
         float[] distanceBetween = {3};
             Toast.makeText( this.context,
                     distanceBetween[0]+"m de départ : point  "+ this.MA.way.get(0),

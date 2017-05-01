@@ -48,7 +48,7 @@ public class Util {
         if(activity == null)
             return;
 
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT);
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
     }
 
     public static void checkPrivileges(Activity AC, int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE)

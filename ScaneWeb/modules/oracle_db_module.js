@@ -75,6 +75,21 @@ myModule.insertUser = function(prenom, nom, dateNaiss, lvlSport, ville, mail, pa
   	});
 }
 
+myModule.insertPath = function(id, name, callback) {
+  req = "INSERT INTO PATH (ID, NAME) VALUES (%d,'%s')"
+  req = util.format(req, id, name);
+  console.log(req);
+
+  myModule.connect(function(err, conn) {
+      if (err) {
+          console.log('insertPath error on dbConnexion');
+        } else {
+          console.log(req);
+          myModule.execQuery(conn, req, callback);
+      }
+    });
+}
+
 
 
 module.exports = myModule;

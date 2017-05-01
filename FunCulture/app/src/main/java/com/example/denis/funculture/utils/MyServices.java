@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.denis.funculture.component.User;
+import com.example.denis.funculture.component.localisation.Path;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -76,6 +77,17 @@ public class MyServices {
         task.execute(url);
     }
 
+    public void postPath(Path path) {
+        MyTask task = new MyTask();
+        String functionName = "insertPath";
+        String url = getUrl(functionName);
+        url = addParamToUrl(url, Integer.toString(path.getId()));
+        url = addParamToUrl(url, path.getName());
+
+        Log.d("PostPath url : ", url);
+        task.execute(url);
+    }
+
     private class MyTask extends AsyncTask<String, String, String> {
         ProgressDialog dialog;
         protected void onPreExecute() {
@@ -102,7 +114,6 @@ public class MyServices {
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line+"\n");
                 }
-                Log.d("getZones response : ", buffer.toString());
                 connection.disconnect();
                 reader.close();
                 return buffer.toString();
@@ -121,7 +132,7 @@ public class MyServices {
                 dialog.dismiss();
             }
             if (result != null) {
-                Util.createDialog(result);
+                Util.createToast(result);
                 Log.d(TAG, result);
             } else {
                 Log.d(TAG, "result null");
