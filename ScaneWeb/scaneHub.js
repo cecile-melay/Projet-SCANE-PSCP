@@ -48,7 +48,7 @@ moduleDb.insertPoint(lat, lng, posInPath, associatePath, function(err, result) {
 });
 
 //Insertion d'un utilisateur
-app.get('/insertUser/:prenom/:nom/:dateNaiss/:lvlSport/:fc/:ville/:mail/:pass', function (req, res) {
+app.get('/insertUser/:prenom/:nom/:dateNaiss/:lvlSport/:fc/:ville/:mail/:pass/:pseudo', function (req, res) {
 console.log("/insertUser");
 
 var prenom = req.params.prenom;
@@ -59,9 +59,9 @@ var ville = req.params.ville;
 var mail = req.params.mail;
 var pass = req.params.pass;
 var fc = req.params.fc;
-console.log('fc : ' + fc);
-console.log('lvl : ' + lvlSport);
-moduleDb.insertUser(prenom, nom, dateNaiss, lvlSport, ville, mail, pass, fc, function(err, result) {
+var pseudo = req.params.pseudo;
+
+moduleDb.insertUser(prenom, nom, dateNaiss, lvlSport, ville, mail, pass, fc, pseudo, function(err, result) {
   if (err) {
       console.log('insertUser error on dbQuery : ' + err);
       res.send('insertUser error on dbQuery : ' + err);

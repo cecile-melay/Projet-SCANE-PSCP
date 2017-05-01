@@ -7,6 +7,7 @@ package com.example.denis.funculture.component;
 public class User {
     private String prenom;
     private String nom;
+    private String pseudo;
     private String dateNaiss;
     private int lvlSport;
     private int fc;
@@ -14,9 +15,10 @@ public class User {
     private String mail;
     private String pass;
 
-    public User(String prenom, String nom, String dateNaiss, int lvlSport, int fc, String ville, String mail, String pass) {
+    public User(String prenom, String nom, String dateNaiss, int lvlSport, int fc, String ville, String mail, String pass, String pseudo) {
         this.prenom = prenom;
         this.nom = nom;
+        this.pseudo = pseudo;
         this.dateNaiss = dateNaiss;
         this.lvlSport = lvlSport;
         this.fc = fc;
@@ -55,5 +57,9 @@ public class User {
 
     public String getPass() {
         return pass;
+    }
+
+    public String getPseudo() {
+        return pseudo;
     }
 }

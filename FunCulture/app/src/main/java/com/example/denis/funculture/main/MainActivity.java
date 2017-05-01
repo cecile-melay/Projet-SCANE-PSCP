@@ -20,15 +20,16 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.component.User;
 import com.example.denis.funculture.fragments.Accueil;
 import com.example.denis.funculture.fragments.ChooseSensorFragment;
 import com.example.denis.funculture.fragments.ChooseTags;
-import com.example.denis.funculture.fragments.Inscription;
 import com.example.denis.funculture.fragments.MapsFragment;
 import com.example.denis.funculture.fragments.MyFragment;
 import com.example.denis.funculture.fragments.QCMFragment;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private List<MyFragment> fragments = new ArrayList<>();
     private MyFragment homeFragment;
     private MapsFragment mapFragment;
+    private User currentUser;
 
     //Register Fields
     private EditText etSecondName;
@@ -57,10 +59,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private EditText etVille;
     private EditText etMail;
     private EditText etPass;
+    private EditText etPseudo;
     private EditText etFc;
     private Spinner spLevel;
     private Button btRegister;
     private LinearLayout llRegister;
+    private boolean isRegisterOpen = false;
+
+    //Nav user infos
+    private ImageView ivUser;
+    private TextView tvUserPseudo;
+    private TextView tvUserName;
 
     public void setFabClicListener(View.OnClickListener listener) {
         this.fab.setOnClickListener(listener);
@@ -111,6 +120,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         this.navigationView = (NavigationView) findViewById(R.id.nav_view);
+        tvUserPseudo = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tv_user_pseudo);
+        tvUserName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tv_user_name);
+        ivUser = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.iv_user);
         navigationView.setNavigationItemSelectedListener(this);
 
         init();
@@ -129,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.etVille = (EditText) findViewById(R.id.et_ville);
         this.etMail = (EditText) findViewById(R.id.et_mail);
         this.etPass = (EditText) findViewById(R.id.et_pass);
+        this.etPseudo = (EditText) findViewById(R.id.et_pseudo);
         this.etFc = (EditText) findViewById(R.id.et_fc);
         this.spLevel = (Spinner) findViewById(R.id.sp_level);
         this.btRegister = (Button) findViewById(R.id.bt_register);
@@ -154,22 +167,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 || Util.isEmpty(etVille)
                 || Util.isEmpty(etPass)
                 || Util.isEmpty(etFc)
+                || Util.isEmpty(etPseudo)
                 || spLevel.getSelectedItemPosition() == 0) {
             Util.createDialog(MyResources.MISSING_FIELD_WARNING);
         }
         else {
-            User newUser = new User(etFirstName.getText().toString(),
+            currentUser = new User(etFirstName.getText().toString(),
                     etSecondName.getText().toString(),
                     etBirth.getText().toString(),
                     spLevel.getSelectedItemPosition(),
                     Integer.parseInt(etFc.getText().toString()),
                     etVille.getText().toString(),
                     etMail.getText().toString(),
-                    etPass.getText().toString());
+                    etPass.getText().toString(),
+                    etPseudo.getText().toString());
 
-            MyServices.getSingleton().insertUser(newUser);
-            //Util.createDialog(MyResources.SUCCESS_REGISTER);
+            MyServices.getSingleton().insertUser(currentUser);
+            Util.createDialog(MyResources.SUCCESS_REGISTER);
+            ivUser.setVisibility(View.VISIBLE);
+            tvUserPseudo.setText(currentUser.getPseudo());
+            tvUserName.setText(currentUser.getPrenom() + " " + currentUser.getNom());
             llRegister.setVisibility(View.GONE);
+            isRegisterOpen = false;
         }
     }
 
@@ -218,16 +237,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void showRegisterLayout() {
         this.llRegister.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        this.isRegisterOpen = true;
     }
 
     @Override
@@ -322,6 +332,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+
+            if(isRegisterOpen) {
+                llRegister.setVisibility(View.GONE);
+                isRegisterOpen = false;
+                return false;
+            }
+
             if(fragments.size() > 0) {
                 return super.onKeyDown(keyCode, event);
             } else {

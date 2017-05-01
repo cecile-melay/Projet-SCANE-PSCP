@@ -49,7 +49,7 @@ public class MyServices {
         MyTask task = new MyTask();
 
         ///insertUser/:prenom/:nom/:dateNaiss/:lvlSport/:fc/:ville/:mail/:pass
-        String functionName = String.format("insertUser/%s/%s/%s/%d/%d/%s/%s/%s",
+        String functionName = String.format("insertUser/%s/%s/%s/%d/%d/%s/%s/%s/%s",
                 user.getPrenom(),
                 user.getNom(),
                 user.getDateNaiss(),
@@ -57,7 +57,8 @@ public class MyServices {
                 user.getFc(),
                 user.getVille(),
                 user.getMail(),
-                user.getPass());
+                user.getPass(),
+                user.getPseudo());
 
         String url = getUrl(functionName);
         Log.d(TAG, "insertUser url : " + url);

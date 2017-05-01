@@ -60,9 +60,9 @@ myModule.insertPoint = function(lat, lng, posInPath, associatePath, callback) {
   	});
 }
 
-myModule.insertUser = function(prenom, nom, dateNaiss, lvlSport, ville, mail, pass, fc, callback) {
-	req = "INSERT INTO USERSCANE (PRENOM, NOM, DATENAISS, SPORTLEVEL, VILLE, MAIL, PASS, FC) VALUES ('%s','%s', '%s', %d, '%s', '%s', '%s', %d)"
-	req = util.format(req, prenom, nom, dateNaiss, lvlSport, ville, mail, pass, fc);
+myModule.insertUser = function(prenom, nom, dateNaiss, lvlSport, ville, mail, pass, fc, pseudo, callback) {
+	req = "INSERT INTO USERSCANE (PRENOM, NOM, DATENAISS, SPORTLEVEL, VILLE, MAIL, PASS, FC, PSEUDO) VALUES ('%s','%s', '%s', %d, '%s', '%s', '%s', %d, '%s')"
+	req = util.format(req, prenom, nom, dateNaiss, lvlSport, ville, mail, pass, fc, pseudo);
 	console.log(req);
 
 	myModule.connect(function(err, conn) {
