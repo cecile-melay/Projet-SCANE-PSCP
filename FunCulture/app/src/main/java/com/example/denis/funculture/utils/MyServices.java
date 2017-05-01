@@ -7,6 +7,9 @@ import android.util.Log;
 import com.example.denis.funculture.component.User;
 import com.example.denis.funculture.component.localisation.Path;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,7 +27,7 @@ public class MyServices {
     private static final String SERVER_PORT = "1337";
 
     public static MyServices getSingleton() {
-        if(singleton == null) {
+        if (singleton == null) {
             singleton = new MyServices();
         }
 
@@ -89,8 +92,53 @@ public class MyServices {
         task.execute(url);
     }
 
+    public void loginUser(String pseudo, String pass) {
+        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable(){
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonResult = new JSONObject(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        MyTask task = new MyTask(onPostExecuteRunnable);
+        String functionName = "login";
+        String url = getUrl(functionName);
+        url = addParamToUrl(url, pseudo);
+        url = addParamToUrl(url, pass);
+
+        Log.d("loginUser url : ", url);
+        task.execute(url);
+    }
+
     private class MyTask extends AsyncTask<String, String, String> {
-        ProgressDialog dialog;
+        private ProgressDialog dialog;
+        private OnPostExecuteRunnable onPostExecute;
+
+        public MyTask() {
+            this.onPostExecute = new OnPostExecuteRunnable() {
+                @Override
+                public void run() {
+                    if (dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
+                    if (result != null) {
+                        Util.createToast(result);
+                        Log.d(TAG, result);
+                    } else {
+                        Log.d(TAG, "result null");
+                    }
+                }
+            };
+        }
+
+        public MyTask(OnPostExecuteRunnable onPostExecute) {
+            this.onPostExecute = onPostExecute;
+        }
+
         protected void onPreExecute() {
             super.onPreExecute();
 
@@ -113,7 +161,7 @@ public class MyServices {
                 StringBuffer buffer = new StringBuffer();
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    buffer.append(line+"\n");
+                    buffer.append(line + "\n");
                 }
                 connection.disconnect();
                 reader.close();
@@ -129,15 +177,20 @@ public class MyServices {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if (dialog.isShowing()){
-                dialog.dismiss();
-            }
-            if (result != null) {
-                Util.createToast(result);
-                Log.d(TAG, result);
-            } else {
-                Log.d(TAG, "result null");
-            }
+            this.onPostExecute.setResult(result);
+            this.onPostExecute.run();
+        }
+    }
+
+    class OnPostExecuteRunnable implements Runnable {
+        String result;
+
+        public void setResult(String result) {
+            this.result = result;
+        }
+
+        @Override
+        public void run() {
 
         }
     }

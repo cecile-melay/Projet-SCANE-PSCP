@@ -90,6 +90,21 @@ myModule.insertPath = function(id, name, callback) {
     });
 }
 
+myModule.login = function(pseudo, pass, callback) {
+  req = "SELECT * FROM USERSCANE WHERE PSEUDO = '%s' AND PASS = '%s'"
+  req = util.format(req, pseudo, pass);
+  console.log(req);
+
+  myModule.connect(function(err, conn) {
+      if (err) {
+          console.log('login error on dbConnexion');
+        } else {
+          console.log(req);
+          myModule.execQuery(conn, req, callback);
+      }
+    });
+}
+
 
 
 module.exports = myModule;

@@ -1,4 +1,5 @@
 var moduleDb = require('./modules/oracle_db_module')
+var parseJson = require('parse-json');
 var express = require('express');
 var app = express();
 var cors = require('cors')
@@ -85,6 +86,25 @@ moduleDb.insertPath(id, name, function(err, result) {
       res.send('insertPath error on dbQuery : ' + err);
     } else {
       console.log('success');
+      res.send(result);
+    }
+});
+});
+
+//Insertion d'un chemin
+app.get('/login/:pseudo/:pass', function (req, res) {
+console.log("/insertPath");
+
+var pseudo = req.params.pseudo;
+var pass = req.params.pass;
+
+moduleDb.login(pseudo, pass, function(err, result) {
+  if (err) {
+      console.log('login error on dbQuery : ' + err);
+      res.send('login error on dbQuery : ' + err);
+    } else {
+      console.log('success');
+      console.log(result);
       res.send(result);
     }
 });

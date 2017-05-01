@@ -50,5 +50,6 @@
     <string name="queries">Requêtes</string>
     <string name="create_path">Créer chemin</string>
     <string name="add_point" formatted="false">Ajouter un point</string>
+    <string name="connection">Connexion</string>
 
 </resources>

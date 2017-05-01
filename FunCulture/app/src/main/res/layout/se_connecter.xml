@@ -7,7 +7,7 @@
         android:background="@color/blue_alpha"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
-        android:id="@+id/et_mail"
+        android:id="@+id/et_pseudo"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:inputType="textPersonName"
@@ -36,7 +36,7 @@
     <Button
         android:background="@color/blue"
         android:textColor="@color/white"
-        android:id="@+id/bt_register"
+        android:id="@+id/bt_login"
         android:text="Se connecter"
         android:layout_width="match_parent"
         android:layout_height="50dp"
