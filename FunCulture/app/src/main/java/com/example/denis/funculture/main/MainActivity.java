@@ -183,10 +183,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     etPseudo.getText().toString());
 
             MyServices.getSingleton().insertUser(currentUser);
+            setCurrentUser(currentUser);
             Util.createDialog(MyResources.SUCCESS_REGISTER);
-            ivUser.setVisibility(View.VISIBLE);
-            tvUserPseudo.setText(currentUser.getPseudo());
-            tvUserName.setText(currentUser.getPrenom() + " " + currentUser.getNom());
             llRegister.setVisibility(View.GONE);
             isRegisterOpen = false;
         }
@@ -368,5 +366,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return false;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+        ivUser.setVisibility(View.VISIBLE);
+        tvUserPseudo.setText(currentUser.getPseudo());
+        tvUserName.setText(currentUser.getPrenom() + " " + currentUser.getNom());
     }
 }

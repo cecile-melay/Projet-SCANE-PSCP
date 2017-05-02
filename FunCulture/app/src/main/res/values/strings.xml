@@ -51,5 +51,6 @@
     <string name="create_path">Créer chemin</string>
     <string name="add_point" formatted="false">Ajouter un point</string>
     <string name="connection">Connexion</string>
+    <string name="login_failed">Mauvais pseudo ou mot de passe.</string>
 
 </resources>

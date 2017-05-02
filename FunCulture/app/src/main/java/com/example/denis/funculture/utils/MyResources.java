@@ -28,5 +28,6 @@ public class MyResources {
         public static final String QUERIES = App.getSingleton().getContext().getString(R.string.queries);
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
-    public static final String CONNEXION = App.getSingleton().getContext().getString(R.string.connection);
+        public static final String CONNEXION = App.getSingleton().getContext().getString(R.string.connection);
+        public static final String LOGIN_FAILED = App.getSingleton().getContext().getString(R.string.login_failed);
 }

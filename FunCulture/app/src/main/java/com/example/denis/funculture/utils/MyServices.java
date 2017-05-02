@@ -7,6 +7,7 @@ import android.util.Log;
 import com.example.denis.funculture.component.User;
 import com.example.denis.funculture.component.localisation.Path;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -98,6 +99,66 @@ public class MyServices {
             public void run() {
                 try {
                     JSONObject jsonResult = new JSONObject(result);
+                    Log.d(TAG, jsonResult.toString());
+                    JSONArray resultArray = jsonResult.getJSONArray("rows");
+                    JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
+
+                    if(resultArray.length() == 0) {
+                        Util.createToast(MyResources.LOGIN_FAILED);
+                        return;
+                    }
+
+                    JSONArray userData = resultArray.getJSONArray(0);
+                    User currentUser = new User();
+                    for(int i=0; i<userData.length(); i++) {
+                        switch (metaDataArray.getJSONObject(i).getString("name")) {
+                            case "ID" :
+                                int id = userData.getInt(i);
+                                currentUser.setId(id);
+                                break;
+                            case "PRENOM" :
+                                String prenom = userData.getString(i);
+                                currentUser.setPrenom(prenom);
+                                break;
+                            case "NOM" :
+                                String nom = userData.getString(i);
+                                currentUser.setNom(nom);
+                                break;
+                            case "DATENAISS" :
+                                String dateNaiss = userData.getString(i);
+                                currentUser.setDateNaiss(dateNaiss);
+                                break;
+                            case "SPORTLEVEL" :
+                                int lvl = userData.getInt(i);
+                                currentUser.setLvlSport(lvl);
+                                break;
+                            case "VILLE" :
+                                String ville = userData.getString(i);
+                                currentUser.setVille(ville);
+                                break;
+                            case "MAIL" :
+                                String mail = userData.getString(i);
+                                currentUser.setMail(mail);
+                                break;
+                            case "PASS" :
+                                String pass = userData.getString(i);
+                                currentUser.setPass(pass);
+                                break;
+                            case "FC" :
+                                int fc = userData.getInt(i);
+                                currentUser.setFc(fc);
+                                break;
+                            case "XP" :
+                                int xp = userData.getInt(i);
+                                currentUser.setXp(xp);
+                                break;
+                            case "PSEUDO" :
+                                String pseudo = userData.getString(i);
+                                currentUser.setPseudo(pseudo);
+                                break;
+                        }
+                    }
+                    Util.getMainActivity().setCurrentUser(currentUser);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -119,20 +180,6 @@ public class MyServices {
         private OnPostExecuteRunnable onPostExecute;
 
         public MyTask() {
-            this.onPostExecute = new OnPostExecuteRunnable() {
-                @Override
-                public void run() {
-                    if (dialog.isShowing()) {
-                        dialog.dismiss();
-                    }
-                    if (result != null) {
-                        Util.createToast(result);
-                        Log.d(TAG, result);
-                    } else {
-                        Log.d(TAG, "result null");
-                    }
-                }
-            };
         }
 
         public MyTask(OnPostExecuteRunnable onPostExecute) {
@@ -177,8 +224,19 @@ public class MyServices {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            this.onPostExecute.setResult(result);
-            this.onPostExecute.run();
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            if (result != null) {
+                Log.d(TAG, result);
+
+                if(onPostExecute != null) {
+                    this.onPostExecute.setResult(result);
+                    this.onPostExecute.run();
+                }
+            } else {
+                Log.d(TAG, "result null");
+            }
         }
     }
 
