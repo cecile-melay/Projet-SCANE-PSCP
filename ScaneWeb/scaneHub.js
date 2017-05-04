@@ -136,3 +136,54 @@ moduleDb.login(pseudo, pass, function(err, result) {
     }
 });
 });
+
+app.get('/getPath/:id', function (req, res) {
+console.log("/getPath");
+
+var id = req.params.id;
+
+moduleDb.getPath(id, function(err, result) {
+  if (err) {
+      console.log('getPath error on dbQuery : ' + err);
+      res.send('getPath error on dbQuery : ' + err);
+    } else {
+      console.log('success');
+      console.log(result);
+      res.send(result);
+    }
+});
+});
+
+app.get('/getPathPoints/:id', function (req, res) {
+console.log("/getPath");
+
+var id = req.params.id;
+
+moduleDb.getPathPoints(id, function(err, result) {
+  if (err) {
+      console.log('getPathPoints error on dbQuery : ' + err);
+      res.send('getPathPoints error on dbQuery : ' + err);
+    } else {
+      console.log('success');
+      console.log(result);
+      res.send(result);
+    }
+});
+});
+
+app.get('/getPathPointsOfInterest/:id', function (req, res) {
+console.log("/getPath");
+
+var id = req.params.id;
+
+moduleDb.getPathPointsOfInterest(id, function(err, result) {
+  if (err) {
+      console.log('getPathPointsOfInterest error on dbQuery : ' + err);
+      res.send('getPathPointsOfInterest error on dbQuery : ' + err);
+    } else {
+      console.log('success');
+      console.log(result);
+      res.send(result);
+    }
+});
+});

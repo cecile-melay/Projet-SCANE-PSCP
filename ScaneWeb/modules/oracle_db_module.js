@@ -44,6 +44,45 @@ myModule.getZones = function(callback) {
   	})
 }
 
+myModule.getPath = function(id, callback) {
+  var req = "SELECT * FROM PATH WHERE ID = %d";
+  req = util.format(req, id);
+
+    myModule.connect(function(err, conn) {
+      if (err) {
+          console.log('getPath error on dbConnexion');
+        } else {
+          myModule.execQuery(conn, req, callback);
+        }
+    })
+}
+
+myModule.getPathPoints = function(id, callback) {
+  var req = "SELECT * FROM PATHPOINT WHERE ASSOCIATEDPATH = %d";
+  req = util.format(req, id);
+
+    myModule.connect(function(err, conn) {
+      if (err) {
+          console.log('getPathPoints error on dbConnexion');
+        } else {
+          myModule.execQuery(conn, req, callback);
+        }
+    })
+}
+
+myModule.getPathPointsOfInterest = function(id, callback) {
+  var req = "SELECT * FROM POINTSOFINTEREST INNER JOIN PATHPOINT ON POINTSOFINTEREST.ASSOCIATEDPATHPOINT = PATHPOINT.ID WHERE PATHPOINT.ASSOCIATEDPATH = %d";
+  req = util.format(req, id);
+
+    myModule.connect(function(err, conn) {
+      if (err) {
+          console.log('getPathPointsOfInterest error on dbConnexion');
+        } else {
+          myModule.execQuery(conn, req, callback);
+        }
+    })
+}
+
 //exemple pour guillaume
 myModule.insertPoint = function(lat, lng, posInPath, associatePath, callback) {
 	req = "INSERT INTO PATHPOINT (LAT, LNG, POSITIONINPATH, ASSOCIATEDPATH) VALUES (%d, %d, %d, %d)"

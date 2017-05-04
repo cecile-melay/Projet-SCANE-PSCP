@@ -1,5 +1,8 @@
 package com.example.denis.funculture.component.localisation;
 
+import android.graphics.Point;
+
+import com.example.denis.funculture.utils.Util;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -11,7 +14,7 @@ import java.util.List;
 
 public class MyPointOfInterest {
     private int id;
-    private LatLng point;
+    private PointOfPath point;
     private String name;
     private String description;
     private String sound;
@@ -21,8 +24,36 @@ public class MyPointOfInterest {
         this.pictures = new ArrayList<>();
     }
 
-    public void addPicture(String picturePath) {
-        this.pictures.add(picturePath);
+    public MyPointOfInterest(int id, int pointId, String name, String description, String sound) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.sound = sound;
+        this.point = Util.getCurrentPath().getPoint(pointId);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public PointOfPath getPoint() {
+        return point;
+    }
+
+    public void setPoint(PointOfPath point) {
+        this.point = point;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -41,19 +72,11 @@ public class MyPointOfInterest {
         this.sound = sound;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public LatLng getPoint() {
-        return point;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public List<String> getPictures() {
         return pictures;
+    }
+
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
     }
 }

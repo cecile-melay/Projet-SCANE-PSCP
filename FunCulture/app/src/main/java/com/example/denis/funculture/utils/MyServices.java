@@ -5,7 +5,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.denis.funculture.component.User;
+import com.example.denis.funculture.component.localisation.MyPointOfInterest;
 import com.example.denis.funculture.component.localisation.Path;
+import com.example.denis.funculture.component.localisation.PointOfPath;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PointOfInterest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -172,6 +176,172 @@ public class MyServices {
         url = addParamToUrl(url, pass);
 
         Log.d("loginUser url : ", url);
+        task.execute(url);
+    }
+
+    public void getPointsOfInterest(int id) {
+        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable(){
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonResult = new JSONObject(result);
+                    Log.d(TAG, jsonResult.toString());
+                    JSONArray resultArray = jsonResult.getJSONArray("rows");
+                    JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
+
+                    if(resultArray.length() == 0) {
+                        Util.createToast(MyResources.LOGIN_FAILED);
+                        return;
+                    }
+
+                    JSONArray userData = resultArray.getJSONArray(0);
+                    int id = -1;
+                    int pointId = 0;
+                    String name = "";
+                    String description = "";
+                    String sound = "";
+
+                    for(int i=0; i<userData.length(); i++) {
+                        switch (metaDataArray.getJSONObject(i).getString("name")) {
+                            case "ID" :
+                                id = userData.getInt(i);
+                                break;
+                            case "NAME" :
+                                name = userData.getString(i);
+                                break;
+                            case "DESCRIPTION" :
+                                description = userData.getString(i);
+                                break;
+                            case "ASSOCIATEDSOUND" :
+                                sound = userData.getString(i);
+                                break;
+                            case "ASSOCIATEDPATHPOINT" :
+                                pointId = userData.getInt(i);
+                                break;
+                        }
+                    }
+
+                    if(id != -1) {
+                        MyPointOfInterest poi = new MyPointOfInterest(id, pointId, name, description, sound);
+                        Util.getCurrentPath().addPointOfInterest(poi);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        MyTask task = new MyTask(onPostExecuteRunnable);
+        String functionName = "getPathPointsOfInterest";
+        String url = getUrl(functionName);
+        url = addParamToUrl(url, Integer.toString(id));
+
+        Log.d("PointsOfInterest url : ", url);
+        task.execute(url);
+    }
+
+    public void getPointsOfPath(int id) {
+        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable(){
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonResult = new JSONObject(result);
+                    Log.d(TAG, jsonResult.toString());
+                    JSONArray resultArray = jsonResult.getJSONArray("rows");
+                    JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
+
+                    if(resultArray.length() == 0) {
+                        Util.createToast(MyResources.LOGIN_FAILED);
+                        return;
+                    }
+
+                    JSONArray userData = resultArray.getJSONArray(0);
+                    int id = 0;
+                    int position = -1;
+                    double lat = 0;
+                    double lng = 0;
+                    for(int i=0; i<userData.length(); i++) {
+                        switch (metaDataArray.getJSONObject(i).getString("name")) {
+                            case "LAT" :
+                                lat = userData.getDouble(i);
+                                break;
+                            case "LNG" :
+                                lng = userData.getDouble(i);
+                                break;
+                            case "POSITIONINPATH" :
+                                position = userData.getInt(i);
+                                break;
+                            case "ID" :
+                                id = userData.getInt(i);
+                                break;
+                        }
+                    }
+                    if(position != -1) {
+                        PointOfPath point = new PointOfPath(id);
+                        point.setPosition(position);
+                        point.setLatLng(new LatLng(lat, lng));
+
+                        Util.getCurrentPath().addPoint(point);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        MyTask task = new MyTask(onPostExecuteRunnable);
+        String functionName = "getPathPoints";
+        String url = getUrl(functionName);
+        url = addParamToUrl(url, Integer.toString(id));
+
+        Log.d("getPathPoints url : ", url);
+        task.execute(url);
+    }
+
+    public void getPath(int id) {
+        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable(){
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonResult = new JSONObject(result);
+                    Log.d(TAG, jsonResult.toString());
+                    JSONArray resultArray = jsonResult.getJSONArray("rows");
+                    JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
+
+                    if(resultArray.length() == 0) {
+                        Util.createToast(MyResources.LOGIN_FAILED);
+                        return;
+                    }
+
+                    JSONArray userData = resultArray.getJSONArray(0);
+                    int id = -1;
+                    String name = "";
+                    for(int i=0; i<userData.length(); i++) {
+                        switch (metaDataArray.getJSONObject(i).getString("name")) {
+                            case "ID" :
+                                id = userData.getInt(i);
+                                break;
+                            case "NAME" :
+                                name = userData.getString(i);
+                                break;
+                        }
+
+                        if(id != -1) {
+                            Util.setCurrentPath(new Path(id, name));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        MyTask task = new MyTask(onPostExecuteRunnable);
+        String functionName = "getPath";
+        String url = getUrl(functionName);
+        url = addParamToUrl(url, Integer.toString(id));
+
+        Log.d("getPath url : ", url);
         task.execute(url);
     }
 

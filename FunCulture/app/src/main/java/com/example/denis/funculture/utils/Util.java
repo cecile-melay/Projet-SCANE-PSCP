@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.denis.funculture.component.User;
+import com.example.denis.funculture.component.localisation.Path;
 import com.example.denis.funculture.fragments.EditProfil;
 import com.example.denis.funculture.fragments.MyFragment;
 import com.example.denis.funculture.fragments.SeConnecter;
@@ -33,6 +34,7 @@ public class Util {
     private static MainActivity mainActivity;
     private static MyFragment currentFragment;
     private static User currentUser;
+    private static Path currentPath;
 
     public static void createDialog(String message)
     {
@@ -200,5 +202,13 @@ public class Util {
         }
         inputMethodManager.hideSoftInputFromWindow(
                 mainActivity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    public static void setCurrentPath(Path currentPath) {
+        Util.currentPath = currentPath;
+    }
+
+    public static Path getCurrentPath() {
+        return currentPath;
     }
 }

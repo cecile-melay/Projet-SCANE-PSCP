@@ -657,6 +657,7 @@ Pour les tests je vais faire que le mode tracking passe à false automatiquement
                             .setPositiveButton("Sauvegarder chemin", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     savePath();
+                                    locListener.setTrackingMode(false);
                                 }
                             });
                     builder.show();

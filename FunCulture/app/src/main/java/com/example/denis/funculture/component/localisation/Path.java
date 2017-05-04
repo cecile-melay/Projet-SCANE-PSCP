@@ -14,7 +14,7 @@ import java.util.List;
 public class Path {
     private int id;
     private String name;
-    private List<LatLng> points;
+    private List<PointOfPath> points;
     private List<MyPointOfInterest> pointsOfInterest;
 
     public Path(int id, String name) {
@@ -24,8 +24,15 @@ public class Path {
         this.name = name;
     }
 
-    public void addPoint(LatLng point) {
+    public void addPoint(PointOfPath point) {
         this.points.add(point);
+    }
+
+    public void addPoint(LatLng point) {
+        PointOfPath pop = new PointOfPath(1);
+        pop.setPosition(points.size() + 1);
+        pop.setLatLng(point);
+        this.points.add(pop);
     }
 
     public void addPointOfInterest(MyPointOfInterest pointOfInterest) {
@@ -42,13 +49,23 @@ public class Path {
 
     public void savePointsOfPath() {
         for(int i=0; i<this.points.size(); i++) {
-            LatLng point = this.points.get(i);
-            MyServices.getSingleton().postPoint(point.latitude, point.longitude, i, id);
+            PointOfPath point = this.points.get(i);
+            MyServices.getSingleton().postPoint(point.getLatLng().latitude, point.getLatLng().longitude, i, id);
         }
     }
 
     public void saveOnServer() {
         MyServices.getSingleton().postPath(this);
         savePointsOfPath();
+    }
+
+    public PointOfPath getPoint(int pointId) {
+        for(PointOfPath point : this.points) {
+            if(point.getId() == pointId) {
+                return point;
+            }
+        }
+
+        return null;
     }
 }
