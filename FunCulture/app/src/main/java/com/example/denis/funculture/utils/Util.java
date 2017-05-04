@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.denis.funculture.component.User;
+import com.example.denis.funculture.fragments.EditProfil;
 import com.example.denis.funculture.fragments.MyFragment;
 import com.example.denis.funculture.fragments.SeConnecter;
 import com.example.denis.funculture.main.App;
@@ -173,7 +174,7 @@ public class Util {
         mainActivity.setCurrentUser(currentUser);
 
         if(currentFragment instanceof SeConnecter) {
-            ((SeConnecter)currentFragment).checkUserConnected();
+            mainActivity.startFragment(EditProfil.class);
         }
     }
 
