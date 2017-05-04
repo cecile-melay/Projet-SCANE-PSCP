@@ -240,7 +240,8 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:textSize="19sp"
-            android:padding="5dp"/>
+            android:padding="5dp"
+            android:layout_marginBottom="20dp"/>
 
         <Button
             android:background="@color/blue"

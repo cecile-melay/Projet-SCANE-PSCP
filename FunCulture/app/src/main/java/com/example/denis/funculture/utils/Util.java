@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -188,5 +189,16 @@ public class Util {
 
     public static void setCurrentFragment(MyFragment currentFragment) {
         Util.currentFragment = currentFragment;
+    }
+
+    public static void hideSoftKeyboard() {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) mainActivity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        if(mainActivity.getCurrentFocus() == null) {
+            return;
+        }
+        inputMethodManager.hideSoftInputFromWindow(
+                mainActivity.getCurrentFocus().getWindowToken(), 0);
     }
 }

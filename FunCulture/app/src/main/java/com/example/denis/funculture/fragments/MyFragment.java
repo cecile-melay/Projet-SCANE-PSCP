@@ -22,6 +22,7 @@ public abstract class MyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         Util.setCurrentFragment(this);
         this.contentView = (ViewGroup) inflater.inflate(getLayoutId(), null, false);
+        Util.hideSoftKeyboard();
         init();
         return this.contentView;
     }
