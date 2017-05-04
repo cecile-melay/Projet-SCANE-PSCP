@@ -30,6 +30,12 @@ public class User {
         this.mail = "";
         this.pass = "";
     }
+
+    public User(int id,String prenom, String nom, String dateNaiss, int lvlSport, int fc, String ville, String mail, String pass, String pseudo) {
+        this(prenom, nom, dateNaiss, lvlSport, fc, ville, mail, pass, pseudo);
+        this.id = id;
+    }
+
     public User(String prenom, String nom, String dateNaiss, int lvlSport, int fc, String ville, String mail, String pass, String pseudo) {
         this.id = 0;
         this.xp = 0;

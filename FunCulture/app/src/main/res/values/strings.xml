@@ -46,11 +46,14 @@
     <string name="sport_level">Niveau sportif :</string>
     <string name="register">S\'inscrire</string>
     <string name="success_register">Félicitation ! Vous êtes désormais inscrit.</string>
+    <string name="success_update_user">Vos modifications ont bien été enregistrées.</string>
     <string name="missing_field_warning">Veuillez renseigner tous les champs s\'il vous plaît.</string>
     <string name="queries">Requêtes</string>
     <string name="create_path">Créer chemin</string>
     <string name="add_point" formatted="false">Ajouter un point</string>
     <string name="connection">Connexion</string>
     <string name="login_failed">Mauvais pseudo ou mot de passe.</string>
+    <string name="update_user">Mise à jour informations</string>
+    <string name="already_connected">Vous êtes déja connecté.</string>
 
 </resources>

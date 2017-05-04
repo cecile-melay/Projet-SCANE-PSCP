@@ -20,6 +20,7 @@ public abstract class MyFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        Util.setCurrentFragment(this);
         this.contentView = (ViewGroup) inflater.inflate(getLayoutId(), null, false);
         init();
         return this.contentView;

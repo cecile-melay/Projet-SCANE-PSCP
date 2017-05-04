@@ -73,6 +73,33 @@ moduleDb.insertUser(prenom, nom, dateNaiss, lvlSport, ville, mail, pass, fc, pse
 });
 });
 
+//Insertion d'un utilisateur
+app.get('/updateUser/:id/:prenom/:nom/:dateNaiss/:lvlSport/:fc/:ville/:mail/:pass/:pseudo/:xp', function (req, res) {
+console.log("/insertUser");
+
+var id = req.params.id;
+var prenom = req.params.prenom;
+var nom = req.params.nom;
+var dateNaiss = req.params.dateNaiss;
+var lvlSport = req.params.lvlSport;
+var ville = req.params.ville;
+var mail = req.params.mail;
+var pass = req.params.pass;
+var fc = req.params.fc;
+var pseudo = req.params.pseudo;
+var xp = req.params.xp;
+
+moduleDb.updateUser(id, prenom, nom, dateNaiss, lvlSport, ville, mail, pass, fc, pseudo, xp, function(err, result) {
+  if (err) {
+      console.log('updateUser error on dbQuery : ' + err);
+      res.send('updateUser error on dbQuery : ' + err);
+    } else {
+      console.log('success');
+      res.send(result);
+    }
+});
+});
+
 //Insertion d'un chemin
 app.get('/insertPath/:id/:name', function (req, res) {
 console.log("/insertPath");
@@ -93,7 +120,7 @@ moduleDb.insertPath(id, name, function(err, result) {
 
 //Insertion d'un chemin
 app.get('/login/:pseudo/:pass', function (req, res) {
-console.log("/insertPath");
+console.log("/login");
 
 var pseudo = req.params.pseudo;
 var pass = req.params.pass;

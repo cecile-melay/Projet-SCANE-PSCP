@@ -158,7 +158,7 @@ public class MyServices {
                                 break;
                         }
                     }
-                    Util.getMainActivity().setCurrentUser(currentUser);
+                    Util.setCurrentUser(currentUser);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -172,6 +172,28 @@ public class MyServices {
         url = addParamToUrl(url, pass);
 
         Log.d("loginUser url : ", url);
+        task.execute(url);
+    }
+
+    public void updateUser(User user) {
+        MyTask task = new MyTask();
+
+        ///updateUser/:id/:prenom/:nom/:dateNaiss/:lvlSport/:fc/:ville/:mail/:pass
+        String functionName = String.format("updateUser/%d/%s/%s/%s/%d/%d/%s/%s/%s/%s/%d",
+                user.getId(),
+                user.getPrenom(),
+                user.getNom(),
+                user.getDateNaiss(),
+                user.getLvlSport(),
+                user.getFc(),
+                user.getVille(),
+                user.getMail(),
+                user.getPass(),
+                user.getPseudo(),
+                user.getXp());
+
+        String url = getUrl(functionName);
+        Log.d(TAG, "updateUser url : " + url);
         task.execute(url);
     }
 

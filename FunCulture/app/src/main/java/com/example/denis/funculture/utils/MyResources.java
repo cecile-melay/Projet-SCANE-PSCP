@@ -26,8 +26,10 @@ public class MyResources {
         public static final String CREATE_PATH = App.getSingleton().getContext().getString(R.string.create_path);
         public static final String ADD_POINT = App.getSingleton().getContext().getString(R.string.add_point);
         public static final String QUERIES = App.getSingleton().getContext().getString(R.string.queries);
+        public static final String UPDATE_USER = App.getSingleton().getContext().getString(R.string.update_user);
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
         public static final String CONNEXION = App.getSingleton().getContext().getString(R.string.connection);
         public static final String LOGIN_FAILED = App.getSingleton().getContext().getString(R.string.login_failed);
+    public static final String SUCCESS_UPDATE = App.getSingleton().getContext().getString(R.string.success_update_user);
 }

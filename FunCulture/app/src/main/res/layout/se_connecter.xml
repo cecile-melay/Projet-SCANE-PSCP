@@ -1,49 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:background="@color/blue_alpha"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:id="@+id/et_pseudo"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:inputType="textPersonName"
-        android:hint="pseudo"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:textSize="19sp"
-        android:padding="5dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/already_connected"
+        android:id="@+id/tv_connected"
+        android:visibility="visible"/>
 
-    <EditText
-        android:background="@color/blue_alpha"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:id="@+id/et_pass"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:inputType="textPassword"
-        android:hint="mot de passe"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:textSize="19sp"
-        android:padding="5dp"/>
+        android:layout_height="match_parent"
+        android:id="@+id/ll_connection"
+        android:visibility="gone">
 
-    <Button
-        android:background="@color/blue"
-        android:textColor="@color/white"
-        android:id="@+id/bt_login"
-        android:text="Se connecter"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:textSize="15sp"
-        android:padding="5dp"/>
+        <EditText
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:id="@+id/et_pseudo"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="textPersonName"
+            android:hint="pseudo"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="19sp"
+            android:padding="5dp"/>
 
-</LinearLayout>
+        <EditText
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:id="@+id/et_pass"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="textPassword"
+            android:hint="mot de passe"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="19sp"
+            android:padding="5dp"/>
+
+        <Button
+            android:background="@color/blue"
+            android:textColor="@color/white"
+            android:id="@+id/bt_login"
+            android:text="Se connecter"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="15sp"
+            android:padding="5dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

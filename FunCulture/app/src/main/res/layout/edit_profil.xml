@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ll_register"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_tv_register"
+            android:text="Pseudo : "
+            android:layout_gravity="center"/>
+        <EditText
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:id="@+id/et_pseudo"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:inputType="textPersonName"
+            android:hint="Pseudo"
+            android:layout_marginTop="@dimen/margin_top_tv_register"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="19sp"
+            android:padding="5dp"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prenom : "
+            android:layout_marginTop="@dimen/margin_top_tv_register"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:id="@+id/et_first_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:inputType="textPersonName"
+            android:hint="Prénom"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="19sp"
+            android:padding="5dp"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_tv_register"
+            android:text="Nom : "
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:id="@+id/et_second_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:inputType="textPersonName"
+            android:hint="Nom"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="19sp"
+            android:padding="5dp"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_tv_register"
+            android:text="Date de naissance : "
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/et_birth"
+            android:inputType="date"
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="Date de naissance (jj.mm.aaaa)"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="19sp"
+            android:padding="5dp"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_tv_register"
+            android:text="Niveau sportif : "
+            android:layout_gravity="center"/>
+
+        <Spinner
+            android:id="@+id/sp_level"
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="19sp"
+            android:padding="5dp"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_tv_register"
+            android:text="FC : "
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:id="@+id/et_fc"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:inputType="number"
+            android:hint="FC"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="19sp"
+            android:padding="5dp"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_tv_register"
+            android:text="XP : "
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:id="@+id/tv_xp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="19sp"
+            android:padding="5dp"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_tv_register"
+            android:text="Ville : "
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:id="@+id/et_ville"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:inputType="textPersonName"
+            android:hint="Ville"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="19sp"
+            android:padding="5dp"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_tv_register"
+            android:text="Mail : "
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:id="@+id/et_mail"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:inputType="textPersonName"
+            android:hint="Email"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="19sp"
+            android:padding="5dp"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_tv_register"
+            android:text="Mot de passe : "
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:background="@color/blue_alpha"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:id="@+id/et_pass"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:inputType="textPassword"
+            android:hint="Mot de passe"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="19sp"
+            android:padding="5dp"/>
+
+        <Button
+            android:background="@color/blue"
+            android:textColor="@color/white"
+            android:id="@+id/bt_register"
+            android:text="Enregistrer"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="15sp"
+            android:padding="5dp"/>
+
+        <Button
+            android:background="@color/blue"
+            android:textColor="@color/white"
+            android:id="@+id/bt_cancel"
+            android:text="Annuler"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="15sp"
+            android:padding="5dp"/>
+
+    </LinearLayout>
+
+</ScrollView>

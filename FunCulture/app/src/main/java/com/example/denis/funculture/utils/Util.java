@@ -11,6 +11,9 @@ import android.support.v7.app.AlertDialog;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.denis.funculture.component.User;
+import com.example.denis.funculture.fragments.MyFragment;
+import com.example.denis.funculture.fragments.SeConnecter;
 import com.example.denis.funculture.main.App;
 import com.example.denis.funculture.main.MainActivity;
 
@@ -26,6 +29,8 @@ import java.util.concurrent.TimeUnit;
 //Ici on mettra toutes les fonctions usuelles nécessaires à différents endroits du code
 public class Util {
     private static MainActivity mainActivity;
+    private static MyFragment currentFragment;
+    private static User currentUser;
 
     public static void createDialog(String message)
     {
@@ -161,5 +166,26 @@ public class Util {
 
     public static boolean isEmpty(EditText et) {
         return isEmpty(et.getText().toString());
+    }
+
+    public static void setCurrentUser(User currentUser) {
+        Util.currentUser = currentUser;
+        mainActivity.setCurrentUser(currentUser);
+
+        if(currentFragment instanceof SeConnecter) {
+            ((SeConnecter)currentFragment).checkUserConnected();
+        }
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static MyFragment getCurrentFragment() {
+        return currentFragment;
+    }
+
+    public static void setCurrentFragment(MyFragment currentFragment) {
+        Util.currentFragment = currentFragment;
     }
 }

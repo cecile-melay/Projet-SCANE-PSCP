@@ -54,7 +54,6 @@ myModule.insertPoint = function(lat, lng, posInPath, associatePath, callback) {
   		if (err) {
           console.log('insertPoint error on dbConnexion');
         } else {
-		      console.log(req);
 		      myModule.execQuery(conn, req, callback);
 		  }
   	});
@@ -69,10 +68,23 @@ myModule.insertUser = function(prenom, nom, dateNaiss, lvlSport, ville, mail, pa
   		if (err) {
           console.log('insertUser error on dbConnexion');
         } else {
-		      console.log(req);
 		      myModule.execQuery(conn, req, callback);
 		  }
   	});
+}
+
+myModule.updateUser = function(id, prenom, nom, dateNaiss, lvlSport, ville, mail, pass, fc, pseudo, xp, callback) {
+  req = "UPDATE USERSCANE SET PRENOM = '%s', NOM = '%s', DATENAISS = '%s', SPORTLEVEL = %d, VILLE = '%s', MAIL = '%s', PASS = '%s', FC = %d, XP = %d, PSEUDO = '%s' WHERE ID = %d"
+  req = util.format(req, prenom, nom, dateNaiss, lvlSport, ville, mail, pass, fc, xp, pseudo, id);
+  console.log(req);
+
+  myModule.connect(function(err, conn) {
+      if (err) {
+          console.log('updateUser error on dbConnexion');
+        } else {
+          myModule.execQuery(conn, req, callback);
+      }
+    });
 }
 
 myModule.insertPath = function(id, name, callback) {
@@ -84,7 +96,6 @@ myModule.insertPath = function(id, name, callback) {
       if (err) {
           console.log('insertPath error on dbConnexion');
         } else {
-          console.log(req);
           myModule.execQuery(conn, req, callback);
       }
     });
@@ -99,7 +110,6 @@ myModule.login = function(pseudo, pass, callback) {
       if (err) {
           console.log('login error on dbConnexion');
         } else {
-          console.log(req);
           myModule.execQuery(conn, req, callback);
       }
     });

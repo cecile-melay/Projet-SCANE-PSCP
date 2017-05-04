@@ -30,6 +30,7 @@ import com.example.denis.funculture.component.User;
 import com.example.denis.funculture.fragments.Accueil;
 import com.example.denis.funculture.fragments.ChooseSensorFragment;
 import com.example.denis.funculture.fragments.ChooseTags;
+import com.example.denis.funculture.fragments.EditProfil;
 import com.example.denis.funculture.fragments.MapsFragment;
 import com.example.denis.funculture.fragments.MyFragment;
 import com.example.denis.funculture.fragments.QCMFragment;
@@ -45,12 +46,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final String FRAGMENT_TAG = "fragmentTag";
     private Toolbar toolbar;
     private NavigationView navigationView;
+    private DrawerLayout drawer;
     private FloatingActionButton fab;
     private FloatingActionButton fab2;
     private List<MyFragment> fragments = new ArrayList<>();
     private MyFragment homeFragment;
     private MapsFragment mapFragment;
-    private User currentUser;
 
     //Register Fields
     private EditText etSecondName;
@@ -70,13 +71,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ImageView ivUser;
     private TextView tvUserPseudo;
     private TextView tvUserName;
+    private LinearLayout llUserInfos;
 
     public void setFabClicListener(View.OnClickListener listener) {
         this.fab.setOnClickListener(listener);
     }
 
     public void swithQCMButtonVisibility() {
-        if(this.fab2.getVisibility() == View.VISIBLE) {
+        if (this.fab2.getVisibility() == View.VISIBLE) {
             this.fab2.setVisibility(View.INVISIBLE);
             this.fab.setVisibility(View.INVISIBLE);
         } else {
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -122,6 +124,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.navigationView = (NavigationView) findViewById(R.id.nav_view);
         tvUserPseudo = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tv_user_pseudo);
         tvUserName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.tv_user_name);
+        llUserInfos = (LinearLayout) navigationView.getHeaderView(0).findViewById(R.id.ll_user_infos);
+        llUserInfos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Util.getCurrentUser() == null) {
+                    return;
+                }
+
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                }
+                startFragment(EditProfil.class);
+            }
+        });
         ivUser = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.iv_user);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -154,13 +170,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         String[] sportLevels = new String[]{"Niveau sportif", "Débutant", "Intermédiaire", "Confirmé"};
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this,R.layout.spinner_item,sportLevels);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, sportLevels);
         spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item_drop);
         this.spLevel.setAdapter(spinnerArrayAdapter);
     }
 
     private void validateRegister() {
-        if(Util.isEmpty(etFirstName)
+        if (Util.isEmpty(etFirstName)
                 || Util.isEmpty(etSecondName)
                 || Util.isEmpty(etBirth)
                 || Util.isEmpty(etMail)
@@ -170,9 +186,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 || Util.isEmpty(etPseudo)
                 || spLevel.getSelectedItemPosition() == 0) {
             Util.createDialog(MyResources.MISSING_FIELD_WARNING);
-        }
-        else {
-            currentUser = new User(etFirstName.getText().toString(),
+        } else {
+            Util.setCurrentUser(new User(etFirstName.getText().toString(),
                     etSecondName.getText().toString(),
                     etBirth.getText().toString(),
                     spLevel.getSelectedItemPosition(),
@@ -180,10 +195,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     etVille.getText().toString(),
                     etMail.getText().toString(),
                     etPass.getText().toString(),
-                    etPseudo.getText().toString());
+                    etPseudo.getText().toString()));
 
-            MyServices.getSingleton().insertUser(currentUser);
-            setCurrentUser(currentUser);
+            MyServices.getSingleton().insertUser(Util.getCurrentUser());
             Util.createDialog(MyResources.SUCCESS_REGISTER);
             llRegister.setVisibility(View.GONE);
             isRegisterOpen = false;
@@ -271,6 +285,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void run() {
                 try {
+                    if (llRegister != null) {
+                        llRegister.setVisibility(View.GONE);
+                    }
                     MyFragment fragment = fragmentClass.newInstance();
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                     ft.replace(R.id.fragment_frame, fragment, FRAGMENT_TAG);
@@ -278,10 +295,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     ft.addToBackStack(null);
                     ft.commit();
 
-                    if(fragmentClass == MapsFragment.class) {
+                    if (fragmentClass == MapsFragment.class) {
                         mapFragment = (MapsFragment) fragment;
                     }
-                    if(homeFragment == null) {
+                    if (homeFragment == null) {
                         homeFragment = fragment;
                     } else {
                         fragments.add(fragment);
@@ -302,21 +319,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //Comportement lorsque que l'on ferme un fragment
     public void removeLastFragment() {
-        if(this.fragments.size() < 1) {
+        if (this.fragments.size() < 1) {
             return;
         }
 
         //On le retire de la liste
-        fragments.remove(fragments.size() -1);
+        fragments.remove(fragments.size() - 1);
     }
 
     public void closeCurrentFragment(Fragment fragmentToClose, boolean restoreMap) {
         fragments.remove(fragmentToClose);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        if(restoreMap && mapFragment != null) {
+        if (restoreMap && mapFragment != null) {
+            Util.setCurrentFragment(mapFragment);
             ft.replace(R.id.fragment_frame, mapFragment, FRAGMENT_TAG);
         } else {
+            Util.setCurrentFragment(homeFragment);
             ft.replace(R.id.fragment_frame, homeFragment, FRAGMENT_TAG);
         }
 
@@ -336,19 +355,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             }
 
-            if(isRegisterOpen) {
+            if (isRegisterOpen) {
                 llRegister.setVisibility(View.GONE);
                 isRegisterOpen = false;
                 return false;
             }
 
-            if(fragments.size() > 0) {
+            if (fragments.size() > 0) {
                 return super.onKeyDown(keyCode, event);
             } else {
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
+                        switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
                                 finish();
                                 break;
@@ -369,7 +388,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
         ivUser.setVisibility(View.VISIBLE);
         tvUserPseudo.setText(currentUser.getPseudo());
         tvUserName.setText(currentUser.getPrenom() + " " + currentUser.getNom());

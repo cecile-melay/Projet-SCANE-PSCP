@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.utils.MyResources;
@@ -15,6 +17,8 @@ import com.example.denis.funculture.utils.Util;
  */
 
 public class SeConnecter extends MyFragment {
+    TextView tvConnected;
+    LinearLayout llConnection;
     EditText etPseudo;
     EditText etPass;
     Button btLogin;
@@ -23,6 +27,8 @@ public class SeConnecter extends MyFragment {
     protected void init() {
         etPseudo = (EditText) contentView.findViewById(R.id.et_pseudo);
         etPass = (EditText) contentView.findViewById(R.id.et_pass);
+        tvConnected = (TextView) contentView.findViewById(R.id.tv_connected);
+        llConnection = (LinearLayout) contentView.findViewById(R.id.ll_connection);
         btLogin = (Button) contentView.findViewById(R.id.bt_login);
 
         btLogin.setOnClickListener(new View.OnClickListener() {
@@ -48,5 +54,21 @@ public class SeConnecter extends MyFragment {
     @Override
     protected String getTitle() {
         return MyResources.CONNEXION;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkUserConnected();
+    }
+
+    public void checkUserConnected() {
+        if(Util.getCurrentUser() == null) {
+            llConnection.setVisibility(View.VISIBLE);
+            tvConnected.setVisibility(View.GONE);
+        } else {
+            llConnection.setVisibility(View.GONE);
+            tvConnected.setVisibility(View.VISIBLE);
+        }
     }
 }
