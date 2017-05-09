@@ -98,7 +98,7 @@ public class MyServices {
     }
 
     public void loginUser(String pseudo, String pass) {
-        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable(){
+        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
             @Override
             public void run() {
                 try {
@@ -107,56 +107,56 @@ public class MyServices {
                     JSONArray resultArray = jsonResult.getJSONArray("rows");
                     JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
 
-                    if(resultArray.length() == 0) {
+                    if (resultArray.length() == 0) {
                         Util.createToast(MyResources.LOGIN_FAILED);
                         return;
                     }
 
                     JSONArray userData = resultArray.getJSONArray(0);
                     User currentUser = new User();
-                    for(int i=0; i<userData.length(); i++) {
+                    for (int i = 0; i < userData.length(); i++) {
                         switch (metaDataArray.getJSONObject(i).getString("name")) {
-                            case "ID" :
+                            case "ID":
                                 int id = userData.getInt(i);
                                 currentUser.setId(id);
                                 break;
-                            case "PRENOM" :
+                            case "PRENOM":
                                 String prenom = userData.getString(i);
                                 currentUser.setPrenom(prenom);
                                 break;
-                            case "NOM" :
+                            case "NOM":
                                 String nom = userData.getString(i);
                                 currentUser.setNom(nom);
                                 break;
-                            case "DATENAISS" :
+                            case "DATENAISS":
                                 String dateNaiss = userData.getString(i);
                                 currentUser.setDateNaiss(dateNaiss);
                                 break;
-                            case "SPORTLEVEL" :
+                            case "SPORTLEVEL":
                                 int lvl = userData.getInt(i);
                                 currentUser.setLvlSport(lvl);
                                 break;
-                            case "VILLE" :
+                            case "VILLE":
                                 String ville = userData.getString(i);
                                 currentUser.setVille(ville);
                                 break;
-                            case "MAIL" :
+                            case "MAIL":
                                 String mail = userData.getString(i);
                                 currentUser.setMail(mail);
                                 break;
-                            case "PASS" :
+                            case "PASS":
                                 String pass = userData.getString(i);
                                 currentUser.setPass(pass);
                                 break;
-                            case "FC" :
+                            case "FC":
                                 int fc = userData.getInt(i);
                                 currentUser.setFc(fc);
                                 break;
-                            case "XP" :
+                            case "XP":
                                 int xp = userData.getInt(i);
                                 currentUser.setXp(xp);
                                 break;
-                            case "PSEUDO" :
+                            case "PSEUDO":
                                 String pseudo = userData.getString(i);
                                 currentUser.setPseudo(pseudo);
                                 break;
@@ -180,7 +180,7 @@ public class MyServices {
     }
 
     public void getPointsOfInterest(int id) {
-        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable(){
+        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
             @Override
             public void run() {
                 try {
@@ -189,41 +189,43 @@ public class MyServices {
                     JSONArray resultArray = jsonResult.getJSONArray("rows");
                     JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
 
-                    if(resultArray.length() == 0) {
+                    if (resultArray.length() == 0) {
                         Util.createToast(MyResources.LOGIN_FAILED);
                         return;
                     }
 
-                    JSONArray userData = resultArray.getJSONArray(0);
-                    int id = -1;
-                    int pointId = 0;
-                    String name = "";
-                    String description = "";
-                    String sound = "";
+                    for (int j = 0; j < resultArray.length(); j++) {
+                        JSONArray userData = resultArray.getJSONArray(j);
+                        int id = -1;
+                        int pointId = 0;
+                        String name = "";
+                        String description = "";
+                        String sound = "";
 
-                    for(int i=0; i<userData.length(); i++) {
-                        switch (metaDataArray.getJSONObject(i).getString("name")) {
-                            case "ID" :
-                                id = userData.getInt(i);
-                                break;
-                            case "NAME" :
-                                name = userData.getString(i);
-                                break;
-                            case "DESCRIPTION" :
-                                description = userData.getString(i);
-                                break;
-                            case "ASSOCIATEDSOUND" :
-                                sound = userData.getString(i);
-                                break;
-                            case "ASSOCIATEDPATHPOINT" :
-                                pointId = userData.getInt(i);
-                                break;
+                        for (int i = 0; i < userData.length(); i++) {
+                            switch (metaDataArray.getJSONObject(i).getString("name")) {
+                                case "ID":
+                                    id = userData.getInt(i);
+                                    break;
+                                case "NAME":
+                                    name = userData.getString(i);
+                                    break;
+                                case "DESCRIPTION":
+                                    description = userData.getString(i);
+                                    break;
+                                case "ASSOCIATEDSOUND":
+                                    sound = userData.getString(i);
+                                    break;
+                                case "ASSOCIATEDPATHPOINT":
+                                    pointId = userData.getInt(i);
+                                    break;
+                            }
                         }
-                    }
 
-                    if(id != -1) {
-                        MyPointOfInterest poi = new MyPointOfInterest(id, pointId, name, description, sound);
-                        Util.getCurrentPath().addPointOfInterest(poi);
+                        if (id != -1) {
+                            MyPointOfInterest poi = new MyPointOfInterest(id, pointId, name, description, sound);
+                            Util.getCurrentPath().addPointOfInterest(poi);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -241,7 +243,7 @@ public class MyServices {
     }
 
     public void getPointsOfPath(int id) {
-        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable(){
+        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
             @Override
             public void run() {
                 try {
@@ -250,39 +252,43 @@ public class MyServices {
                     JSONArray resultArray = jsonResult.getJSONArray("rows");
                     JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
 
-                    if(resultArray.length() == 0) {
+                    if (resultArray.length() == 0) {
                         Util.createToast(MyResources.LOGIN_FAILED);
                         return;
                     }
 
-                    JSONArray userData = resultArray.getJSONArray(0);
-                    int id = 0;
-                    int position = -1;
-                    double lat = 0;
-                    double lng = 0;
-                    for(int i=0; i<userData.length(); i++) {
-                        switch (metaDataArray.getJSONObject(i).getString("name")) {
-                            case "LAT" :
-                                lat = userData.getDouble(i);
-                                break;
-                            case "LNG" :
-                                lng = userData.getDouble(i);
-                                break;
-                            case "POSITIONINPATH" :
-                                position = userData.getInt(i);
-                                break;
-                            case "ID" :
-                                id = userData.getInt(i);
-                                break;
+                    for (int j = 0; j < resultArray.length(); j++) {
+                        JSONArray userData = resultArray.getJSONArray(j);
+
+                        int id = 0;
+                        int position = -1;
+                        double lat = 0;
+                        double lng = 0;
+                        for (int i = 0; i < userData.length(); i++) {
+                            switch (metaDataArray.getJSONObject(i).getString("name")) {
+                                case "LAT":
+                                    lat = userData.getDouble(i);
+                                    break;
+                                case "LNG":
+                                    lng = userData.getDouble(i);
+                                    break;
+                                case "POSITIONINPATH":
+                                    position = userData.getInt(i);
+                                    break;
+                                case "ID":
+                                    id = userData.getInt(i);
+                                    break;
+                            }
+                        }
+                        if (position != -1) {
+                            PointOfPath point = new PointOfPath(id);
+                            point.setPosition(position);
+                            point.setLatLng(new LatLng(lat, lng));
+
+                            Util.getCurrentPath().addPoint(point);
                         }
                     }
-                    if(position != -1) {
-                        PointOfPath point = new PointOfPath(id);
-                        point.setPosition(position);
-                        point.setLatLng(new LatLng(lat, lng));
 
-                        Util.getCurrentPath().addPoint(point);
-                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -299,7 +305,7 @@ public class MyServices {
     }
 
     public void getPath(int id) {
-        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable(){
+        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
             @Override
             public void run() {
                 try {
@@ -308,7 +314,7 @@ public class MyServices {
                     JSONArray resultArray = jsonResult.getJSONArray("rows");
                     JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
 
-                    if(resultArray.length() == 0) {
+                    if (resultArray.length() == 0) {
                         Util.createToast(MyResources.LOGIN_FAILED);
                         return;
                     }
@@ -316,19 +322,21 @@ public class MyServices {
                     JSONArray userData = resultArray.getJSONArray(0);
                     int id = -1;
                     String name = "";
-                    for(int i=0; i<userData.length(); i++) {
+                    for (int i = 0; i < userData.length(); i++) {
                         switch (metaDataArray.getJSONObject(i).getString("name")) {
-                            case "ID" :
+                            case "ID":
                                 id = userData.getInt(i);
                                 break;
-                            case "NAME" :
+                            case "NAME":
                                 name = userData.getString(i);
                                 break;
                         }
+                    }
 
-                        if(id != -1) {
-                            Util.setCurrentPath(new Path(id, name));
-                        }
+                    if (id != -1) {
+                        Util.setCurrentPath(new Path(id, name));
+                        getPointsOfPath(id);
+                        getPointsOfInterest(id);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -422,7 +430,7 @@ public class MyServices {
             if (result != null) {
                 Log.d(TAG, result);
 
-                if(onPostExecute != null) {
+                if (onPostExecute != null) {
                     this.onPostExecute.setResult(result);
                     this.onPostExecute.run();
                 }

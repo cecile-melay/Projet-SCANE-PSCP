@@ -79,4 +79,8 @@ public class MyPointOfInterest {
     public void setPictures(List<String> pictures) {
         this.pictures = pictures;
     }
+
+    public String ToString() {
+        return String.format(" PointOfPath id : %d pointId : %d name : %s description : %s ------ ", id, point.getId(), name, description);
+    }
 }

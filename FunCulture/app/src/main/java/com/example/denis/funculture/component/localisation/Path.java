@@ -68,4 +68,18 @@ public class Path {
 
         return null;
     }
+
+    public String ToString() {
+        String s = String.format(" Path id : %d name : %s ------ ", id, name);
+
+        for(PointOfPath pointOfPath : points) {
+            s += pointOfPath.ToString();
+        }
+
+        for(MyPointOfInterest pointOfInterest : pointsOfInterest) {
+            s += pointOfInterest.ToString();
+        }
+
+        return s;
+    }
 }

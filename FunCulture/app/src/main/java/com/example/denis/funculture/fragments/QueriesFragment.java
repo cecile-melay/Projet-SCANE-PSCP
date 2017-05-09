@@ -18,10 +18,13 @@ import com.example.denis.funculture.utils.Util;
 public class QueriesFragment extends MyFragment {
     Button btGetZones;
     Button btPostPoint;
+    Button btLoadPath;
+    Button btPathInfos;
     EditText etLat;
     EditText etLng;
     EditText etPos;
     EditText etPath;
+    EditText etPathId;
 
     @Override
     protected void init() {
@@ -29,11 +32,14 @@ public class QueriesFragment extends MyFragment {
 
         btGetZones = (Button) this.contentView.findViewById(R.id.bt_getZones);
         btPostPoint = (Button) this.contentView.findViewById(R.id.bt_post_point);
+        btLoadPath = (Button) this.contentView.findViewById(R.id.bt_load_path);
+        btPathInfos = (Button) this.contentView.findViewById(R.id.bt_show_path);
 
         etLat = (EditText) this.contentView.findViewById(R.id.et_lat);
         etLng = (EditText) this.contentView.findViewById(R.id.et_lng);
         etPos = (EditText) this.contentView.findViewById(R.id.et_pos);
         etPath = (EditText) this.contentView.findViewById(R.id.et_path);
+        etPathId = (EditText) this.contentView.findViewById(R.id.et_path_id);
 
         btGetZones.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +54,32 @@ public class QueriesFragment extends MyFragment {
                 postPoint();
             }
         });
+
+        btLoadPath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadPath();
+            }
+        });
+
+        btPathInfos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Util.getCurrentPath() != null) {
+                    Util.createDialog(Util.getCurrentPath().ToString());
+                }
+            }
+        });
+    }
+
+    private void loadPath() {
+        if(Util.isEmpty(etPathId)) {
+            Util.createDialog(MyResources.MISSING_FIELD_WARNING);
+        } else {
+            int id = Integer.parseInt(etPathId.getText().toString());
+
+            MyServices.getSingleton().getPath(id);
+        }
     }
 
     private void postPoint() {

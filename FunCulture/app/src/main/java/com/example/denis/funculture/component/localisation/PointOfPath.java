@@ -35,4 +35,8 @@ public class PointOfPath {
     public int getId() {
         return id;
     }
+
+    public String ToString() {
+        return String.format(" PointOfPath id : %d LatLng : %s position : %d ------ ", id, latLng.toString(), position);
+    }
 }
