@@ -69,6 +69,14 @@ public class Path {
         return null;
     }
 
+    public List<PointOfPath> getPoints() {
+        return points;
+    }
+
+    public List<MyPointOfInterest> getPointsOfInterest() {
+        return pointsOfInterest;
+    }
+
     public String ToString() {
         String s = String.format(" Path id : %d name : %s ------ ", id, name);
 

@@ -55,5 +55,6 @@
     <string name="login_failed">Mauvais pseudo ou mot de passe.</string>
     <string name="update_user">Mise à jour informations</string>
     <string name="already_connected">Vous êtes déja connecté.</string>
+    <string name="choose_path">Choisir un parcours</string>
 
 </resources>

@@ -8,8 +8,9 @@ import com.example.denis.funculture.component.User;
 import com.example.denis.funculture.component.localisation.MyPointOfInterest;
 import com.example.denis.funculture.component.localisation.Path;
 import com.example.denis.funculture.component.localisation.PointOfPath;
+import com.example.denis.funculture.fragments.MapsFragment;
+import com.example.denis.funculture.main.MainActivity;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PointOfInterest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -179,7 +180,7 @@ public class MyServices {
         task.execute(url);
     }
 
-    public void getPointsOfInterest(int id) {
+    public void loadPointsOfInterest(int id, final boolean openMapAfterLoad) {
         OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
             @Override
             public void run() {
@@ -227,6 +228,10 @@ public class MyServices {
                             Util.getCurrentPath().addPointOfInterest(poi);
                         }
                     }
+
+                    if(openMapAfterLoad) {
+                        Util.getMainActivity().startFragment(MapsFragment.class);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -242,7 +247,7 @@ public class MyServices {
         task.execute(url);
     }
 
-    public void getPointsOfPath(int id) {
+    public void loadPointsOfPath(int id, final boolean openMapAfterLoad) {
         OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
             @Override
             public void run() {
@@ -288,7 +293,7 @@ public class MyServices {
                             Util.getCurrentPath().addPoint(point);
                         }
                     }
-
+                    loadPointsOfInterest(Util.getCurrentPath().getId(), openMapAfterLoad);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -304,7 +309,7 @@ public class MyServices {
         task.execute(url);
     }
 
-    public void getPath(int id) {
+    public void loadPath(int id, final boolean openMapsAfterLoad) {
         OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
             @Override
             public void run() {
@@ -335,8 +340,7 @@ public class MyServices {
 
                     if (id != -1) {
                         Util.setCurrentPath(new Path(id, name));
-                        getPointsOfPath(id);
-                        getPointsOfInterest(id);
+                        loadPointsOfPath(id, openMapsAfterLoad);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

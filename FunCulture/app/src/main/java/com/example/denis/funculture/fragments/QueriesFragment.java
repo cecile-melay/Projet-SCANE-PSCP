@@ -1,7 +1,5 @@
 package com.example.denis.funculture.fragments;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -78,7 +76,7 @@ public class QueriesFragment extends MyFragment {
         } else {
             int id = Integer.parseInt(etPathId.getText().toString());
 
-            MyServices.getSingleton().getPath(id);
+            MyServices.getSingleton().loadPath(id, true);
         }
     }
 

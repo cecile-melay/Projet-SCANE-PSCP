@@ -31,6 +31,7 @@ import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.example.denis.funculture.R;
+import com.example.denis.funculture.component.localisation.MyPointOfInterest;
 import com.example.denis.funculture.component.localisation.Path;
 import com.example.denis.funculture.component.sensor.MyTimer;
 import com.example.denis.funculture.component.sensor.Pedometer;
@@ -49,6 +50,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PointOfInterest;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -315,240 +317,38 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         } else {
 
             mMap.setMyLocationEnabled(true);
+            PolylineOptions polylineOptions = new PolylineOptions()
+                    .width(25)
+                    .color(Color.BLUE)
+                    .geodesic(true);
 
-            zones.add(new Double[]{43.616909, 7.064413});  // Parking
-            nomsZones.add("Parking");
-            zones.add(new Double[]{43.616824, 7.064771});  // Ping Pong
-            nomsZones.add("Table de ping pong");
-            zones.add(new Double[]{43.624938, 7.050284});  // Bord gauche Newton
-            nomsZones.add("Bord gauche Newton");
-            zones.add(new Double[]{43.624557, 7.050940});  // Passerelle Newton
-            nomsZones.add("Passerelle Newton");
-            zones.add(new Double[]{43.617337, 7.064026});  // Administration MIAGE
-            nomsZones.add("Administration");
-            zones.add(new Double[]{43.721782, 7.252956});  // Entrée Villa Arson
-            nomsZones.add("Entrée Villa Arson");
-            zones.add(new Double[]{43.721575, 7.252669});  // Pinède Villa Arson
-            nomsZones.add("Pinède Villa Arson");
-            zones.add(new Double[]{43.721603, 7.252355});  // Vieux batiment pinède Villa Arson
-            nomsZones.add("Vieux batiment pinède Villa Arson");
-            zones.add(new Double[]{43.721338, 7.252879});  // Pareterre carrelage Villa Arson
-            nomsZones.add("Pareterre carrelage Villa Arson");
-            zones.add(new Double[]{43.721031, 7.252900});  // Passerelle entrée rouge Villa Arson
-            nomsZones.add("Passerelle entrée rouge de la Villa Arson");
-            zones.add(new Double[]{43.721018, 7.253120});  // Gauche rouge Villa Arson
-            nomsZones.add("Gauche rouge de la Villa Arson");
-            zones.add(new Double[]{43.720887, 7.253013});  // Arrière rouge Villa Arson
-            nomsZones.add("Arrière rouge de la Villa Arson");
-            zones.add(new Double[]{43.720976, 7.253480});  // Grand plateau gauche Villa Arson
-            nomsZones.add("Grand plateau gauche Villa Arson");
-            zones.add(new Double[]{43.719751, 7.253722});  // Terrasse finale avec pyramide aztec Villa Arson
-            nomsZones.add("Terrasse finale avec pyramide aztec Villa Arson");
-            // zones route NEWTON
-            zones.add(new Double[]{43.625312, 7.049848});
-            nomsZones.add("Route Newton 1");
-            zones.add(new Double[]{43.625738, 7.050184});
-            nomsZones.add("Route Newton 2");
-            zones.add(new Double[]{43.626132, 7.051074});
-            nomsZones.add("Route Newton 3");
-            zones.add(new Double[]{43.626344, 7.051955});
-            nomsZones.add("Route Newton 4");
+            for(MyPointOfInterest poi : Util.getCurrentPath().getPointsOfInterest()) {
+                zones.add(new Double[]{poi.getPoint().getLatLng().latitude,
+                        poi.getPoint().getLatLng().longitude});
+                nomsZones.add(poi.getName());
+                mMap.addCircle(new CircleOptions()
+                        .center(new LatLng(poi.getPoint().getLatLng().latitude,
+                                poi.getPoint().getLatLng().longitude))
+                        .radius(5)
+                        .strokeColor(Color.BLUE)
+                        .fillColor(Color.RED));
 
-            Circle circle;
-            circle = mMap.addCircle(new CircleOptions() // Parking
-                    .center(new LatLng(43.616909, 7.064413))
-                    .radius(5)
-                    .strokeColor(Color.BLUE)
-                    .fillColor(Color.RED));
-            circle = mMap.addCircle(new CircleOptions() // Ping Pong
-                    .center(new LatLng(43.616824, 7.064771))
-                    .radius(5)
-                    .strokeColor(Color.RED)
-                    .fillColor(Color.BLUE));
-            circle = mMap.addCircle(new CircleOptions() // Bord gauche Newton
-                    .center(new LatLng(43.624938, 7.050284))
-                    .radius(5)
-                    .strokeColor(Color.RED)
-                    .fillColor(Color.GREEN));
-            circle = mMap.addCircle(new CircleOptions() // Passerelle Newton
-                    .center(new LatLng(43.624557, 7.050940))
-                    .radius(5)
-                    .strokeColor(Color.BLUE)
-                    .fillColor(Color.YELLOW));
-            circle = mMap.addCircle(new CircleOptions() // Administration MIAGE
-                    .center(new LatLng(43.617337, 7.064026))
-                    .radius(15)
-                    .strokeColor(Color.BLUE)
-                    .fillColor(Color.WHITE));
-            circle = mMap.addCircle(new CircleOptions() // Entrée Villa Arson
-                    .center(new LatLng(43.721782, 7.252956))
-                    .radius(5)
-                    .strokeColor(Color.BLUE));
-            circle = mMap.addCircle(new CircleOptions() // Pinède Villa Arson
-                    .center(new LatLng(43.721575, 7.252669))
-                    .radius(5)
-                    .strokeColor(Color.GREEN));
-            circle = mMap.addCircle(new CircleOptions() // Vieux batiment pinède Villa Arson
-                    .center(new LatLng(43.721603, 7.252355))
-                    .radius(5)
-                    .strokeColor(Color.RED));
-            circle = mMap.addCircle(new CircleOptions() // Pareterre carrelage Villa Arson
-                    .center(new LatLng(43.721338, 7.252879))
-                    .radius(5)
-                    .strokeColor(Color.YELLOW));
-            circle = mMap.addCircle(new CircleOptions() // Passerelle entrée rouge Villa Arson
-                    .center(new LatLng(43.721031, 7.252900))
-                    .radius(5)
-                    .strokeColor(Color.RED));
-            circle = mMap.addCircle(new CircleOptions() // Gauche rouge Villa Arson
-                    .center(new LatLng(43.721018, 7.253120))
-                    .radius(5)
-                    .strokeColor(Color.WHITE));
-            circle = mMap.addCircle(new CircleOptions() // Arrière rouge Villa Arson
-                    .center(new LatLng(43.720887, 7.253013))
-                    .radius(5)
-                    .strokeColor(Color.BLUE));
-            circle = mMap.addCircle(new CircleOptions() // Grand plateau gauche Villa Arson
-                    .center(new LatLng(43.720976, 7.253480))
-                    .radius(5)
-                    .strokeColor(Color.YELLOW));
-            circle = mMap.addCircle(new CircleOptions() // Terrasse finale avec pyramide aztec Villa Arson
-                    .center(new LatLng(43.719751, 7.253722))
-                    .radius(5)
-                    .strokeColor(Color.GREEN));
+                Marker marker = mMap.addMarker(new MarkerOptions()
+                        .position(poi.getPoint().getLatLng())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                        .title(poi.getName())
+                        .snippet(poi.getDescription())
+                );
+                markers.add(marker);
 
+                //Ajout à la polyline
+                polylineOptions.add(poi.getPoint().getLatLng());
+            }
+
+            //Ajout polyline à la map
+            mMap.addPolyline(polylineOptions);
 
             //addProximityAlerts(zones, nomsZones);
-
-            Marker markerParking = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.616909, 7.064413))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Parking")
-                    .snippet("parking de la formation MIAGE")
-            );
-            Marker markerPingPong = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.616824, 7.064771))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.pingpong))
-                    .title("Ping Pong")
-                    .snippet("Table de ping pong")
-            );
-            Marker markerBordGaucheNewton = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.624938, 7.050284))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Bord gauche Newton")
-                    .snippet("Bord gauche Newton")
-            );
-            Marker markerPasserelleNewton = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.624557, 7.050940))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Passerelle Newton")
-                    .snippet("Passerelle Newton")
-            );
-            Marker markerAdministrationMIAGE = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.617337, 7.064026))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Administration")
-                    .snippet("Administration MIAGE")
-            );
-            Marker markerEntreeVillaArson= mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.721782, 7.252956))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Entrée Villa Arson")
-                    .snippet("Accueil Villa Arson")
-            );
-            Marker markerPinedeVillaArson= mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.721575, 7.252669))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Pinède Villa Arson")
-                    .snippet("Un espace de verdure")
-            );
-            Marker markerAncienBatimentVillaArson= mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.721603, 7.252355))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Vieux batiment pinède Villa Arson")
-                    .snippet("Un ancien batiment dans la pinède de la Villa Arson")
-            );
-            Marker markerPareterreVillaArson= mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.721338, 7.252879))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Pareterre carrelage Villa Arson")
-                    .snippet("Retour à la civilisation")
-            );
-            Marker markerEntreeRougeVillaArson= mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.721031, 7.252900))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Passerelle rouge entrée Villa Arson")
-                    .snippet("L'entrée Rouge")
-            );
-            Marker markerBordGaucheVillaArson= mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.721018, 7.253120))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Bord gauche batiment rouge Villa Arson")
-                    .snippet("Le bord gauche rouge")
-            );
-            Marker markerArriereVillaArson= mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.720887, 7.253013))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Bord arrière batiment rouge de la Villa Arson")
-                    .snippet("L'arrière rouge")
-            );
-            Marker markerGrandPlateauVillaArson= mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.720976, 7.253480))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Grand plateau gauche Villa Arson")
-                    .snippet("Grand espace bétonné")
-            );
-            Marker markerTerrasseFinaleVillaArson= mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.719751, 7.253722))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Terrasse finale avec pyramide aztec Villa Arson")
-                    .snippet("Pyramide aztec")
-            );
-
-            // Test route Newton
-            Marker markerRouteNewton1 = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.625312, 7.049848))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Route Newton 1")
-                    .snippet("Route Newton 1")
-            );
-            Marker markerRouteNewton2 = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.625738, 7.050184))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Route Newton 2")
-                    .snippet("Route Newton 2")
-            );
-            Marker markerRouteNewton3 = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.626132, 7.051074))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Route Newton 3")
-                    .snippet("Route Newton 3")
-            );
-            Marker markerRouteNewton4 = mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(43.626344, 7.051955))
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                    .title("Route Newton 4")
-                    .snippet("Route Newton 4")
-            );
-
-            markers.add(markerParking);
-            markers.add(markerPingPong);
-            markers.add(markerBordGaucheNewton);
-            markers.add(markerPasserelleNewton);
-            markers.add(markerAdministrationMIAGE);
-            markers.add(markerEntreeVillaArson);
-            markers.add(markerPinedeVillaArson);
-            markers.add(markerPareterreVillaArson);
-            markers.add(markerAncienBatimentVillaArson);
-            markers.add(markerEntreeRougeVillaArson);
-            markers.add(markerBordGaucheVillaArson);
-            markers.add(markerArriereVillaArson);
-            markers.add(markerGrandPlateauVillaArson);
-            markers.add(markerTerrasseFinaleVillaArson);
-            markers.add(markerRouteNewton1);
-            markers.add(markerRouteNewton2);
-            markers.add(markerRouteNewton3);
-            markers.add(markerRouteNewton4);
 
             // Use the LocationManager class to obtain GPS locations
             locListener = new MyLocationListener(this, mMap);
@@ -561,28 +361,8 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
                         Toast.LENGTH_SHORT).show();
             }
 
-            // Chemin MIAGE
-            Polyline polygonMIAGE = mMap.addPolyline(new PolylineOptions()
-                    .add(new LatLng(markerRouteNewton1.getPosition().latitude, markerRouteNewton1.getPosition().longitude),
-                            new LatLng(markerRouteNewton2.getPosition().latitude, markerRouteNewton2.getPosition().longitude),
-                            new LatLng(markerRouteNewton3.getPosition().latitude, markerRouteNewton3.getPosition().longitude),
-                            new LatLng(markerRouteNewton4.getPosition().latitude, markerRouteNewton4.getPosition().longitude))
-                    .width(25)
-                    .color(Color.BLUE)
-                    .geodesic(true));
-
-            // Chemin NEWTON
-            Polyline polygonNEWTON = mMap.addPolyline(new PolylineOptions()
-                    .add(new LatLng(43.616824, 7.064771), new LatLng(43.617156, 7.063899), new LatLng(43.617465, 7.063620),
-                            new LatLng(43.617447, 7.063478), new LatLng(43.617005, 7.063652))
-                    .width(25)
-                    .color(Color.BLUE)
-                    .geodesic(true));
-
         }
-/*
-Pour les tests je vais faire que le mode tracking passe à false automatiquement quand on a 10 points dans le chemin
- */
+
         ((MainActivity) getActivity()).setFabClicListener(new View.OnClickListener() {
 
             @Override
@@ -768,7 +548,7 @@ Pour les tests je vais faire que le mode tracking passe à false automatiquement
 
     private int LancerSon(Marker marker) {
         // Check which maker have been clicked or approched
-        int son = 0;
+        int son;
         switch(marker.getTitle()) {
             case ("Ping Pong"):
                 son = R.raw.ping;

@@ -1,16 +1,24 @@
 package com.example.denis.funculture.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.activities.AppareilPhoto;
 import com.example.denis.funculture.activities.QRCodeScanner;
+import com.example.denis.funculture.component.localisation.Path;
 import com.example.denis.funculture.main.MainActivity;
 import com.example.denis.funculture.utils.MyResources;
+import com.example.denis.funculture.utils.MyServices;
+import com.example.denis.funculture.utils.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +78,29 @@ public class ChooseSensorFragment extends MyFragment implements View.OnClickList
                 switch (position) {
                     //GPS
                     case 0 :
-                        ((MainActivity) getActivity()).startFragment(MapsFragment.class);
+                        //TODO : Show list with existing paths
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        LinearLayout layout = new LinearLayout(getActivity());
+                        layout.setOrientation(LinearLayout.VERTICAL);
+
+                        final EditText etId = new EditText(getContext());
+                        etId.setHint("Id du parcours");
+                        etId.setInputType(InputType.TYPE_CLASS_NUMBER);
+                        layout.addView(etId);
+
+                        builder.setView(layout);
+                        builder.setMessage(MyResources.CHOOSE_PATH)
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        if(Util.isEmpty(etId)) {
+                                            Util.createDialog(MyResources.MISSING_FIELD_WARNING);
+                                        } else {
+                                            MyServices.getSingleton()
+                                                    .loadPath(Integer.parseInt(etId.getText().toString()), true);
+                                        }
+                                    }
+                                });
+                        builder.show();
                         break;
 
                     //ACCELEROMETER

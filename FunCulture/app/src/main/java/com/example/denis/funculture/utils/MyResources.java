@@ -24,6 +24,7 @@ public class MyResources {
         public static final String SUCCESS_REGISTER = App.getSingleton().getContext().getString(R.string.success_register);
         public static final String MISSING_FIELD_WARNING = App.getSingleton().getContext().getString(R.string.missing_field_warning);
         public static final String CREATE_PATH = App.getSingleton().getContext().getString(R.string.create_path);
+        public static final String CHOOSE_PATH = App.getSingleton().getContext().getString(R.string.choose_path);
         public static final String ADD_POINT = App.getSingleton().getContext().getString(R.string.add_point);
         public static final String QUERIES = App.getSingleton().getContext().getString(R.string.queries);
         public static final String UPDATE_USER = App.getSingleton().getContext().getString(R.string.update_user);
