@@ -247,6 +247,55 @@ public class MyServices {
         task.execute(url);
     }
 
+    public void loadPaths() {
+        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonResult = new JSONObject(result);
+                    Log.d(TAG, jsonResult.toString());
+                    JSONArray resultArray = jsonResult.getJSONArray("rows");
+                    JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
+
+                    if (resultArray.length() == 0) {
+                        Util.createToast(MyResources.LOGIN_FAILED);
+                        return;
+                    }
+
+                    for (int j = 0; j < resultArray.length(); j++) {
+                        JSONArray userData = resultArray.getJSONArray(j);
+                        int id = -1;
+                        String name = "";
+
+                        for (int i = 0; i < userData.length(); i++) {
+                            switch (metaDataArray.getJSONObject(i).getString("name")) {
+                                case "ID":
+                                    id = userData.getInt(i);
+                                    break;
+                                case "NAME":
+                                    name = userData.getString(i);
+                                    break;
+                            }
+                        }
+
+                        if (id != -1) {
+                            Path path = new Path(id, name);
+                            Util.addPath(path);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        MyTask task = new MyTask(onPostExecuteRunnable);
+        String functionName = "getPaths";
+        String url = getUrl(functionName);
+        Log.d("getPaths url : ", url);
+        task.execute(url);
+    }
+
     public void loadPointsOfPath(int id, final boolean openMapAfterLoad) {
         OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
             @Override

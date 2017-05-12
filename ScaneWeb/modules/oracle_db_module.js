@@ -57,6 +57,18 @@ myModule.getPath = function(id, callback) {
     })
 }
 
+myModule.getPaths = function(callback) {
+  var req = "SELECT * FROM PATH";
+
+    myModule.connect(function(err, conn) {
+      if (err) {
+          console.log('getPaths error on dbConnexion');
+        } else {
+          myModule.execQuery(conn, req, callback);
+        }
+    })
+}
+
 myModule.getPathPoints = function(id, callback) {
   var req = "SELECT * FROM PATHPOINT WHERE ASSOCIATEDPATH = %d";
   req = util.format(req, id);

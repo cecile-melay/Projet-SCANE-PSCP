@@ -32,12 +32,12 @@ public class ChooseSensorFragment extends MyFragment implements View.OnClickList
     private Button testButton;
 
     @Override
-    protected int getLayoutId(){
+    protected int getLayoutId() {
         return R.layout.choose_sensor_fragment;
     }
 
     @Override
-    protected String getTitle(){
+    protected String getTitle() {
         return MyResources.CHOOSE_SENSOR;
     }
 
@@ -52,7 +52,7 @@ public class ChooseSensorFragment extends MyFragment implements View.OnClickList
 
     //ici on ajoute les capteurs au spinner
     private void fillSensorSpinner() {
-        List<String> spinnerArray =  new ArrayList<>();
+        List<String> spinnerArray = new ArrayList<>();
         spinnerArray.add(MyResources.GPS);
         spinnerArray.add(MyResources.ACCELEROMETER);
         spinnerArray.add(MyResources.PEDOMETER);
@@ -70,56 +70,63 @@ public class ChooseSensorFragment extends MyFragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        if(v == this.testButton) {
-            if(senssorSpinner != null && senssorSpinner.getSelectedItem() != null) {
+        if (v == this.testButton) {
+            if (senssorSpinner != null && senssorSpinner.getSelectedItem() != null) {
                 int position = senssorSpinner.getSelectedItemPosition();
                 Intent intent;
 
                 switch (position) {
                     //GPS
-                    case 0 :
+                    case 0:
                         //TODO : Show list with existing paths
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         LinearLayout layout = new LinearLayout(getActivity());
                         layout.setOrientation(LinearLayout.VERTICAL);
 
-                        final EditText etId = new EditText(getContext());
-                        etId.setHint("Id du parcours");
-                        etId.setInputType(InputType.TYPE_CLASS_NUMBER);
-                        layout.addView(etId);
+                        ArrayList<String> spinnerArray = new ArrayList<>();
+
+                        for (int i = 0; i < Util.getPaths().size(); i++) {
+                            spinnerArray.add(Util.getPaths().get(i).getName());
+                        }
+
+                        final Spinner spinner = new Spinner(getActivity());
+                        ArrayAdapter<String> spinnerArrayAdapter =
+                                new ArrayAdapter<>(getActivity(),
+                                        android.R.layout.simple_spinner_dropdown_item,
+                                        spinnerArray);
+                        spinner.setAdapter(spinnerArrayAdapter);
+                        layout.addView(spinner);
 
                         builder.setView(layout);
                         builder.setMessage(MyResources.CHOOSE_PATH)
                                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        if(Util.isEmpty(etId)) {
-                                            Util.createDialog(MyResources.MISSING_FIELD_WARNING);
-                                        } else {
-                                            MyServices.getSingleton()
-                                                    .loadPath(Integer.parseInt(etId.getText().toString()), true);
-                                        }
+
+                                        int pathId =
+                                                Util.getPaths().get(spinner.getSelectedItemPosition()).getId();
+                                        MyServices.getSingleton().loadPath(pathId, true);
                                     }
                                 });
                         builder.show();
                         break;
 
                     //ACCELEROMETER
-                    case 1 :
+                    case 1:
                         ((MainActivity) getActivity()).startFragment(AccelerometerFragment.class);
                         break;
 
                     //PEDOMETER
-                    case 2 :
+                    case 2:
                         ((MainActivity) getActivity()).startFragment(PedometerFragment.class);
                         break;
 
                     //ACTIVITY SERVICE
-                    case 3 :
+                    case 3:
                         ((MainActivity) getActivity()).startFragment(RecognitionActivityFragment.class);
                         break;
 
                     //Appareil Photo
-                    case 4 :
+                    case 4:
                         Intent cameraIntent = new Intent(getActivity(), AppareilPhoto.class);
                         startActivity(cameraIntent);
                         break;

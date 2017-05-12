@@ -142,8 +142,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         init();
-
-        Util.setMainActivity(this);
         Util.checkPrivileges(this, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
         startFragment(ChooseSensorFragment.class);
         initRegisterFields();
@@ -277,6 +275,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //ici on fera toutes les actions nécessaires au démarrage de l'app
     private void init() {
         App.getSingleton().setContext(this);
+        Util.setMainActivity(this);
+        MyServices.getSingleton().loadPaths();
     }
 
 

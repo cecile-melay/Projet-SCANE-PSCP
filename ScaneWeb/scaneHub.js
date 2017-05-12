@@ -154,6 +154,21 @@ moduleDb.getPath(id, function(err, result) {
 });
 });
 
+app.get('/getPaths', function (req, res) {
+console.log("/getPaths");
+
+moduleDb.getPaths(function(err, result) {
+  if (err) {
+      console.log('getPaths error on dbQuery : ' + err);
+      res.send('getPaths error on dbQuery : ' + err);
+    } else {
+      console.log('success');
+      console.log(result);
+      res.send(result);
+    }
+});
+});
+
 app.get('/getPathPoints/:id', function (req, res) {
 console.log("/getPath");
 

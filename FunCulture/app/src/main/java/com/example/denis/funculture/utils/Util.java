@@ -21,8 +21,10 @@ import com.example.denis.funculture.main.App;
 import com.example.denis.funculture.main.MainActivity;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -35,6 +37,7 @@ public class Util {
     private static MyFragment currentFragment;
     private static User currentUser;
     private static Path currentPath;
+    private static List<Path> paths = new ArrayList<>();
 
     public static void createDialog(String message)
     {
@@ -210,5 +213,13 @@ public class Util {
 
     public static Path getCurrentPath() {
         return currentPath;
+    }
+
+    public static List<Path> getPaths() {
+        return paths;
+    }
+
+    public static void addPath(Path path) {
+        Util.paths.add(path);
     }
 }
