@@ -1,5 +1,6 @@
 package com.example.denis.funculture.component.localisation;
 
+import com.example.denis.funculture.component.qcm.QCM;
 import com.example.denis.funculture.utils.MyServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PointOfInterest;
@@ -14,6 +15,7 @@ import java.util.List;
 public class Path {
     private int id;
     private String name;
+    private QCM qcm;
     private List<PointOfPath> points;
     private List<MyPointOfInterest> pointsOfInterest;
 
@@ -89,5 +91,13 @@ public class Path {
         }
 
         return s;
+    }
+
+    public void setQCM(QCM qcm) {
+        this.qcm = qcm;
+    }
+
+    public QCM getQcm() {
+        return qcm;
     }
 }

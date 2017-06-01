@@ -154,6 +154,74 @@ moduleDb.getPath(id, function(err, result) {
 });
 });
 
+app.get('/getQcm/:id', function (req, res) {
+console.log("/getQcm");
+
+var id = req.params.id;
+
+moduleDb.getQCM(id, function(err, result) {
+  if (err) {
+      console.log('getQcm error on dbQuery : ' + err);
+      res.send('getQcm error on dbQuery : ' + err);
+    } else {
+      console.log('success');
+      console.log(result);
+      res.send(result);
+    }
+});
+});
+
+app.get('/getQuestions/:idQcm', function (req, res) {
+console.log("/getQcm");
+
+var id = req.params.idQcm;
+
+moduleDb.getQuestions(id, function(err, result) {
+  if (err) {
+      console.log('getQuestions error on dbQuery : ' + err);
+      res.send('getQuestions error on dbQuery : ' + err);
+    } else {
+      console.log('success');
+      console.log(result);
+      res.send(result);
+    }
+});
+});
+
+app.get('/getAnswers/:idQuest', function (req, res) {
+console.log("/getAnswers");
+
+var id = req.params.idQuest;
+
+moduleDb.getAnswers(id, function(err, result) {
+  if (err) {
+      console.log('getAnswers error on dbQuery : ' + err);
+      res.send('getAnswers error on dbQuery : ' + err);
+    } else {
+      console.log('success');
+      console.log(result);
+      res.send(result);
+    }
+});
+});
+
+app.get('/getEpreuve/:id', function (req, res) {
+console.log("/getEpreuve");
+
+var id = req.params.id;
+
+moduleDb.getEpreuve(id, function(err, result) {
+  if (err) {
+      console.log('getEpreuve error on dbQuery : ' + err);
+      res.send('getEpreuve error on dbQuery : ' + err);
+    } else {
+      console.log('success');
+      console.log(result);
+      res.send(result);
+    }
+});
+});
+
 app.get('/getPaths', function (req, res) {
 console.log("/getPaths");
 

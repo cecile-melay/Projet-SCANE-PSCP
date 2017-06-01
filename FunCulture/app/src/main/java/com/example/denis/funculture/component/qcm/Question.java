@@ -8,6 +8,7 @@ import java.util.List;
  */
 
 public class Question {
+    int id;
     private String category;
     private String label;
     private List<Answer> answers;
@@ -40,5 +41,17 @@ public class Question {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
     }
 }

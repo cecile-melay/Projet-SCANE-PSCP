@@ -2,6 +2,7 @@ package com.example.denis.funculture.component.localisation;
 
 import android.graphics.Point;
 
+import com.example.denis.funculture.component.Epreuve;
 import com.example.denis.funculture.utils.Util;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -18,6 +19,7 @@ public class MyPointOfInterest {
     private String name;
     private String description;
     private String sound;
+    private Epreuve epreuve;
     private List<String> pictures;
 
     public MyPointOfInterest(int id, LatLng point, String name) {
@@ -82,5 +84,13 @@ public class MyPointOfInterest {
 
     public String ToString() {
         return String.format(" PointOfPath id : %d pointId : %d name : %s description : %s ------ ", id, point.getId(), name, description);
+    }
+
+    public void setEpreuve(Epreuve epreuve) {
+        this.epreuve = epreuve;
+    }
+
+    public Epreuve getEpreuve() {
+        return epreuve;
     }
 }

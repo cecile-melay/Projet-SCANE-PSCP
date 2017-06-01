@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.component.localisation.MyPointOfInterest;
 import com.example.denis.funculture.component.localisation.Path;
+import com.example.denis.funculture.component.localisation.PointOfPath;
 import com.example.denis.funculture.component.sensor.MyTimer;
 import com.example.denis.funculture.component.sensor.Pedometer;
 import com.example.denis.funculture.component.sensor.geoloc.AlertReceiver;
@@ -72,7 +73,6 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
     private double startTime = 0;
     private double finalTime = 0;
-    private int nbPointChemin = 10;
 
     private Handler myHandler = new Handler();
     private int forwardTime = 5000;
@@ -312,10 +312,9 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         MapsFragment ma = this;
         mMap.setOnMarkerClickListener(this);
         // Check Geolocation permission
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Util.checkPrivileges(getActivity(), MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
-        } else {
-
+//        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            Util.checkPrivileges(getActivity(), MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
+//        } else {
             mMap.setMyLocationEnabled(true);
             PolylineOptions polylineOptions = new PolylineOptions()
                     .width(25)
@@ -340,18 +339,19 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
                         .snippet(poi.getDescription())
                 );
                 markers.add(marker);
-
-                //Ajout à la polyline
-                polylineOptions.add(poi.getPoint().getLatLng());
             }
 
+            for(PointOfPath point : Util.getCurrentPath().getPoints()) {
+                //Ajout à la polyline
+                polylineOptions.add(point.getLatLng());
+            }
             //Ajout polyline à la map
-            mMap.addPolyline(polylineOptions);
+                mMap.addPolyline(polylineOptions);
 
             //addProximityAlerts(zones, nomsZones);
 
             // Use the LocationManager class to obtain GPS locations
-            locListener = new MyLocationListener(this, mMap);
+                locListener = new MyLocationListener(this, mMap);
             locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
             locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
             locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListener);
@@ -361,7 +361,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
                         Toast.LENGTH_SHORT).show();
             }
 
-        }
+//        }
 
         ((MainActivity) getActivity()).setFabClicListener(new View.OnClickListener() {
 

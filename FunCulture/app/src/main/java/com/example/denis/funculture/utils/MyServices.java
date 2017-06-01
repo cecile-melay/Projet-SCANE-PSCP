@@ -4,13 +4,18 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.denis.funculture.component.Epreuve;
 import com.example.denis.funculture.component.User;
 import com.example.denis.funculture.component.localisation.MyPointOfInterest;
 import com.example.denis.funculture.component.localisation.Path;
 import com.example.denis.funculture.component.localisation.PointOfPath;
+import com.example.denis.funculture.component.qcm.Answer;
+import com.example.denis.funculture.component.qcm.QCM;
+import com.example.denis.funculture.component.qcm.Question;
 import com.example.denis.funculture.fragments.MapsFragment;
 import com.example.denis.funculture.main.MainActivity;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PointOfInterest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -225,6 +230,7 @@ public class MyServices {
 
                         if (id != -1) {
                             MyPointOfInterest poi = new MyPointOfInterest(id, pointId, name, description, sound);
+                            loadEpreuve(poi);
                             Util.getCurrentPath().addPointOfInterest(poi);
                         }
                     }
@@ -357,6 +363,241 @@ public class MyServices {
         Log.d("getPathPoints url : ", url);
         task.execute(url);
     }
+    public void loadQCM(final Path path) {
+        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonResult = new JSONObject(result);
+                    Log.d(TAG, jsonResult.toString());
+                    JSONArray resultArray = jsonResult.getJSONArray("rows");
+                    JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
+
+                    if (resultArray.length() == 0) {
+                        Util.createToast(MyResources.LOGIN_FAILED);
+                        return;
+                    }
+
+                    for (int j = 0; j < resultArray.length(); j++) {
+                        JSONArray userData = resultArray.getJSONArray(j);
+
+                        int id = -1;
+                        int idTag = 0;
+                        String name = "";
+                        int xp = 0;
+                        for (int i = 0; i < userData.length(); i++) {
+                            switch (metaDataArray.getJSONObject(i).getString("name")) {
+                                case "NAME":
+                                    name = userData.getString(i);
+                                    break;
+                                case "IDTAG":
+                                    idTag = userData.getInt(i);
+                                    break;
+                                case "XP":
+                                    xp = userData.getInt(i);
+                                    break;
+                                case "ID":
+                                    id = userData.getInt(i);
+                                    break;
+                            }
+                        }
+                        if (id != -1 && name != null) {
+                            QCM qcm = new QCM(id, name);
+                            qcm.setXp(xp);
+                            qcm.setIdTag(idTag);
+
+                            path.setQCM(qcm);
+                            loadQCMQuestions(qcm);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        MyTask task = new MyTask(onPostExecuteRunnable);
+        String functionName = "getQcm";
+        String url = getUrl(functionName);
+        url = addParamToUrl(url, Integer.toString(path.getId()));
+
+        Log.d("getQcm url : ", url);
+        task.execute(url);
+    }
+
+    private void loadQCMQuestions(final QCM qcm) {
+        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonResult = new JSONObject(result);
+                    Log.d(TAG, jsonResult.toString());
+                    JSONArray resultArray = jsonResult.getJSONArray("rows");
+                    JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
+
+                    if (resultArray.length() == 0) {
+                        Util.createToast(MyResources.LOGIN_FAILED);
+                        return;
+                    }
+
+                    for (int j = 0; j < resultArray.length(); j++) {
+                        JSONArray userData = resultArray.getJSONArray(j);
+
+                        int id = -1;
+                        String category = "";
+                        String name = "";
+                        int xp = 0;
+                        for (int i = 0; i < userData.length(); i++) {
+                            switch (metaDataArray.getJSONObject(i).getString("name")) {
+                                case "NAME":
+                                    name = userData.getString(i);
+                                    break;
+                                case "CATEGORY":
+                                    category = userData.getString(i);
+                                    break;
+                                case "ID":
+                                    id = userData.getInt(i);
+                                    break;
+                            }
+                        }
+                        if (id != -1 && name != null) {
+                            Question quest = new Question(category, name);
+                            quest.setId(id);
+                            qcm.addQuestion(quest);
+                            loadAnswers(quest);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        MyTask task = new MyTask(onPostExecuteRunnable);
+        String functionName = "getQuestions";
+        String url = getUrl(functionName);
+        url = addParamToUrl(url, Integer.toString(qcm.getId()));
+
+        Log.d("getQuestions url : ", url);
+        task.execute(url);
+    }
+
+    private void loadAnswers(final Question quest) {
+        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonResult = new JSONObject(result);
+                    Log.d(TAG, jsonResult.toString());
+                    JSONArray resultArray = jsonResult.getJSONArray("rows");
+                    JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
+
+                    if (resultArray.length() == 0) {
+                        Util.createToast(MyResources.LOGIN_FAILED);
+                        return;
+                    }
+
+                    for (int j = 0; j < resultArray.length(); j++) {
+                        JSONArray userData = resultArray.getJSONArray(j);
+
+                        String isTrue = "";
+                        String name = "";
+                        for (int i = 0; i < userData.length(); i++) {
+                            switch (metaDataArray.getJSONObject(i).getString("name")) {
+                                case "NAME":
+                                    name = userData.getString(i);
+                                    break;
+                                case "ISTRUE":
+                                    isTrue = userData.getString(i);
+                                    break;
+                            }
+                        }
+                        if (name != null) {
+                            boolean bool = false;
+                            if(isTrue.equals("Y")) {
+                                bool = true;
+                            }
+                            Answer answer = new Answer(j, false, "" + j, name, bool);
+                            quest.addAnswer(answer);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        MyTask task = new MyTask(onPostExecuteRunnable);
+        String functionName = "getAnswers";
+        String url = getUrl(functionName);
+        url = addParamToUrl(url, Integer.toString(quest.getId()));
+
+        Log.d("getAnswers url : ", url);
+        task.execute(url);
+    }
+
+    private void loadEpreuve(final MyPointOfInterest poi) {
+        OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonResult = new JSONObject(result);
+                    Log.d(TAG, jsonResult.toString());
+                    JSONArray resultArray = jsonResult.getJSONArray("rows");
+                    JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
+
+                    if (resultArray.length() == 0) {
+                        Util.createToast(MyResources.LOGIN_FAILED);
+                        return;
+                    }
+
+                    for (int j = 0; j < resultArray.length(); j++) {
+                        JSONArray userData = resultArray.getJSONArray(j);
+
+                        int id = -1;
+                        String url = "";
+                        String name = "";
+                        int xp = 0;
+                        for (int i = 0; i < userData.length(); i++) {
+                            switch (metaDataArray.getJSONObject(i).getString("name")) {
+                                case "ID":
+                                    id = userData.getInt(i);
+                                    break;
+                                case "URL":
+                                    url = userData.getString(i);
+                                    break;
+                                case "NAME":
+                                    name = userData.getString(i);
+                                    break;
+                                case "XP":
+                                    xp = userData.getInt(i);
+                                    break;
+                            }
+                        }
+                        if (name != null) {
+                            Epreuve epreuve = new Epreuve();
+                            epreuve.setName(name);
+                            epreuve.setId(id);
+                            epreuve.setXp(xp);
+                            epreuve.setUrl(url);
+
+                            poi.setEpreuve(epreuve);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        MyTask task = new MyTask(onPostExecuteRunnable);
+        String functionName = "getEpreuve";
+        String url = getUrl(functionName);
+        url = addParamToUrl(url, Integer.toString(poi.getId()));
+
+        Log.d("getEpreuve url : ", url);
+        task.execute(url);
+    }
 
     public void loadPath(int id, final boolean openMapsAfterLoad) {
         OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
@@ -388,7 +629,9 @@ public class MyServices {
                     }
 
                     if (id != -1) {
-                        Util.setCurrentPath(new Path(id, name));
+                        Path path = new Path(id, name);
+                        Util.setCurrentPath(path);
+                        loadQCM(path);
                         loadPointsOfPath(id, openMapsAfterLoad);
                     }
                 } catch (JSONException e) {

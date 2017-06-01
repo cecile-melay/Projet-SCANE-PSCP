@@ -56,5 +56,6 @@
     <string name="update_user">Mise à jour informations</string>
     <string name="already_connected">Vous êtes déja connecté.</string>
     <string name="choose_path">Choisir un parcours</string>
+    <string name="webview">webview</string>
 
 </resources>

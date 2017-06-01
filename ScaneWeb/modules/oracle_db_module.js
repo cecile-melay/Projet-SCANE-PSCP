@@ -82,6 +82,59 @@ myModule.getPathPoints = function(id, callback) {
     })
 }
 
+myModule.getQCM = function(idPath, callback) {
+  var req = "SELECT * FROM QCM WHERE IDPATH = %d";
+  req = util.format(req, idPath);
+
+    myModule.connect(function(err, conn) {
+      if (err) {
+          console.log('getQCM error on dbConnexion');
+        } else {
+          myModule.execQuery(conn, req, callback);
+        }
+    })
+}
+
+
+myModule.getQuestions = function(idQcm, callback) {
+  var req = "SELECT * FROM QUESTION WHERE IDQCM = %d";
+  req = util.format(req, idQcm);
+
+    myModule.connect(function(err, conn) {
+      if (err) {
+          console.log('getQuestions error on dbConnexion');
+        } else {
+          myModule.execQuery(conn, req, callback);
+        }
+    })
+}
+
+myModule.getAnswers = function(idQuest, callback) {
+  var req = "SELECT * FROM ANSWER WHERE IDQUESTION = %d";
+  req = util.format(req, idQuest);
+
+    myModule.connect(function(err, conn) {
+      if (err) {
+          console.log('getAnswers error on dbConnexion');
+        } else {
+          myModule.execQuery(conn, req, callback);
+        }
+    })
+}
+
+myModule.getEpreuve = function(idPoi, callback) {
+  var req = "SELECT * FROM EPREUVE WHERE IDPOI = %d";
+  req = util.format(req, idPoi);
+
+    myModule.connect(function(err, conn) {
+      if (err) {
+          console.log('getEpreuve error on dbConnexion');
+        } else {
+          myModule.execQuery(conn, req, callback);
+        }
+    })
+}
+
 myModule.getPathPointsOfInterest = function(id, callback) {
   var req = "SELECT * FROM POINTSOFINTEREST INNER JOIN PATHPOINT ON POINTSOFINTEREST.ASSOCIATEDPATHPOINT = PATHPOINT.ID WHERE PATHPOINT.ASSOCIATEDPATH = %d";
   req = util.format(req, id);

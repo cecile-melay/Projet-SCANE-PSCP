@@ -27,6 +27,7 @@ public class MyResources {
         public static final String CHOOSE_PATH = App.getSingleton().getContext().getString(R.string.choose_path);
         public static final String ADD_POINT = App.getSingleton().getContext().getString(R.string.add_point);
         public static final String QUERIES = App.getSingleton().getContext().getString(R.string.queries);
+        public static final String WEBVIEW = App.getSingleton().getContext().getString(R.string.webview);
         public static final String UPDATE_USER = App.getSingleton().getContext().getString(R.string.update_user);
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;

@@ -61,6 +61,7 @@ public class ChooseSensorFragment extends MyFragment implements View.OnClickList
         spinnerArray.add(MyResources.QRCODE);
         spinnerArray.add(MyResources.QCM);
         spinnerArray.add(MyResources.QUERIES);
+        spinnerArray.add(MyResources.WEBVIEW);
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -145,6 +146,11 @@ public class ChooseSensorFragment extends MyFragment implements View.OnClickList
                     //Queries
                     case 7:
                         ((MainActivity) getActivity()).startFragment(QueriesFragment.class);
+                        break;
+
+                    //Webview
+                    case 8:
+                        ((MainActivity) getActivity()).startFragment(WebFragment.class);
                         break;
                 }
             }
