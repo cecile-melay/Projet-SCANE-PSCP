@@ -3,18 +3,15 @@ package com.example.denis.funculture.fragments;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.activities.AppareilPhoto;
 import com.example.denis.funculture.activities.QRCodeScanner;
-import com.example.denis.funculture.component.localisation.Path;
 import com.example.denis.funculture.main.MainActivity;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.MyServices;
@@ -150,7 +147,7 @@ public class ChooseSensorFragment extends MyFragment implements View.OnClickList
 
                     //Webview
                     case 8:
-                        ((MainActivity) getActivity()).startFragment(WebFragment.class);
+                        ((MainActivity) getActivity()).startFragment(EpreuveFragment.class);
                         break;
                 }
             }

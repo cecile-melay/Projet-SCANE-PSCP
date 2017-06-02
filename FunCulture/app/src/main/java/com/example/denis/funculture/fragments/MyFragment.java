@@ -37,7 +37,7 @@ public abstract class MyFragment extends Fragment {
 
     @Override
     public void onStop() {
-        Util.getMainActivity().removeLastFragment();
+        //Util.getMainActivity().removeLastFragment();
         super.onStop();
     }
 

@@ -22,10 +22,6 @@ public class MyPointOfInterest {
     private Epreuve epreuve;
     private List<String> pictures;
 
-    public MyPointOfInterest(int id, LatLng point, String name) {
-        this.pictures = new ArrayList<>();
-    }
-
     public MyPointOfInterest(int id, int pointId, String name, String description, String sound) {
         this.id = id;
         this.name = name;
@@ -36,10 +32,6 @@ public class MyPointOfInterest {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public PointOfPath getPoint() {
@@ -83,7 +75,7 @@ public class MyPointOfInterest {
     }
 
     public String ToString() {
-        return String.format(" PointOfPath id : %d pointId : %d name : %s description : %s ------ ", id, point.getId(), name, description);
+        return String.format(" PointOfInterest id : %d pointId : %d name : %s description : %s ------ ", id, point.getId(), name, description);
     }
 
     public void setEpreuve(Epreuve epreuve) {

@@ -41,7 +41,7 @@ public class SeConnecter extends MyFragment {
                     String pseudo = etPseudo.getText().toString();
                     String pass = etPass.getText().toString();
 
-                    MyServices.getSingleton().loginUser(pseudo, pass);
+                    MyServices.getSingleton().loginUser(pseudo, pass, true);
                 }
             }
         });

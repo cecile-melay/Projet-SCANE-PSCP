@@ -13,9 +13,7 @@ import com.example.denis.funculture.component.qcm.Answer;
 import com.example.denis.funculture.component.qcm.QCM;
 import com.example.denis.funculture.component.qcm.Question;
 import com.example.denis.funculture.fragments.MapsFragment;
-import com.example.denis.funculture.main.MainActivity;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PointOfInterest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -103,7 +101,7 @@ public class MyServices {
         task.execute(url);
     }
 
-    public void loginUser(String pseudo, String pass) {
+    public void loginUser(String pseudo, String pass, final boolean showFailedMessage) {
         OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
             @Override
             public void run() {
@@ -113,7 +111,7 @@ public class MyServices {
                     JSONArray resultArray = jsonResult.getJSONArray("rows");
                     JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
 
-                    if (resultArray.length() == 0) {
+                    if (resultArray.length() == 0 && showFailedMessage) {
                         Util.createToast(MyResources.LOGIN_FAILED);
                         return;
                     }
@@ -185,7 +183,7 @@ public class MyServices {
         task.execute(url);
     }
 
-    public void loadPointsOfInterest(int id, final boolean openMapAfterLoad) {
+    public void loadPointsOfInterest(int pathId, final boolean openMapAfterLoad) {
         OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
             @Override
             public void run() {
@@ -195,15 +193,10 @@ public class MyServices {
                     JSONArray resultArray = jsonResult.getJSONArray("rows");
                     JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
 
-                    if (resultArray.length() == 0) {
-                        Util.createToast(MyResources.LOGIN_FAILED);
-                        return;
-                    }
-
                     for (int j = 0; j < resultArray.length(); j++) {
                         JSONArray userData = resultArray.getJSONArray(j);
-                        int id = -1;
-                        int pointId = 0;
+                        int point = 0;
+                        int poiId = -1;
                         String name = "";
                         String description = "";
                         String sound = "";
@@ -211,7 +204,9 @@ public class MyServices {
                         for (int i = 0; i < userData.length(); i++) {
                             switch (metaDataArray.getJSONObject(i).getString("name")) {
                                 case "ID":
-                                    id = userData.getInt(i);
+                                    if(poiId == -1) {
+                                        poiId = userData.getInt(i);
+                                    }
                                     break;
                                 case "NAME":
                                     name = userData.getString(i);
@@ -223,13 +218,15 @@ public class MyServices {
                                     sound = userData.getString(i);
                                     break;
                                 case "ASSOCIATEDPATHPOINT":
-                                    pointId = userData.getInt(i);
+                                    point = userData.getInt(i);
                                     break;
                             }
                         }
 
-                        if (id != -1) {
-                            MyPointOfInterest poi = new MyPointOfInterest(id, pointId, name, description, sound);
+                        if (poiId != -1) {
+                            Log.d(TAG, "load POI : " + poiId);
+                            MyPointOfInterest poi = new MyPointOfInterest(poiId, point, name, description, sound);
+                            Log.d(TAG, "load POI : " + poi.ToString());
                             loadEpreuve(poi);
                             Util.getCurrentPath().addPointOfInterest(poi);
                         }
@@ -247,7 +244,7 @@ public class MyServices {
         MyTask task = new MyTask(onPostExecuteRunnable);
         String functionName = "getPathPointsOfInterest";
         String url = getUrl(functionName);
-        url = addParamToUrl(url, Integer.toString(id));
+        url = addParamToUrl(url, Integer.toString(pathId));
 
         Log.d("PointsOfInterest url : ", url);
         task.execute(url);
@@ -262,11 +259,6 @@ public class MyServices {
                     Log.d(TAG, jsonResult.toString());
                     JSONArray resultArray = jsonResult.getJSONArray("rows");
                     JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
-
-                    if (resultArray.length() == 0) {
-                        Util.createToast(MyResources.LOGIN_FAILED);
-                        return;
-                    }
 
                     for (int j = 0; j < resultArray.length(); j++) {
                         JSONArray userData = resultArray.getJSONArray(j);
@@ -311,11 +303,6 @@ public class MyServices {
                     Log.d(TAG, jsonResult.toString());
                     JSONArray resultArray = jsonResult.getJSONArray("rows");
                     JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
-
-                    if (resultArray.length() == 0) {
-                        Util.createToast(MyResources.LOGIN_FAILED);
-                        return;
-                    }
 
                     for (int j = 0; j < resultArray.length(); j++) {
                         JSONArray userData = resultArray.getJSONArray(j);
@@ -363,6 +350,7 @@ public class MyServices {
         Log.d("getPathPoints url : ", url);
         task.execute(url);
     }
+
     public void loadQCM(final Path path) {
         OnPostExecuteRunnable onPostExecuteRunnable = new OnPostExecuteRunnable() {
             @Override
@@ -372,11 +360,6 @@ public class MyServices {
                     Log.d(TAG, jsonResult.toString());
                     JSONArray resultArray = jsonResult.getJSONArray("rows");
                     JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
-
-                    if (resultArray.length() == 0) {
-                        Util.createToast(MyResources.LOGIN_FAILED);
-                        return;
-                    }
 
                     for (int j = 0; j < resultArray.length(); j++) {
                         JSONArray userData = resultArray.getJSONArray(j);
@@ -435,12 +418,7 @@ public class MyServices {
                     JSONArray resultArray = jsonResult.getJSONArray("rows");
                     JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
 
-                    if (resultArray.length() == 0) {
-                        Util.createToast(MyResources.LOGIN_FAILED);
-                        return;
-                    }
-
-                    for (int j = 0; j < resultArray.length(); j++) {
+                for (int j = 0; j < resultArray.length(); j++) {
                         JSONArray userData = resultArray.getJSONArray(j);
 
                         int id = -1;
@@ -492,11 +470,6 @@ public class MyServices {
                     JSONArray resultArray = jsonResult.getJSONArray("rows");
                     JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
 
-                    if (resultArray.length() == 0) {
-                        Util.createToast(MyResources.LOGIN_FAILED);
-                        return;
-                    }
-
                     for (int j = 0; j < resultArray.length(); j++) {
                         JSONArray userData = resultArray.getJSONArray(j);
 
@@ -545,11 +518,6 @@ public class MyServices {
                     Log.d(TAG, jsonResult.toString());
                     JSONArray resultArray = jsonResult.getJSONArray("rows");
                     JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
-
-                    if (resultArray.length() == 0) {
-                        Util.createToast(MyResources.LOGIN_FAILED);
-                        return;
-                    }
 
                     for (int j = 0; j < resultArray.length(); j++) {
                         JSONArray userData = resultArray.getJSONArray(j);
@@ -608,11 +576,6 @@ public class MyServices {
                     Log.d(TAG, jsonResult.toString());
                     JSONArray resultArray = jsonResult.getJSONArray("rows");
                     JSONArray metaDataArray = jsonResult.getJSONArray("metaData");
-
-                    if (resultArray.length() == 0) {
-                        Util.createToast(MyResources.LOGIN_FAILED);
-                        return;
-                    }
 
                     JSONArray userData = resultArray.getJSONArray(0);
                     int id = -1;

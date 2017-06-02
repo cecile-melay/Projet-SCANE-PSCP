@@ -14,7 +14,10 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
+
 import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -42,10 +45,13 @@ import com.example.denis.funculture.main.App;
 import com.example.denis.funculture.main.MainActivity;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.Util;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -62,7 +68,7 @@ import java.util.ArrayList;
  * Main Activity which contains the Google Map
  */
 public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickListener,
-                                                        OnMapReadyCallback {
+        OnMapReadyCallback {
 
     private MediaPlayer mediaPlayer;
     private GoogleMap mMap;
@@ -78,7 +84,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     private int forwardTime = 5000;
     private int backwardTime = 5000;
     private SeekBar seekbar;
-    private TextView tx1,tx2,tx3;
+    private TextView tx1, tx2, tx3;
 
     public static int oneTimeOnly = 0;
 
@@ -100,6 +106,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     public static ArrayList<Double[]> zones = new ArrayList<Double[]>();
     public static ArrayList<String> nomsZones = new ArrayList<String>();
     public static ArrayList<Marker> markers = new ArrayList<Marker>();
+    private HashMap<Marker, MyPointOfInterest> linkMap;
 
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
     private static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
@@ -116,16 +123,16 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     }
 
     @Override
-    protected String getTitle(){
+    protected String getTitle() {
         return MyResources.GPS;
     }
-
 
 
     @Override
     protected void init() {
         super.init();
 
+        linkMap = new HashMap<>();
         SupportMapFragment mapFragment = new SupportMapFragment();
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.map_fragment_frame, mapFragment);
@@ -136,13 +143,13 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
         controlleurAudio();
 
-        if(this.pedometer == null) {
+        if (this.pedometer == null) {
             this.pedometer = new Pedometer(getActivity());
             LinearLayout llPerdometer = (LinearLayout) contentView.findViewById(R.id.ll_pedometer_view);
             llPerdometer.addView(pedometer.getView());
         }
 
-        if(this.timer == null) {
+        if (this.timer == null) {
             this.timer = new MyTimer(getActivity());
             LinearLayout llTimer = (LinearLayout) contentView.findViewById(R.id.ll_timer_view);
             llTimer.addView(timer.getView());
@@ -154,16 +161,16 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
     private void controlleurAudio() {
         btNext = (ImageView) contentView.findViewById(R.id.btNext);
-        btPlay = (ImageView)contentView.findViewById(R.id.btPlay);
-        btPrev = (ImageView)contentView.findViewById(R.id.btPrev);
+        btPlay = (ImageView) contentView.findViewById(R.id.btPlay);
+        btPrev = (ImageView) contentView.findViewById(R.id.btPrev);
 
-        tx1 = (TextView)contentView.findViewById(R.id.textView2);
-        tx2 = (TextView)contentView.findViewById(R.id.textView3);
-        tx3 = (TextView)contentView.findViewById(R.id.textView4);
+        tx1 = (TextView) contentView.findViewById(R.id.textView2);
+        tx2 = (TextView) contentView.findViewById(R.id.textView3);
+        tx3 = (TextView) contentView.findViewById(R.id.textView4);
         tx3.setText("Song.mp3");
 
 
-        seekbar = (SeekBar)contentView.findViewById(R.id.seekBar);
+        seekbar = (SeekBar) contentView.findViewById(R.id.seekBar);
         seekbar.setClickable(false);
 
         BoutonsControlleurAudio();
@@ -173,10 +180,10 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         btPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mediaPlayer== null) {
+                if (mediaPlayer == null) {
                     return;
                 }
-                if(mediaPlayer.isPlaying()) {
+                if (mediaPlayer.isPlaying()) {
                     PauseControlleurAudio();
                 } else {
                     PlayControlleurAudio();
@@ -198,39 +205,39 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     }
 
     private void SautArriereControlleurAudio() {
-        if(mediaPlayer == null) {
+        if (mediaPlayer == null) {
             return;
         }
-        int temp = (int)startTime;
+        int temp = (int) startTime;
 
-        if((temp-backwardTime)>0){
+        if ((temp - backwardTime) > 0) {
             startTime = startTime - backwardTime;
             mediaPlayer.seekTo((int) startTime);
-            Toast.makeText(getActivity().getApplicationContext(),"You have Jumped backward 5 seconds",Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(getActivity().getApplicationContext(),"Cannot jump backward 5 seconds",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "You have Jumped backward 5 seconds", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity().getApplicationContext(), "Cannot jump backward 5 seconds", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void SautAvantControlleurAudio() {
-        if(mediaPlayer == null) {
+        if (mediaPlayer == null) {
             return;
         }
-        int temp = (int)startTime;
+        int temp = (int) startTime;
 
-        if((temp+forwardTime)<=finalTime){
+        if ((temp + forwardTime) <= finalTime) {
             startTime = startTime + forwardTime;
             mediaPlayer.seekTo((int) startTime);
-            Toast.makeText(getActivity().getApplicationContext(),"You have Jumped forward 5 seconds",Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(getActivity().getApplicationContext(),"Cannot jump forward 5 seconds",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), "You have Jumped forward 5 seconds", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity().getApplicationContext(), "Cannot jump forward 5 seconds", Toast.LENGTH_SHORT).show();
         }
     }
 
     @SuppressLint("NewApi")
     private void PauseControlleurAudio() {
-        Toast.makeText(getActivity().getApplicationContext(), "Pausing sound",Toast.LENGTH_SHORT).show();
-        if(mediaPlayer == null) {
+        Toast.makeText(getActivity().getApplicationContext(), "Pausing sound", Toast.LENGTH_SHORT).show();
+        if (mediaPlayer == null) {
             return;
         }
         mediaPlayer.pause();
@@ -240,13 +247,14 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
     @SuppressLint("NewApi")
     private void PlayControlleurAudio() {
-        Toast.makeText(getActivity().getApplicationContext(), "Playing sound",Toast.LENGTH_SHORT).show();
-        if(mediaPlayer == null) {
+        Toast.makeText(getActivity().getApplicationContext(), "Playing sound", Toast.LENGTH_SHORT).show();
+        if (mediaPlayer == null) {
             return;
         }
         mediaPlayer.start();
 
-        btPlay.setImageDrawable(Util.getMainActivity().getDrawable(R.drawable.pause));;
+        btPlay.setImageDrawable(Util.getMainActivity().getDrawable(R.drawable.pause));
+        ;
         finalTime = mediaPlayer.getDuration();
         startTime = mediaPlayer.getCurrentPosition();
 
@@ -269,8 +277,8 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
                                 startTime)))
         );
 
-        seekbar.setProgress((int)startTime);
-        myHandler.postDelayed(UpdateSongTime,100);
+        seekbar.setProgress((int) startTime);
+        myHandler.postDelayed(UpdateSongTime, 100);
     }
 
 
@@ -281,7 +289,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
             //locManager.removeUpdates(locListener);
             //mMap.setMyLocationEnabled(false);
         }
-        Toast.makeText(getActivity(), "OnPause()", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "OnPause()", Toast.LENGTH_SHORT).show();
         Util.getMainActivity().swithQCMButtonVisibility();
     }
 
@@ -294,8 +302,17 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
             //locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListener);;
             //mMap.setMyLocationEnabled(true);
         }
-        Toast.makeText(getActivity(), "OnResume()", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "OnResume()", Toast.LENGTH_SHORT).show();
         Util.getMainActivity().swithQCMButtonVisibility();
+        try{
+            zoomOnMe();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(markers.size() > 0) {
+            float zoomLevel = (float) 16.0; //This goes up to 21
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markers.get(0).getPosition(), zoomLevel));
+        }
     }
 
     /**
@@ -315,51 +332,57 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 //        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //            Util.checkPrivileges(getActivity(), MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
 //        } else {
-            mMap.setMyLocationEnabled(true);
-            PolylineOptions polylineOptions = new PolylineOptions()
-                    .width(25)
-                    .color(Color.BLUE)
-                    .geodesic(true);
+        mMap.setMyLocationEnabled(true);
+        PolylineOptions polylineOptions = new PolylineOptions()
+                .width(25)
+                .color(Color.BLUE)
+                .geodesic(true);
 
-            for(MyPointOfInterest poi : Util.getCurrentPath().getPointsOfInterest()) {
-                zones.add(new Double[]{poi.getPoint().getLatLng().latitude,
-                        poi.getPoint().getLatLng().longitude});
-                nomsZones.add(poi.getName());
-                mMap.addCircle(new CircleOptions()
-                        .center(new LatLng(poi.getPoint().getLatLng().latitude,
-                                poi.getPoint().getLatLng().longitude))
-                        .radius(5)
-                        .strokeColor(Color.BLUE)
-                        .fillColor(Color.RED));
+        for (MyPointOfInterest poi : Util.getCurrentPath().getPointsOfInterest()) {
+            zones.add(new Double[]{poi.getPoint().getLatLng().latitude,
+                    poi.getPoint().getLatLng().longitude});
+            nomsZones.add(poi.getName());
+            mMap.addCircle(new CircleOptions()
+                    .center(new LatLng(poi.getPoint().getLatLng().latitude,
+                            poi.getPoint().getLatLng().longitude))
+                    .radius(5)
+                    .strokeColor(Color.BLUE)
+                    .fillColor(Color.RED));
 
-                Marker marker = mMap.addMarker(new MarkerOptions()
-                        .position(poi.getPoint().getLatLng())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
-                        .title(poi.getName())
-                        .snippet(poi.getDescription())
-                );
-                markers.add(marker);
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(poi.getPoint().getLatLng())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.photo))
+                    .title(poi.getName())
+                    .snippet(poi.getDescription())
+            );
+            markers.add(marker);
+            linkMap.put(marker, poi);
+
+            if(markers.size() > 0) {
+                float zoomLevel = (float) 16.0; //This goes up to 21
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markers.get(0).getPosition(), zoomLevel));
             }
+        }
 
-            for(PointOfPath point : Util.getCurrentPath().getPoints()) {
-                //Ajout à la polyline
-                polylineOptions.add(point.getLatLng());
-            }
-            //Ajout polyline à la map
-                mMap.addPolyline(polylineOptions);
+        for (PointOfPath point : Util.getCurrentPath().getPoints()) {
+            //Ajout à la polyline
+            polylineOptions.add(point.getLatLng());
+        }
+        //Ajout polyline à la map
+        mMap.addPolyline(polylineOptions);
 
-            //addProximityAlerts(zones, nomsZones);
+        //addProximityAlerts(zones, nomsZones);
 
-            // Use the LocationManager class to obtain GPS locations
-                locListener = new MyLocationListener(this, mMap);
-            locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
-            locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListener);
-            if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                Toast.makeText(getActivity(),
-                        "Activez le GPS",
-                        Toast.LENGTH_SHORT).show();
-            }
+        // Use the LocationManager class to obtain GPS locations
+        locListener = new MyLocationListener(this, mMap);
+        locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locListener);
+        locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListener);
+        if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Toast.makeText(getActivity(),
+                    "Activez le GPS",
+                    Toast.LENGTH_SHORT).show();
+        }
 
 //        }
 
@@ -371,7 +394,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 final LatLng currentPoint = locListener.getMyposition();
 
-                if(!locListener.getTrackingMode()) {
+                if (!locListener.getTrackingMode()) {
                     LinearLayout layout = new LinearLayout(context);
                     layout.setOrientation(LinearLayout.VERTICAL);
 
@@ -397,7 +420,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
                             });
                     builder.show();
                 }
-                if(locListener.getTrackingMode()) {
+                if (locListener.getTrackingMode()) {
                     LinearLayout layout = new LinearLayout(context);
                     layout.setOrientation(LinearLayout.VERTICAL);
 
@@ -432,7 +455,8 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
                             })
                             .setNeutralButton("Annuler", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {}
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
                             })
                             .setPositiveButton("Sauvegarder chemin", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
@@ -447,10 +471,14 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
             }
         });
 
+        zoomOnMe();
+    }
+
+    private void zoomOnMe() {
     }
 
     private void savePath() {
-        if(currentPath == null) {
+        if (currentPath == null) {
             return;
         }
 
@@ -478,55 +506,75 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         IntentFilter filter = new IntentFilter("com.example.denis.funculture.activities");
         getActivity().registerReceiver(new AlertReceiver(), filter);
     }
-    public void addPositionToWay(LatLng position){
-        if(way != null && way.size()!=0){
+
+    public void addPositionToWay(LatLng position) {
+        if (way != null && way.size() != 0) {
             Polyline polygon = mMap.addPolyline(new PolylineOptions()
-                    .add(way.get(way.size()-1), position)
+                    .add(way.get(way.size() - 1), position)
                     .width(5)
                     .color(Color.RED)
                     .geodesic(true));
         }
-        Log.d("MapsFragment" ,"new pos : " + position.toString() + " way size : " + way.size());
+        Log.d("MapsFragment", "new pos : " + position.toString() + " way size : " + way.size());
         way.add(position);
     }
+
     public ArrayList<Marker> getTabMarkers() {
         return this.tabMarkers;
     }
 
 
-    /** Called when the user clicks a marker. */
+    /**
+     * Called when the user clicks a marker.
+     */
     @Override
     public boolean onMarkerClick(final Marker marker) {
+        if (this.previousMarkerName.equals(marker.getTitle())) {
+            final MyPointOfInterest poi = linkMap.get(marker);
+
+            if (poi == null) {
+                return true;
+            }
+            if (poi.getEpreuve() != null) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(MyResources.LAUNCH_EPREUVE)
+                        .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                poi.getEpreuve().launch();
+                            }
+                        });
+                builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                builder.show();
+            }
+            this.previousMarkerName = marker.getTitle();
+            return true;
+        }
 
         marker.showInfoWindow();
         int son = LancerSon(marker);
 
-        Log.e("previousMarkerName", this.previousMarkerName);
-        Log.e("actualMarkerName", marker.getTitle());
-
-        // Avoid sound repetition for auto start sound
-        if(!this.previousMarkerName.equals(marker.getTitle())) {
-            if (mediaPlayer != null) {
-                mediaPlayer.pause();
-                mediaPlayer = MediaPlayer.create(getActivity(), son);
-                myHandler.postDelayed(UpdateSongTime,100);
-                PlayControlleurAudio();
-                mediaPlayer.start();
-            } else if (mediaPlayer != null && mediaPlayer.getCurrentPosition() != 0){
-                myHandler.postDelayed(UpdateSongTime,100);
-                PlayControlleurAudio();
-                mediaPlayer.start();
-            } else {
-                mediaPlayer = MediaPlayer.create(getActivity(), son);
-                myHandler.postDelayed(UpdateSongTime,100);
-                PlayControlleurAudio();
-                mediaPlayer.start();
-            }
+        Log.d("previousMarkerName", this.previousMarkerName);
+        Log.d("actualMarkerName", marker.getTitle());
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+            mediaPlayer = MediaPlayer.create(getActivity(), son);
+            myHandler.postDelayed(UpdateSongTime, 100);
+            PlayControlleurAudio();
+            mediaPlayer.start();
+        } else if (mediaPlayer != null && mediaPlayer.getCurrentPosition() != 0) {
+            myHandler.postDelayed(UpdateSongTime, 100);
+            PlayControlleurAudio();
+            mediaPlayer.start();
+        } else {
+            mediaPlayer = MediaPlayer.create(getActivity(), son);
+            myHandler.postDelayed(UpdateSongTime, 100);
+            PlayControlleurAudio();
+            mediaPlayer.start();
         }
-        else
-            {
-                // TO DO : ASK IF I WANT TO REPEAT THE SOUND
-            }
 
         // Retrieve the data from the marker.
         Integer clickCount = (Integer) marker.getTag();
@@ -535,12 +583,6 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         if (clickCount != null) {
             clickCount = clickCount + 1;
             marker.setTag(clickCount);
-
-
-            // Return false to indicate that we have not consumed the event and that we wish
-            // for the default behavior to occur (which is for the camera to move such that the
-            // marker is centered and for the marker's info window to open, if it has one).
-            return false;
         }
         this.previousMarkerName = marker.getTitle();
         return true;
@@ -549,7 +591,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
     private int LancerSon(Marker marker) {
         // Check which maker have been clicked or approched
         int son;
-        switch(marker.getTitle()) {
+        switch (marker.getTitle()) {
             case ("Ping Pong"):
                 son = R.raw.ping;
                 break;
@@ -572,7 +614,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
                 son = R.raw.finnewton;
                 break;
             default:
-                if(marker.getSnippet().contains("o"))
+                if (marker.getSnippet().contains("o"))
                     son = R.raw.abr;
                 else
                     son = R.raw.song;
@@ -583,7 +625,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
     private Runnable UpdateSongTime = new Runnable() {
         public void run() {
-            if(mediaPlayer == null) {
+            if (mediaPlayer == null) {
                 return;
             }
             startTime = mediaPlayer.getCurrentPosition();
@@ -593,7 +635,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
                                     toMinutes((long) startTime)))
             );
-            seekbar.setProgress((int)startTime);
+            seekbar.setProgress((int) startTime);
             myHandler.postDelayed(this, 100);
         }
     };

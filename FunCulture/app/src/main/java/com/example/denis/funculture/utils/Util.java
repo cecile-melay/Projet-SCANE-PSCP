@@ -12,8 +12,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.denis.funculture.component.Epreuve;
 import com.example.denis.funculture.component.User;
 import com.example.denis.funculture.component.localisation.Path;
+import com.example.denis.funculture.fragments.Accueil;
 import com.example.denis.funculture.fragments.EditProfil;
 import com.example.denis.funculture.fragments.MyFragment;
 import com.example.denis.funculture.fragments.SeConnecter;
@@ -37,6 +39,8 @@ public class Util {
     private static MyFragment currentFragment;
     private static User currentUser;
     private static Path currentPath;
+    private static Epreuve currentEpreuve;
+    private static Boolean centerMapOnUser = false;
     private static List<Path> paths = new ArrayList<>();
 
     public static void createDialog(String message)
@@ -177,10 +181,10 @@ public class Util {
 
     public static void setCurrentUser(User currentUser) {
         Util.currentUser = currentUser;
+        LoginModel.getInstance().saveConnexion(currentUser.getPseudo(), currentUser.getPass());
         mainActivity.setCurrentUser(currentUser);
-
         if(currentFragment instanceof SeConnecter) {
-            mainActivity.startFragment(EditProfil.class);
+            mainActivity.startFragment(Accueil.class);
         }
     }
 
@@ -221,5 +225,17 @@ public class Util {
 
     public static void addPath(Path path) {
         Util.paths.add(path);
+    }
+
+    public static void setCurrentEpreuve(Epreuve currentEpreuve) {
+        Util.currentEpreuve = currentEpreuve;
+    }
+
+    public static Epreuve getCurrentEpreuve() {
+        return currentEpreuve;
+    }
+
+    public static boolean centerMapOnUser() {
+        return centerMapOnUser;
     }
 }

@@ -1,5 +1,10 @@
 package com.example.denis.funculture.component;
 
+import com.example.denis.funculture.fragments.Accueil;
+import com.example.denis.funculture.fragments.EpreuveFragment;
+import com.example.denis.funculture.fragments.SeConnecter;
+import com.example.denis.funculture.utils.Util;
+
 /**
  * Created by denis on 01/06/2017.
  */
@@ -40,5 +45,10 @@ public class Epreuve {
 
     public void setXp(int xp) {
         this.xp = xp;
+    }
+
+    public void launch() {
+        Util.setCurrentEpreuve(this);
+        Util.getMainActivity().startFragment(EpreuveFragment.class);
     }
 }

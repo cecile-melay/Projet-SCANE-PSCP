@@ -21,6 +21,7 @@ public class MyResources {
         public static final String YES = App.getSingleton().getContext().getString(R.string.yes);
         public static final String NO = App.getSingleton().getContext().getString(R.string.no);
         public static final String LEAVE_APP = App.getSingleton().getContext().getString(R.string.leave_app);
+        public static final String LAUNCH_EPREUVE = App.getSingleton().getContext().getString(R.string.launch_epreuve);
         public static final String SUCCESS_REGISTER = App.getSingleton().getContext().getString(R.string.success_register);
         public static final String MISSING_FIELD_WARNING = App.getSingleton().getContext().getString(R.string.missing_field_warning);
         public static final String CREATE_PATH = App.getSingleton().getContext().getString(R.string.create_path);
@@ -32,6 +33,7 @@ public class MyResources {
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE = 0;
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
         public static final String CONNEXION = App.getSingleton().getContext().getString(R.string.connection);
+        public static final String SUCCESS_EPREUVE = App.getSingleton().getContext().getString(R.string.success_epreuve);
         public static final String LOGIN_FAILED = App.getSingleton().getContext().getString(R.string.login_failed);
     public static final String SUCCESS_UPDATE = App.getSingleton().getContext().getString(R.string.success_update_user);
 }

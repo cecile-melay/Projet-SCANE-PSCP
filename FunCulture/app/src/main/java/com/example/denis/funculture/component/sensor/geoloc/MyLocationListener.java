@@ -11,6 +11,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.denis.funculture.fragments.MapsFragment;
+import com.example.denis.funculture.utils.Util;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -82,12 +84,14 @@ public class MyLocationListener implements android.location.LocationListener {
 
         if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
             //mMap.setMyLocationEnabled(true);
-
         this.myposition = new LatLng(loc.getLatitude(),loc.getLongitude());
         this.myOldPosition = this.myposition;
-        Log.e("myLocalisation", String.valueOf(this.myposition));
+        Log.d("myLocalisation", String.valueOf(this.myposition));
 
-
+        if(Util.centerMapOnUser()) {
+            float zoomLevel = (float) 16.0; //This goes up to 21
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myposition, zoomLevel));
+        }
         /*
         * Controle de position hors du mode tracking
          */
@@ -165,17 +169,17 @@ public class MyLocationListener implements android.location.LocationListener {
     @Override
     public void onProviderDisabled(String provider)
     {
-        Toast.makeText( this.context,
-                "Gps Disabled",
-                Toast.LENGTH_SHORT ).show();
+//        Toast.makeText( this.context,
+//                "Gps Disabled",
+//                Toast.LENGTH_SHORT ).show();
     }
 
     @Override
     public void onProviderEnabled(String provider)
     {
-        Toast.makeText( this.context,
-                "Gps Enabled. Location in progress ...",
-                Toast.LENGTH_SHORT).show();
+//        Toast.makeText( this.context,
+//                "Gps Enabled. Location in progress ...",
+//                Toast.LENGTH_SHORT).show();
         //mMap.animateCamera(CameraUpdateFactory.zoomTo(21), 2000, null);
     }
 

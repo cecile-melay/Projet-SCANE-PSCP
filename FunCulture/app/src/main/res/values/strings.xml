@@ -57,5 +57,7 @@
     <string name="already_connected">Vous êtes déja connecté.</string>
     <string name="choose_path">Choisir un parcours</string>
     <string name="webview">webview</string>
+    <string name="launch_epreuve">Il existe une épreuve relative à ce point de passage, souhaitez-vous l\'effectuer et bénéficier d\'un bonus d\'expérience ?</string>
+    <string name="success_epreuve">Bravo vous avez gagné %d Xp !</string>
 
 </resources>

@@ -35,6 +35,7 @@ import com.example.denis.funculture.fragments.MapsFragment;
 import com.example.denis.funculture.fragments.MyFragment;
 import com.example.denis.funculture.fragments.QCMFragment;
 import com.example.denis.funculture.fragments.SeConnecter;
+import com.example.denis.funculture.utils.LoginModel;
 import com.example.denis.funculture.utils.MyResources;
 import com.example.denis.funculture.utils.MyServices;
 import com.example.denis.funculture.utils.Util;
@@ -111,7 +112,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startFragment(QCMFragment.class);
+                if(Util.getCurrentPath().getQcm() != null) {
+                    startFragment(QCMFragment.class);
+                }
             }
         });
 
@@ -142,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         init();
-        Util.checkPrivileges(this, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_FINE, MyResources.MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE);
         startFragment(ChooseSensorFragment.class);
         initRegisterFields();
     }
@@ -164,6 +166,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 validateRegister();
+            }
+        });
+        this.llRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                return;
             }
         });
 
@@ -217,11 +225,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             startFragment(ChooseTags.class);
 
-        } else if (id == R.id.nav_map) {
-
-            startFragment(MapsFragment.class);
-
-        } else if (id == R.id.nav_desc) {
+        }
+//        else if (id == R.id.nav_map) {
+//
+//            startFragment(MapsFragment.class);
+//
+//        }
+        else if (id == R.id.nav_desc) {
 
             startFragment(ChooseSensorFragment.class);
 
@@ -277,6 +287,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         App.getSingleton().setContext(this);
         Util.setMainActivity(this);
         MyServices.getSingleton().loadPaths();
+        LoginModel.getInstance().checkConnexion();
     }
 
 
@@ -361,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return false;
             }
 
-            if (fragments.size() > 0) {
+            if (fragments.size() > 1) {
                 return super.onKeyDown(keyCode, event);
             } else {
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {

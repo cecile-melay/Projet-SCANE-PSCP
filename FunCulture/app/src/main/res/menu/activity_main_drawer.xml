@@ -4,20 +4,16 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_accueil"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_menu_gallery"
             android:title="Accueil" />
         <item
             android:id="@+id/nav_choose_tag"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_menu_gallery"
             android:title="Choisir ses types d'intérêt" />
-        <item
-            android:id="@+id/nav_map"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Rejoindre le parcours" />
         <item
             android:id="@+id/nav_desc"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Description du parcours" />
+            android:title="Test des fonctionnalités" />
         <item
             android:id="@+id/nav_legende"
             android:icon="@drawable/ic_menu_manage"
@@ -28,11 +24,11 @@
             android:title="Appareil Photo" />
         <item
             android:id="@+id/nav_connexion"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_menu_gallery"
             android:title="Connexion" />
         <item
             android:id="@+id/nav_inscription"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_menu_gallery"
             android:title="Inscription" />
     </group>
 

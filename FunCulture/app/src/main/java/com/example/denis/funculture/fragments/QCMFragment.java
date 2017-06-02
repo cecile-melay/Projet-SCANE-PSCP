@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.denis.funculture.R;
 import com.example.denis.funculture.component.qcm.Answer;
+import com.example.denis.funculture.component.qcm.QCM;
 import com.example.denis.funculture.component.qcm.QCMAnswerAdapter;
 import com.example.denis.funculture.component.qcm.Question;
 import com.example.denis.funculture.utils.MyResources;
@@ -23,10 +24,8 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class QCMFragment extends MyFragment {
-    private static String qcm_title;
     private static final String TAG = "QCMActivity";
-    private static ArrayList<Question> questions = new ArrayList<>();
-
+    private QCM qcm;
     private LinearLayout ll_answers;
     private TextView tvTitle;
     private TextView tvTime;
@@ -40,36 +39,15 @@ public class QCMFragment extends MyFragment {
     private int score;
     private int duration;
 
-    private void addTestQuestions() {
-        Question question1 = new Question("Actualité", "Quel animal de compagnie est le plus adoré à Nice?");
-        question1.addAnswer(new Answer(1, false, "A", "C'est le chat", true));
-        question1.addAnswer(new Answer(2, false, "B", "C'est le chien", false));
-        question1.addAnswer(new Answer(3, false, "C", "C'est le lapin", false));
-        question1.addAnswer(new Answer(4, false, "D", "C'est le hamster", false));
-
-        Question question2 = new Question("Sport", "Quel sport est le plus médiatisé en France ?");
-        question2.addAnswer(new Answer(5, false, "A", "C'est le football", true));
-        question2.addAnswer(new Answer(6, false, "B", "C'est le handball", false));
-        question2.addAnswer(new Answer(7, false, "C", "C'est le volleyball", false));
-        question2.addAnswer(new Answer(8, false, "D", "C'est le curling", false));
-
-        Question question3 = new Question("Spectacle", "Quel événement connait le plus de succès dans le sud ?");
-        question3.addAnswer(new Answer(9, false, "A", "C'est le théâtre", true));
-        question3.addAnswer(new Answer(10, false, "B", "C'est le cinéma", false));
-        question3.addAnswer(new Answer(11, false, "C", "C'est le stand up", false));
-        question3.addAnswer(new Answer(12, false, "D", "C'est les claquettes", false));
-
-        questions.add(question1);
-        questions.add(question2);
-        questions.add(question3);
-    }
-
     protected void init() {
         super.init();
-        addTestQuestions();
-
         this.score = 0;
         this.currentQuestion = -1;
+        this.qcm = Util.getCurrentPath().getQcm();
+        if(qcm == null) {
+            return;
+        }
+
         ll_answers = (LinearLayout) this.contentView.findViewById(R.id.ll_qcm_answers);
         tvTime = (TextView) this.contentView.findViewById(R.id.tv_qcm_time);
         tvTitle = (TextView) this.contentView.findViewById(R.id.tv_qcm_title);
@@ -84,9 +62,9 @@ public class QCMFragment extends MyFragment {
                 nextQuestion();
             }
         });
-        tvTitle.setText(qcm_title);
+        tvTitle.setText(qcm.getName());
 
-        if(questions.size()>0) {
+        if(qcm.getQuestions().size()>0) {
             launchTimer();
             nextQuestion();
         }
@@ -119,18 +97,18 @@ public class QCMFragment extends MyFragment {
 
 
         currentQuestion ++;
-        if(currentQuestion<questions.size()) {
-            Question question = questions.get(currentQuestion);
+        if(currentQuestion<qcm.getQuestions().size()) {
+            Question question = qcm.getQuestions().get(currentQuestion);
             tvCategory.setText(question.getCategory());
             tvQuestion.setText(question.getLabel());
-            tvCount.setText((currentQuestion+1) + "/" + questions.size());
+            tvCount.setText((currentQuestion+1) + "/" + qcm.getQuestions().size());
             this.adapter = new QCMAnswerAdapter(getActivity(), question.getAnswers());
             ll_answers.removeAllViews();
             for(int i=0; i<adapter.getCount(); i++) {
                 ll_answers.addView(adapter.getView(i, null, ll_answers));
             }
 
-            if(currentQuestion == questions.size()-1) {
+            if(currentQuestion == qcm.getQuestions().size()-1) {
                 btNext.setText(MyResources.QCM_SEE_RESULT);
             }
         } else {
@@ -186,17 +164,5 @@ public class QCMFragment extends MyFragment {
         long diff = System.currentTimeMillis() - this.startTime.getTime();
 
         this.tvTime.setText(Util.formatTimeInMillis(diff));
-    }
-
-    public static void addQuestion(Question questions) {
-        QCMFragment.questions.add(questions);
-    }
-
-    public static void setQCMTitle(String QCMTitle) {
-        QCMFragment.qcm_title = QCMTitle;
-    }
-
-    public static void refreshQuestions() {
-        QCMFragment.questions = new ArrayList<>();
     }
 }
