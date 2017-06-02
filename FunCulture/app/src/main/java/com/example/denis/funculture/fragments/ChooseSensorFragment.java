@@ -76,7 +76,6 @@ public class ChooseSensorFragment extends MyFragment implements View.OnClickList
                 switch (position) {
                     //GPS
                     case 0:
-                        //TODO : Show list with existing paths
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                         LinearLayout layout = new LinearLayout(getActivity());
                         layout.setOrientation(LinearLayout.VERTICAL);

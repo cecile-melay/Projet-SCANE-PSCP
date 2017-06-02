@@ -59,5 +59,6 @@
     <string name="webview">webview</string>
     <string name="launch_epreuve">Il existe une épreuve relative à ce point de passage, souhaitez-vous l\'effectuer et bénéficier d\'un bonus d\'expérience ?</string>
     <string name="success_epreuve">Bravo vous avez gagné %d Xp !</string>
+    <string name="welcome">Bienvenue</string>
 
 </resources>

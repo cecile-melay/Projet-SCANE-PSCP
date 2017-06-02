@@ -37,11 +37,17 @@ public abstract class MyFragment extends Fragment {
 
     @Override
     public void onStop() {
-        //Util.getMainActivity().removeLastFragment();
+        //Util.getMainActivity().removeFragment();
         super.onStop();
     }
 
     public void finish(boolean restoreMap) {
         Util.getMainActivity().closeCurrentFragment(this, restoreMap);
+    }
+
+    @Nullable
+    @Override
+    public View getView() {
+        return contentView;
     }
 }

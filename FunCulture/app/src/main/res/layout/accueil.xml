@@ -19,10 +19,10 @@
         android:src="@drawable/castle_antibes"/>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/bt_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="0.05"
         android:text="Commencer le parcours" />
 </LinearLayout>

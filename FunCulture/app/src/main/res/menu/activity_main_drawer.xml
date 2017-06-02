@@ -1,48 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_accueil"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Accueil" />
-        <item
-            android:id="@+id/nav_choose_tag"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Choisir ses types d'intérêt" />
-        <item
-            android:id="@+id/nav_desc"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Test des fonctionnalités" />
-        <item
-            android:id="@+id/nav_legende"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Légende" />
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Appareil Photo" />
-        <item
-            android:id="@+id/nav_connexion"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Connexion" />
-        <item
-            android:id="@+id/nav_inscription"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Inscription" />
-    </group>
-
-   <item android:title="Communicate"
+    <item
+        android:title="Parcours"
         android:visible="true">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_accueil"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="Accueil" />
+            <item
+                android:id="@+id/nav_choose_tag"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Choisir ses types d'intérêt" />
+            <item
+                android:id="@+id/nav_desc"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Test des fonctionnalités" />
+            <item
+                android:id="@+id/nav_inscription"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Inscription" />
+        </menu>
+    </item>
+    <item
+        android:title="Configuration"
+        android:visible="true">
+        <menu>
+            <item
+                android:id="@+id/nav_camera"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="Appareil Photo" />
+            <item
+                android:id="@+id/nav_legende"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Légende" />
         </menu>
     </item>
 

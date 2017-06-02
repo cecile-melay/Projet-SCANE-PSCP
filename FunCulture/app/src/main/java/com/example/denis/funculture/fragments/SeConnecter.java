@@ -1,6 +1,5 @@
 package com.example.denis.funculture.fragments;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +21,7 @@ public class SeConnecter extends MyFragment {
     EditText etPseudo;
     EditText etPass;
     Button btLogin;
+    Button btRegister;
 
     @Override
     protected void init() {
@@ -30,6 +30,7 @@ public class SeConnecter extends MyFragment {
         tvConnected = (TextView) contentView.findViewById(R.id.tv_connected);
         llConnection = (LinearLayout) contentView.findViewById(R.id.ll_connection);
         btLogin = (Button) contentView.findViewById(R.id.bt_login);
+        btRegister = (Button) contentView.findViewById(R.id.bt_register);
 
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +44,13 @@ public class SeConnecter extends MyFragment {
 
                     MyServices.getSingleton().loginUser(pseudo, pass, true);
                 }
+            }
+        });
+
+        btRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.getMainActivity().showRegisterLayout();
             }
         });
     }
@@ -70,5 +78,11 @@ public class SeConnecter extends MyFragment {
             llConnection.setVisibility(View.GONE);
             tvConnected.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void finish(boolean restoreMap) {
+        Util.getMainActivity().removeFragment(this);
+        super.finish(restoreMap);
     }
 }

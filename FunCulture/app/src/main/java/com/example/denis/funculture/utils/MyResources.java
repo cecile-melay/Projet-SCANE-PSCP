@@ -34,6 +34,7 @@ public class MyResources {
         public static final int MY_PERMISSIONS_REQUEST_GEOLOCATION_COARSE = 0;
         public static final String CONNEXION = App.getSingleton().getContext().getString(R.string.connection);
         public static final String SUCCESS_EPREUVE = App.getSingleton().getContext().getString(R.string.success_epreuve);
+        public static final String WELCOME = App.getSingleton().getContext().getString(R.string.welcome);
         public static final String LOGIN_FAILED = App.getSingleton().getContext().getString(R.string.login_failed);
     public static final String SUCCESS_UPDATE = App.getSingleton().getContext().getString(R.string.success_update_user);
 }

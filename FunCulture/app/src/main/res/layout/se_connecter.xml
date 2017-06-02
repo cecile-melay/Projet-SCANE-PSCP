@@ -61,6 +61,19 @@
             android:textSize="15sp"
             android:padding="5dp"/>
 
+        <Button
+            android:background="@color/blue"
+            android:textColor="@color/white"
+            android:id="@+id/bt_register"
+            android:text="S'inscrire"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="15sp"
+            android:padding="5dp"/>
+
     </LinearLayout>
 
 </RelativeLayout>

@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         init();
-        startFragment(ChooseSensorFragment.class);
+        startFragment(SeConnecter.class);
         initRegisterFields();
     }
 
@@ -232,22 +232,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //
 //        }
         else if (id == R.id.nav_desc) {
-
-            startFragment(ChooseSensorFragment.class);
-
-        } else if (id == R.id.nav_legende) {
-
             startFragment(ChooseSensorFragment.class);
 
         } else if (id == R.id.nav_inscription) {
             showRegisterLayout();
-        } else if (id == R.id.nav_connexion) {
-            startFragment(SeConnecter.class);
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -255,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void showRegisterLayout() {
+    public void showRegisterLayout() {
         this.llRegister.setVisibility(View.VISIBLE);
         this.isRegisterOpen = true;
     }
@@ -329,13 +317,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     //Comportement lorsque que l'on ferme un fragment
-    public void removeLastFragment() {
-        if (this.fragments.size() < 1) {
-            return;
+    public void removeFragment(MyFragment fragment) {
+        if (this.fragments.contains(fragment)) {
+            this.fragments.remove(fragment);
         }
-
-        //On le retire de la liste
-        fragments.remove(fragments.size() - 1);
     }
 
     public void closeCurrentFragment(Fragment fragmentToClose, boolean restoreMap) {
