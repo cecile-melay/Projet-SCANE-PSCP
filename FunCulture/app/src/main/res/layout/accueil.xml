@@ -12,6 +12,11 @@
         android:layout_marginTop="20dp"
         android:layout_weight="0.05"
         android:text="Bienvenue !" />
+    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:src="@drawable/castle_antibes"/>
 
     <Button
         android:id="@+id/button2"
