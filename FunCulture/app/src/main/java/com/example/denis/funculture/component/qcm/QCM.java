@@ -7,6 +7,7 @@ import java.util.ArrayList;
  */
 
 public class QCM {
+    boolean alreadyDone;
     int id;
     private String name;
     private int idTag;
@@ -17,6 +18,7 @@ public class QCM {
         this.id = id;
         this.name = name;
         this.questions = new ArrayList<>();
+        this.alreadyDone = false;
     }
 
     public void addQuestion(Question question) {
@@ -61,5 +63,13 @@ public class QCM {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isAlreadyDone() {
+        return alreadyDone;
+    }
+
+    public void setAlreadyDone(boolean alreadyDone) {
+        this.alreadyDone = alreadyDone;
     }
 }

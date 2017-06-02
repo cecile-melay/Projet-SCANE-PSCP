@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Util.getCurrentPath().getQcm() != null) {
+                if(Util.getCurrentPath().getQcm() != null && (!Util.getCurrentPath().getQcm().isAlreadyDone())) {
                     startFragment(QCMFragment.class);
                 }
             }

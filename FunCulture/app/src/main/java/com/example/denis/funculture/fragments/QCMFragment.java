@@ -120,6 +120,7 @@ public class QCMFragment extends MyFragment {
         this.duration = getDuration();
 
         Util.createDialog(String.format(MyResources.END_QCM, this.score));
+        qcm.setAlreadyDone(true);
         finish(true);
         //send to server
         //display message and score

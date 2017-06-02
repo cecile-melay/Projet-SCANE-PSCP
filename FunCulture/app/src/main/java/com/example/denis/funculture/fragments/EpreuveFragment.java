@@ -45,6 +45,7 @@ public class EpreuveFragment extends MyFragment {
             webView.loadUrl(epreuve.getUrl());
         }
 
+        tvMessage.setText(epreuve.getName());
         btShowTip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
