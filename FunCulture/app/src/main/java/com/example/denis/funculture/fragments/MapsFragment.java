@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import android.Manifest;
@@ -258,10 +259,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         finalTime = mediaPlayer.getDuration();
         startTime = mediaPlayer.getCurrentPosition();
 
-        if (oneTimeOnly == 0) {
-            seekbar.setMax((int) finalTime);
-            oneTimeOnly = 1;
-        }
+        seekbar.setMax((int) finalTime);
 
         tx2.setText(String.format("%d min, %d sec",
                 TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
@@ -304,12 +302,12 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
         }
         //Toast.makeText(getActivity(), "OnResume()", Toast.LENGTH_SHORT).show();
         Util.getMainActivity().swithQCMButtonVisibility();
-        try{
+        try {
             zoomOnMe();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(markers.size() > 0) {
+        if (markers.size() > 0) {
             float zoomLevel = (float) 16.0; //This goes up to 21
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markers.get(0).getPosition(), zoomLevel));
         }
@@ -358,7 +356,7 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
             markers.add(marker);
             linkMap.put(marker, poi);
 
-            if(markers.size() > 0) {
+            if (markers.size() > 0) {
                 float zoomLevel = (float) 16.0; //This goes up to 21
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markers.get(0).getPosition(), zoomLevel));
             }
@@ -590,33 +588,35 @@ public class MapsFragment extends MyFragment implements GoogleMap.OnMarkerClickL
 
     private int LancerSon(Marker marker) {
         // Check which maker have been clicked or approched
+        Random rand = new Random();
+        int n = rand.nextInt(8);
         int son;
-        switch (marker.getTitle()) {
-            case ("Ping Pong"):
+        switch (n) {
+            case (0):
                 son = R.raw.ping;
                 break;
-            case ("Parking"):
+            case (1):
                 son = R.raw.parking;
                 break;
-            case ("Administration"):
+            case (2):
                 son = R.raw.administration;
                 break;
-            case ("Route Newton 1"):
+            case (3):
                 son = R.raw.entreenewton;
                 break;
-            case ("Route Newton 2"):
+            case (4):
                 son = R.raw.newton2;
                 break;
-            case ("Route Newton 3"):
+            case (5):
                 son = R.raw.newton3;
                 break;
-            case ("Route Newton 4"):
+            case (6):
                 son = R.raw.finnewton;
                 break;
+            case (7):
+                son = R.raw.abr;
+                break;
             default:
-                if (marker.getSnippet().contains("o"))
-                    son = R.raw.abr;
-                else
                     son = R.raw.song;
                 break;
         }
