@@ -25,11 +25,12 @@ public class QRCodeScanner extends Activity implements ZXingScannerView.ResultHa
         QRCScanner(this.ScannerView) ;
     }
 
+    //initialise le scanner
     public  void QRCScanner (View view){
-        ScannerView = new ZXingScannerView(this);   //  initialise le scanner view
+        ScannerView = new ZXingScannerView(this);   
         setContentView(ScannerView);
-        ScannerView.setResultHandler(this); // Register ourselves as a handler for scan results.
-        ScannerView.startCamera();         // Start camera
+        ScannerView.setResultHandler(this); 
+        ScannerView.startCamera();        
 
     }
 
@@ -39,6 +40,7 @@ public class QRCodeScanner extends Activity implements ZXingScannerView.ResultHa
         ScannerView.stopCamera();
     }
 
+    // Récupération du contenu
     @Override
     public void handleResult(Result rawResult) {
         //Récupérer le résultat du scanner ici
